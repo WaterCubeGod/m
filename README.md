@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 # ming-guang-zhu-meng
-=======
+
 # mgzm_v
 
 ## Project setup
@@ -25,4 +25,3 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
->>>>>>> 37fab01 (init)
