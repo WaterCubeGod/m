@@ -1,5 +1,5 @@
 <template>
-    <el-container>
+    <el-container class="main-container">
         <el-header>
             <div>
                 <el-input placeholder="请输入昵称进行搜索，可以直接回车搜索..." v-model="searchInput" class="searchClass" clearable
@@ -7,6 +7,7 @@
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
             </div>
         </el-header>
+
         <el-table :data="tableData" style="width: 70%" max-height="400" highlight-current-row
             @row-click="handleCurrentChange">
             <el-table-column label="好友列表" width="100">
@@ -34,25 +35,56 @@
                 </template>
             </el-table-column>
         </el-table>
+
         <el-drawer :visible.sync="drawer" :with-header="false" style="position: absolute" z-index="-1">
-            <span>{{ this.currentRow.name }}</span>
-            <div style="height: 83%;">
-                <el-row>
-                    <el-col :span="4">
-                        <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
-                    </el-col>
-                    <el-col :span="20">
-                        <div style="border-style: solid;solid: #000;
-                        border-width: 1px;
-                        border-radius: 10px;height: 31px;display: inline-block;float: left">你好</div>
-                    </el-col>
-                </el-row>
-            </div>
-            <div>
-                <el-input type="textarea" v-model="createForm.desc" autosize @clear="sendInfo"
-                    @keydown.enter.native="sendInfo" style="width: 80%;"></el-input>
-                <el-button slot="append" icon="el-icon-search" @click="sendInfo"
-                    style="width: 20%;height: 32px"></el-button>
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                <el-container style="height: 100%;">
+                    <el-header style="position: relative;width: 100%;height: 10%;">
+                        {{ this.currentRow.name }}
+                    </el-header>
+
+                    <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;overflow-y: hidden;">
+                        <div>
+                            <el-row v-for="(item) in chatList" :key="item.time" style="margin-top: 10px;">
+                                <div v-if="item.belong !== '我'">
+                                    <el-col :span="4">
+                                        <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
+                                    </el-col>
+                                    <el-col :span="20">
+                                        <div style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 10px;height: 31px;display: inline-block;float: left">
+                                            {{ item.data }}
+                                        </div>
+                                    </el-col>
+                                </div>
+                                <div v-if="item.belong === '我'">
+                                    <el-col :span="20">
+                                        <div style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 10px;display: inline-block;float: right">
+                                            {{ item.data }}
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="4">
+                                        <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
+                                    </el-col>
+                                </div>
+                            </el-row>
+                        </div>
+                    </el-main>
+
+                    <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
+                        <div>
+                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
+                                style="width: 80%;"></el-input>
+                            <el-button slot="append" icon="el-icon-search" @click="sendInfo"
+                                style="width: 20%;height: 32px"></el-button>
+                        </div>
+                    </el-footer>
+                </el-container>
             </div>
         </el-drawer>
     </el-container>
@@ -67,9 +99,6 @@ export default {
             chatInfo: '',
             drawer: false,
             currentRow: 0,
-            createForm: {
-                desc: ""
-            },
             tableData: [{
                 date: '2016-05-02',
                 name: '王小虎',
@@ -131,18 +160,27 @@ export default {
                 });
         },
         sendInfo() {
-            this.$axios
-                .get("http://localhost:8080/api/coffee/search", {
-                    params: {
-                        search: this.chatInfo
-                    }
+            // this.$axios
+            //     .get("http://localhost:8080/api/coffee/search", {
+            //         params: {
+            //             search: this.chatInfo
+            //         }
+            //     })
+            //     .then(function (res) {
+            //         console.log(res);
+            //     })
+            //     .catch(resp => {
+            //         console.log("请求失败：" + resp.data.code + "," + resp.data);
+            //     });
+            if (this.chatInfo !== '') {
+                this.chatList.push({
+                    data: this.chatInfo,
+                    belong: '我',
+                    time: '2016-05-02'
                 })
-                .then(function (res) {
-                    console.log(res);
-                })
-                .catch(resp => {
-                    console.log("请求失败：" + resp.data.code + "," + resp.data);
-                });
+                this.chatInfo = ''
+            }
+
         },
         handleCurrentChange(val) {
             this.drawer = true;
@@ -213,7 +251,7 @@ export default {
     font-size: 16px;
 }
 
-.el-container {
+.main-container {
     overflow: hidden;
     position: relative;
 }
