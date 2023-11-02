@@ -1,0 +1,2 @@
+
+e241a9cbcf4740f78dc0f9d4fbdecc8c4a7cd2e0	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/tmp/-/tmp-0.0.31.tgz","integrity":null,"time":1698936100211,"size":"262","metadata":{"time":1698936100211,"url":"http://registry.npmmirror.com/tmp/-/tmp-0.0.31.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/tmp/-/tmp-0.0.31.tgz"},"options":{"compress":true},"status":301}}

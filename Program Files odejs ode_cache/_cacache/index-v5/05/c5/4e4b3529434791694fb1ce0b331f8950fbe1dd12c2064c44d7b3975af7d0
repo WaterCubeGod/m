@@ -1,0 +1,2 @@
+
+0c1c0574fa9441f867acd513dc34c0409ee97f7c	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz","integrity":null,"time":1698936100352,"size":"262","metadata":{"time":1698936100352,"url":"http://registry.npmmirror.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz"},"options":{"compress":true},"status":301}}

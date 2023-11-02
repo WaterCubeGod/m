@@ -1,0 +1,2 @@
+
+c165706de4082f21f080b22238e8194b6929fde0	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/nopt/-/nopt-3.0.6.tgz","integrity":null,"time":1698936100436,"size":"262","metadata":{"time":1698936100436,"url":"http://registry.npmmirror.com/nopt/-/nopt-3.0.6.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/nopt/-/nopt-3.0.6.tgz"},"options":{"compress":true},"status":301}}

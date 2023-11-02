@@ -1,0 +1,2 @@
+
+709829ac917b18e37a01a39ae6d44c9a5b30067c	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/randomatic/-/randomatic-3.1.0.tgz","integrity":null,"time":1698936100336,"size":"262","metadata":{"time":1698936100336,"url":"http://registry.npmmirror.com/randomatic/-/randomatic-3.1.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/randomatic/-/randomatic-3.1.0.tgz"},"options":{"compress":true},"status":301}}

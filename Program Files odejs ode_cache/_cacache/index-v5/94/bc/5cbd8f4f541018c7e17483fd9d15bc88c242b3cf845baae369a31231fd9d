@@ -1,0 +1,2 @@
+
+8affc5acdc71c5b4e2b33074040d721ea4d52fd9	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/is-glob/-/is-glob-2.0.1.tgz","integrity":null,"time":1698936100604,"size":"262","metadata":{"time":1698936100604,"url":"http://registry.npmmirror.com/is-glob/-/is-glob-2.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/is-glob/-/is-glob-2.0.1.tgz"},"options":{"compress":true},"status":301}}

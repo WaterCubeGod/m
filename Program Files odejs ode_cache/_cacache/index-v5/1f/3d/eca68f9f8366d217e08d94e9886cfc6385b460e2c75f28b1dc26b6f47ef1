@@ -1,0 +1,2 @@
+
+989e5600d49a2bca330f9c483feceaae6f6c4453	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/socket.io-client/-/socket.io-client-1.7.3.tgz","integrity":null,"time":1698936100241,"size":"262","metadata":{"time":1698936100241,"url":"http://registry.npmmirror.com/socket.io-client/-/socket.io-client-1.7.3.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/socket.io-client/-/socket.io-client-1.7.3.tgz"},"options":{"compress":true},"status":301}}

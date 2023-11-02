@@ -1,0 +1,2 @@
+
+6d80e307246b7e65dc7f4f539be2e3c4ddd1537d	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/hash-base/-/hash-base-3.0.4.tgz","integrity":null,"time":1698936100697,"size":"262","metadata":{"time":1698936100697,"url":"http://registry.npmmirror.com/hash-base/-/hash-base-3.0.4.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/hash-base/-/hash-base-3.0.4.tgz"},"options":{"compress":true},"status":301}}

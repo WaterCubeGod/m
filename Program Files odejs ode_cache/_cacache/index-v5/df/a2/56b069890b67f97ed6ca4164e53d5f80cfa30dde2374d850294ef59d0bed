@@ -1,0 +1,2 @@
+
+3e6dac1618fce63f89800b913593c56f66dba7f4	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/babylon/-/babylon-6.18.0.tgz","integrity":null,"time":1698936101375,"size":"262","metadata":{"time":1698936101375,"url":"http://registry.npmmirror.com/babylon/-/babylon-6.18.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/babylon/-/babylon-6.18.0.tgz"},"options":{"compress":true},"status":301}}

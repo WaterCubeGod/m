@@ -1,0 +1,2 @@
+
+8c02e27a97eba9221d9b23e576495ae22342050c	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/domain-browser/-/domain-browser-1.2.0.tgz","integrity":null,"time":1698936101044,"size":"262","metadata":{"time":1698936101044,"url":"http://registry.npmmirror.com/domain-browser/-/domain-browser-1.2.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/domain-browser/-/domain-browser-1.2.0.tgz"},"options":{"compress":true},"status":301}}

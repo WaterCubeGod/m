@@ -1,0 +1,2 @@
+
+7290862b5ebb169f7d58b44342763f022d57c941	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/shelljs/-/shelljs-0.7.8.tgz","integrity":null,"time":1698936100256,"size":"262","metadata":{"time":1698936100256,"url":"http://registry.npmmirror.com/shelljs/-/shelljs-0.7.8.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/shelljs/-/shelljs-0.7.8.tgz"},"options":{"compress":true},"status":301}}

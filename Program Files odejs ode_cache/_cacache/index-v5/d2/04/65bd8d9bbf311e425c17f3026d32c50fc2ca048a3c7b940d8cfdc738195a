@@ -1,0 +1,2 @@
+
+2e9e55aa531950679699a11746d0b7a6790429e9	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/fsevents/-/fsevents-1.2.4.tgz","integrity":null,"time":1698936096630,"size":"262","metadata":{"time":1698936096630,"url":"http://registry.npmmirror.com/fsevents/-/fsevents-1.2.4.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:35 GMT","location":"https://registry.npmmirror.com/fsevents/-/fsevents-1.2.4.tgz"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+755a299cfb7f72a2acc100a462554a9575bc3518	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/extglob/-/extglob-2.0.4.tgz","integrity":null,"time":1698936101657,"size":"262","metadata":{"time":1698936101657,"url":"http://registry.npmmirror.com/extglob/-/extglob-2.0.4.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/extglob/-/extglob-2.0.4.tgz"},"options":{"compress":true},"status":301}}

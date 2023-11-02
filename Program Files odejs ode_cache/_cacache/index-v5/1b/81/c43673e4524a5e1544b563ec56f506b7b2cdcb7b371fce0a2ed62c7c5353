@@ -1,0 +1,2 @@
+
+7518984ea960d908e11115ad317817a41995a6c2	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/spdx-license-ids/-/spdx-license-ids-3.0.1.tgz","integrity":null,"time":1698936100234,"size":"262","metadata":{"time":1698936100234,"url":"http://registry.npmmirror.com/spdx-license-ids/-/spdx-license-ids-3.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/spdx-license-ids/-/spdx-license-ids-3.0.1.tgz"},"options":{"compress":true},"status":301}}

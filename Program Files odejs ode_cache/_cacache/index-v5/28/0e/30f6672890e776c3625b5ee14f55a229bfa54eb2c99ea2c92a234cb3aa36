@@ -1,0 +1,2 @@
+
+021ede45f3faa479ddd8e593f47f58f594212b89	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/bn.js/-/bn.js-4.11.8.tgz","integrity":null,"time":1698936101357,"size":"262","metadata":{"time":1698936101357,"url":"http://registry.npmmirror.com/bn.js/-/bn.js-4.11.8.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/bn.js/-/bn.js-4.11.8.tgz"},"options":{"compress":true},"status":301}}

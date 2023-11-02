@@ -1,0 +1,2 @@
+
+c290ce0525aaf3a24c9be5a8ae450ef697d92cee	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz","integrity":null,"time":1698936101088,"size":"262","metadata":{"time":1698936101088,"url":"http://registry.npmmirror.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz"},"options":{"compress":true},"status":301}}

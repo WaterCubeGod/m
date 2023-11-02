@@ -1,0 +1,2 @@
+
+0d755bd589e533ac14c2d159c4579a4f84d13c56	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/callsites/-/callsites-0.2.0.tgz","integrity":null,"time":1698936101301,"size":"262","metadata":{"time":1698936101301,"url":"http://registry.npmmirror.com/callsites/-/callsites-0.2.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/callsites/-/callsites-0.2.0.tgz"},"options":{"compress":true},"status":301}}

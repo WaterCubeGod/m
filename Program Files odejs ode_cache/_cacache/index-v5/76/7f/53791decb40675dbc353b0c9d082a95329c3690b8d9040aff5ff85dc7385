@@ -1,0 +1,2 @@
+
+2da30188b315deb1cfe40e80c8054b6112658e64	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/repeating/-/repeating-2.0.1.tgz","integrity":null,"time":1698936100298,"size":"262","metadata":{"time":1698936100298,"url":"http://registry.npmmirror.com/repeating/-/repeating-2.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/repeating/-/repeating-2.0.1.tgz"},"options":{"compress":true},"status":301}}

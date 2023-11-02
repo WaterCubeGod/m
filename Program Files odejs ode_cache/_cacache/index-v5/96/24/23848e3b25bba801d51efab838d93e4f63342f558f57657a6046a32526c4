@@ -1,0 +1,2 @@
+
+f152b356a47dd3aa14cad5e85835057506dc82b6	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/stream-browserify/-/stream-browserify-2.0.1.tgz","integrity":null,"time":1698936100231,"size":"262","metadata":{"time":1698936100231,"url":"http://registry.npmmirror.com/stream-browserify/-/stream-browserify-2.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/stream-browserify/-/stream-browserify-2.0.1.tgz"},"options":{"compress":true},"status":301}}

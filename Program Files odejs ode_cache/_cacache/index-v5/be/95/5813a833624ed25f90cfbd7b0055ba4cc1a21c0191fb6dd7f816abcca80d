@@ -1,0 +1,2 @@
+
+cd1909ea9c09fad025c31947b67b42db3792e900	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/engine.io/-/engine.io-1.8.3.tgz","integrity":null,"time":1698936101043,"size":"262","metadata":{"time":1698936101043,"url":"http://registry.npmmirror.com/engine.io/-/engine.io-1.8.3.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/engine.io/-/engine.io-1.8.3.tgz"},"options":{"compress":true},"status":301}}

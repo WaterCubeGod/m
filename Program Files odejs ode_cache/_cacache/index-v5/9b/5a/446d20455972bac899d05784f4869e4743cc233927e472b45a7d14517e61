@@ -1,0 +1,2 @@
+
+9a81bbe5859953faa0923766faa80b6fa716f5c0	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/glob/-/glob-5.0.15.tgz","integrity":null,"time":1698936101821,"size":"262","metadata":{"time":1698936101821,"url":"http://registry.npmmirror.com/glob/-/glob-5.0.15.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:41 GMT","location":"https://registry.npmmirror.com/glob/-/glob-5.0.15.tgz"},"options":{"compress":true},"status":301}}

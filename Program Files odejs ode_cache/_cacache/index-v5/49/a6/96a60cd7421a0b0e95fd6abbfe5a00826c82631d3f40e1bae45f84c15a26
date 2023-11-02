@@ -1,0 +1,2 @@
+
+163efb44e34621aaf98179df16c242158c48f3bf	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/ieee754/-/ieee754-1.1.12.tgz","integrity":null,"time":1698936100684,"size":"262","metadata":{"time":1698936100684,"url":"http://registry.npmmirror.com/ieee754/-/ieee754-1.1.12.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/ieee754/-/ieee754-1.1.12.tgz"},"options":{"compress":true},"status":301}}

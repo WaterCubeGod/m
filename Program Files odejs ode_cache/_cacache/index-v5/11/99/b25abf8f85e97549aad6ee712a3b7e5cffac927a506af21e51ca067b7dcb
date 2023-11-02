@@ -1,0 +1,2 @@
+
+b2ff9884fccb4108b48f801bcec715c6d5e68738	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/create-hash/-/create-hash-1.2.0.tgz","integrity":null,"time":1698936101171,"size":"262","metadata":{"time":1698936101171,"url":"http://registry.npmmirror.com/create-hash/-/create-hash-1.2.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/create-hash/-/create-hash-1.2.0.tgz"},"options":{"compress":true},"status":301}}

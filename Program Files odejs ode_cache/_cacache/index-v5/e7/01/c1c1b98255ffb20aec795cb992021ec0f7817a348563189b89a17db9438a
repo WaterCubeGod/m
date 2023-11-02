@@ -1,0 +1,2 @@
+
+e75c2247de0a038ba61f85718908940313bb10a4	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/sha.js/-/sha.js-2.4.11.tgz","integrity":null,"time":1698936100262,"size":"262","metadata":{"time":1698936100262,"url":"http://registry.npmmirror.com/sha.js/-/sha.js-2.4.11.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/sha.js/-/sha.js-2.4.11.tgz"},"options":{"compress":true},"status":301}}
