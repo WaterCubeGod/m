@@ -25,10 +25,10 @@
             <el-table-column label="" width="180">
                 <template slot-scope="scope">
                     <el-popover trigger="hover" placement="top">
-                        <p>姓名: {{ scope.row.name }}</p>
+                        <p>姓名: {{ scope.row.username }}</p>
                         <p>住址: {{ scope.row.address }}</p>
                         <div slot="reference" class="name-wrapper">
-                            <div>{{ scope.row.name }}</div>
+                            <div>{{ scope.row.username }}</div>
                             <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
                             <el-tag>{{ scope.row.address }}</el-tag>
                         </div>
@@ -47,12 +47,12 @@
             <div style="position:absolute;top:0;left:0;width:100%;height:100%;">
                 <el-container style="height: 100%;">
                     <el-header style="position: relative;width: 100%;height: 10%;background: #add6fa;">
-                        {{ this.currentRow.name }}
+                        {{ this.currentRow.username }}
                     </el-header>
 
                     <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
                         <el-row v-for="(item) in chatList" :key="item.time" style="margin-top: 10px;">
-                            <div v-if="item.belong !== '我'">
+                            <div v-if="item.belong !== 1">
                                 <el-col :span="4">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
@@ -115,22 +115,11 @@ export default {
             tableData: [
                 {
                     name: '小乐',
-                    address: '东b',
-                    id: 1
+                    account: '东b',
+                    userID: 3
                 }
             ],
             chatList: [],
-            fromPeople: {
-                userID: '',
-                account: '',
-                username: '',
-                password: '',
-                type: '',
-                address: '',
-                phone: '',
-                email: '',
-                isOnLine: '',
-            },
 
         };
     },
@@ -145,18 +134,18 @@ export default {
             method: 'POST',
             url: 'http://localhost:8087/showFriendList',
             data: {
-                id: 1
+                userID: 1
             }
         }).then(response => {
-            console.log(response.data)
-            
+            console.log(response.data.data)
+            this.tableData = response.data.data
         }, error => {
             console.log('错误', error.message)
         })
     },
     methods: {
         connect() {
-            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/websocket/' + this.currentRow.id, {
+            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/websocket/1/' + this.currentRow.userID, {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -182,7 +171,13 @@ export default {
         },
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
-                this.$socket.sendObj(this.currentRow);
+                this.$socket.sendObj(this.chatInfo.trim());
+                this.chatList.push({
+                    belong: 1,
+                    to: this.currentRow.userID,
+                    time: this.getNowDate(),
+                    data: this.chatInfo.trim(),
+                })
                 this.chatInfo = ''
             }
         },
@@ -193,7 +188,8 @@ export default {
             this.$socket.onmessage = (event) => {
                 const receivedData = JSON.parse(event.data);
                 this.receivedData = receivedData;
-            };
+                console.log(receivedData)
+            }
             this.listbtn = true
         },
         getNowDate() {
