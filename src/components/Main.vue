@@ -23,6 +23,10 @@
                             <i class="el-icon-setting"></i>
                             <span slot="title">个人主页</span>
                         </el-menu-item>
+                        <el-menu-item index="/main/donation">
+                            <i class="el-icon-shopping-bag-1"></i>
+                            <span slot="title">物品捐助</span>
+                        </el-menu-item>
                     </el-menu>
                 </el-aside>
                 <el-main>
