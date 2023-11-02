@@ -49,14 +49,14 @@
     methods: {
       handleDonate(rowData) {
 
-        
+        console.log(rowData)
         // 发送 POST 请求到后端接口
-        this.$axios.post('/donationDetail', {
-          donation: rowData
+        this.$axios.post('http://localhost:8087/donationDetail', {
+            donationID:rowData.donationID
         })
         .then(response=>{
             console.log(response.data)
-            //this.$router.push('/main/friend');
+            this.$router.push('/main/friend');
         }
         );
         
