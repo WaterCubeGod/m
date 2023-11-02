@@ -97,6 +97,9 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueNativeSock from 'vue-native-websocket'
+
 export default {
     name: 'MyFriend',
     data() {
@@ -112,7 +115,8 @@ export default {
             tableData: [
                 {
                     name: '小乐',
-                    address: '东b'
+                    address: '东b',
+                    id: 1
                 }
             ],
             chatList: [],
@@ -137,8 +141,28 @@ export default {
         window.onresize = function () {//用于使表格高度自适应的方法  
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
+        this.$axios({
+            method: 'POST',
+            url: 'http://localhost:8087/showFriendList',
+            data: {
+                id: 1
+            }
+        }).then(response => {
+            console.log(response.data)
+            
+        }, error => {
+            console.log('错误', error.message)
+        })
     },
     methods: {
+        connect() {
+            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/websocket/' + this.currentRow.id, {
+                format: 'json',
+                reconnection: true, // 自动重连
+                reconnectionAttempts: 5, // 重连尝试次数
+                reconnectionDelay: 3000, // 重连延迟（毫秒）
+            })
+        },
         search() {
             if (this.searchInput !== '') {
                 this.label = false
@@ -157,13 +181,19 @@ export default {
             }
         },
         sendInfo() {
-            if (this.chatInfo !== '') {
+            if (this.chatInfo.trim() !== '') {
                 this.$socket.sendObj(this.currentRow);
+                this.chatInfo = ''
             }
         },
         handleCurrentChange(val) {
             this.drawer = this.listbtn;
             this.currentRow = val;
+            this.connect()
+            this.$socket.onmessage = (event) => {
+                const receivedData = JSON.parse(event.data);
+                this.receivedData = receivedData;
+            };
             this.listbtn = true
         },
         getNowDate() {
@@ -200,10 +230,7 @@ export default {
         }
     },
     async created() {
-        this.$socket.onMessage((message) => {
-            const receivedData = JSON.parse(message.data);
-            this.receivedData = receivedData;
-        });
+
     }
 
 }
