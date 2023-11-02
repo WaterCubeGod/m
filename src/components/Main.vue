@@ -4,20 +4,24 @@
             <el-header>首页</el-header>
             <el-container>
                 <el-aside width="200px">
-                    <el-menu :default-active="this.$router.path" class="el-menu-vertical-demo" @open="handleOpen"
+                    <el-menu :default-active="this.activeIndex" class="el-menu-vertical-demo" @open="handleOpen"
                         @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
                         style="width: 200px;" router>
                         <el-menu-item index="/main/main">
                             <i class="el-icon-menu"></i>
                             <span slot="title">首页</span>
                         </el-menu-item>
-                        <el-menu-item index="/main/friend">
+                            <el-menu-item index="/main/friend">
                             <i class="el-icon-chat-round"></i>
                             <span slot="title">我的好友</span>
                         </el-menu-item>
                         <el-menu-item index="/main/team">
                             <i class="el-icon-chat-line-round"></i>
                             <span slot="title">我的群组</span>
+                        </el-menu-item>
+                        <el-menu-item index="/main/study">
+                            <i class="el-icon-notebook-1"></i>
+                            <span slot="title">我的学习</span>
                         </el-menu-item>
                         <el-menu-item index="/main/my">
                             <i class="el-icon-setting"></i>
@@ -41,6 +45,11 @@
 <script>
 export default {
     name: 'MainPage',
+    data() {
+        return {
+            activeIndex: ''
+        }
+    },
     methods: {
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -48,8 +57,11 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         },
-
+    },
+    mounted() {
+        this.activeIndex = this.$route.path
     }
+
 }
 </script>
 
