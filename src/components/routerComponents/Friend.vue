@@ -105,22 +105,29 @@ export default {
             searchInput: '',
             chatInfo: '',
             drawer: false,
-            currentRow: 0,
+            receivedData: {},
+            currentRow: {},
             label: true,
             listbtn: true,
-            tableData: [],
-            chatList: [
+            tableData: [
                 {
-                    data: '你好',
-                    belong: '王小虎',
-                    time: '2016-05-02'
-                },
-                {
-                    data: '你好',
-                    belong: '我',
-                    time: '2016-05-03'
+                    name: '小乐',
+                    address: '东b'
                 }
-            ]
+            ],
+            chatList: [],
+            fromPeople: {
+                userID: '',
+                account: '',
+                username: '',
+                password: '',
+                type: '',
+                address: '',
+                phone: '',
+                email: '',
+                isOnLine: '',
+            },
+
         };
     },
     mounted() {
@@ -150,28 +157,9 @@ export default {
             }
         },
         sendInfo() {
-            // this.$axios
-            //     .get("http://localhost:8080/api/coffee/search", {
-            //         params: {
-            //             search: this.chatInfo
-            //         }
-            //     })
-            //     .then(function (res) {
-            //         console.log(res);
-            //     })
-            //     .catch(resp => {
-            //         console.log("请求失败：" + resp.data.code + "," + resp.data);
-            //     });
             if (this.chatInfo !== '') {
-                this.chatList.push({
-                    data: this.chatInfo,
-                    belong: '我',
-                    time: new Date(this.getNowDate()).getTime(),
-                })
-                this.chatInfo = ''
-                this.handleScrollBottom()
+                this.$socket.sendObj(this.currentRow);
             }
-
         },
         handleCurrentChange(val) {
             this.drawer = this.listbtn;
@@ -210,6 +198,12 @@ export default {
         handleVideoChat() {
             this.listbtn = false
         }
+    },
+    async created() {
+        this.$socket.onMessage((message) => {
+            const receivedData = JSON.parse(message.data);
+            this.receivedData = receivedData;
+        });
     }
 
 }

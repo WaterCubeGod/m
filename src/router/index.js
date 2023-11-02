@@ -3,6 +3,7 @@ import Friend from '../components/routerComponents/Friend'
 import MainPage from '../components/routerComponents/MainPage'
 import My from '../components/routerComponents/My'
 import Team from '../components/routerComponents/Team'
+import Study from '../components/routerComponents/Study'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -24,7 +25,7 @@ const router = new VueRouter({
                 { path: '/main/main', name: 'myMain', component: MainPage },
                 { path: '/main/my', name: 'my', component: My },
                 { path: '/main/team', name: 'team', component: Team },
-                
+                { path: '/main/study', name: 'study', component: Study },
             ]
         },
         { path: '/', redirect: '/main' },

@@ -19,6 +19,10 @@
                             <i class="el-icon-chat-line-round"></i>
                             <span slot="title">我的群组</span>
                         </el-menu-item>
+                        <el-menu-item index="/main/study">
+                            <i class="el-icon-notebook-1"></i>
+                            <span slot="title">我的学习</span>
+                        </el-menu-item>
                         <el-menu-item index="/main/my">
                             <i class="el-icon-setting"></i>
                             <span slot="title">个人主页</span>
