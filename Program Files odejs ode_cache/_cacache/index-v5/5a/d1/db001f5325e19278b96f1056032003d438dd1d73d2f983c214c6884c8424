@@ -1,0 +1,2 @@
+
+8111b4ed4cca54abe4830f25ac9cf116b620cb81	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz","integrity":null,"time":1698936101599,"size":"262","metadata":{"time":1698936101599,"url":"http://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz"},"options":{"compress":true},"status":301}}

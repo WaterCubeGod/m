@@ -1,0 +1,2 @@
+
+53b32dfc683ad52e1466173b79ae3477c54ae14e	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/deep-eql/-/deep-eql-3.0.1.tgz","integrity":null,"time":1698936101100,"size":"262","metadata":{"time":1698936101100,"url":"http://registry.npmmirror.com/deep-eql/-/deep-eql-3.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/deep-eql/-/deep-eql-3.0.1.tgz"},"options":{"compress":true},"status":301}}

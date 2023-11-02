@@ -1,0 +1,2 @@
+
+54c7c06b86cda9d1891484d211bc27c1add45f6a	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/negotiator/-/negotiator-0.6.1.tgz","integrity":null,"time":1698936100436,"size":"262","metadata":{"time":1698936100436,"url":"http://registry.npmmirror.com/negotiator/-/negotiator-0.6.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/negotiator/-/negotiator-0.6.1.tgz"},"options":{"compress":true},"status":301}}

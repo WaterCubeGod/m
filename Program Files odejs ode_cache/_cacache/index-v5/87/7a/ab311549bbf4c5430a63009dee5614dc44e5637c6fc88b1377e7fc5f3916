@@ -1,0 +1,2 @@
+
+789a598fe10ab69574141e3c9d97a46c2986a0aa	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/lodash.create/-/lodash.create-3.1.1.tgz","integrity":null,"time":1698936100486,"size":"262","metadata":{"time":1698936100486,"url":"http://registry.npmmirror.com/lodash.create/-/lodash.create-3.1.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/lodash.create/-/lodash.create-3.1.1.tgz"},"options":{"compress":true},"status":301}}

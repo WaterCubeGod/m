@@ -1,0 +1,2 @@
+
+58c812d27ed9ca6882437616f7138e4a2efefc59	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/public-encrypt/-/public-encrypt-4.0.2.tgz","integrity":null,"time":1698936100344,"size":"262","metadata":{"time":1698936100344,"url":"http://registry.npmmirror.com/public-encrypt/-/public-encrypt-4.0.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/public-encrypt/-/public-encrypt-4.0.2.tgz"},"options":{"compress":true},"status":301}}

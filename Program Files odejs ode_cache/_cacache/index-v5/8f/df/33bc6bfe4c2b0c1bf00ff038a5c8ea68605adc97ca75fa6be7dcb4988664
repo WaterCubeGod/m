@@ -1,0 +1,2 @@
+
+1cd41425641144c03ea19ff513f31dcb1c3415ce	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/mimic-fn/-/mimic-fn-1.2.0.tgz","integrity":null,"time":1698936100468,"size":"262","metadata":{"time":1698936100468,"url":"http://registry.npmmirror.com/mimic-fn/-/mimic-fn-1.2.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/mimic-fn/-/mimic-fn-1.2.0.tgz"},"options":{"compress":true},"status":301}}

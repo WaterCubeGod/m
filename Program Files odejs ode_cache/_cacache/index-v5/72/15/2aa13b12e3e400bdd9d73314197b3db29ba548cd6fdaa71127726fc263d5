@@ -1,0 +1,2 @@
+
+74d77d00f1cbb13a97ee516e8a84f4c35188d341	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/assert/-/assert-1.4.1.tgz","integrity":null,"time":1698936101544,"size":"262","metadata":{"time":1698936101544,"url":"http://registry.npmmirror.com/assert/-/assert-1.4.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/assert/-/assert-1.4.1.tgz"},"options":{"compress":true},"status":301}}

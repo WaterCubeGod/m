@@ -1,0 +1,2 @@
+
+189c4e17693390ef13432d904d00bf48eb0064fd	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/rimraf/-/rimraf-2.6.2.tgz","integrity":null,"time":1698936100291,"size":"262","metadata":{"time":1698936100291,"url":"http://registry.npmmirror.com/rimraf/-/rimraf-2.6.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/rimraf/-/rimraf-2.6.2.tgz"},"options":{"compress":true},"status":301}}

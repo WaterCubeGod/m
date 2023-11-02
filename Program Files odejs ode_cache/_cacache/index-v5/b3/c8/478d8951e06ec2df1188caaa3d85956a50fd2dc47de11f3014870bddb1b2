@@ -1,0 +1,2 @@
+
+534dd405abc83121654c76f316410a2f811237b0	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/eslint/-/eslint-3.19.0.tgz","integrity":null,"time":1698936100977,"size":"262","metadata":{"time":1698936100977,"url":"http://registry.npmmirror.com/eslint/-/eslint-3.19.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/eslint/-/eslint-3.19.0.tgz"},"options":{"compress":true},"status":301}}

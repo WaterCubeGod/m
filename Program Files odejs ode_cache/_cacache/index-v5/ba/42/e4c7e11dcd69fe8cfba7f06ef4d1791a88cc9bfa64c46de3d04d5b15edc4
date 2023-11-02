@@ -1,0 +1,2 @@
+
+6e03e413873150124024e3e662527ce11f41a295	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/meow/-/meow-3.7.0.tgz","integrity":null,"time":1698936100469,"size":"262","metadata":{"time":1698936100469,"url":"http://registry.npmmirror.com/meow/-/meow-3.7.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/meow/-/meow-3.7.0.tgz"},"options":{"compress":true},"status":301}}

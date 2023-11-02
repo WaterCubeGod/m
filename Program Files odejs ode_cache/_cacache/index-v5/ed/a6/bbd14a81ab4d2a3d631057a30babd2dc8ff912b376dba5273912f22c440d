@@ -1,0 +1,2 @@
+
+64945392bc406b9eb874e292775476127f72e5fa	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/progress/-/progress-1.1.8.tgz","integrity":null,"time":1698936100344,"size":"262","metadata":{"time":1698936100344,"url":"http://registry.npmmirror.com/progress/-/progress-1.1.8.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/progress/-/progress-1.1.8.tgz"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+65a8b88bc9b4a186dae329128aa407f26c153a1a	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/strip-ansi/-/strip-ansi-3.0.1.tgz","integrity":null,"time":1698936100228,"size":"262","metadata":{"time":1698936100228,"url":"http://registry.npmmirror.com/strip-ansi/-/strip-ansi-3.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/strip-ansi/-/strip-ansi-3.0.1.tgz"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+1773dde603f3e144ab73b0199dc3ce83c02168bf	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/has/-/has-1.0.3.tgz","integrity":null,"time":1698936100734,"size":"262","metadata":{"time":1698936100734,"url":"http://registry.npmmirror.com/has/-/has-1.0.3.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/has/-/has-1.0.3.tgz"},"options":{"compress":true},"status":301}}

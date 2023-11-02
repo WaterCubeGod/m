@@ -1,0 +1,2 @@
+
+147cacfd6f18c0c4871c4f022df47cf0efbe56a9	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/pascalcase/-/pascalcase-0.1.1.tgz","integrity":null,"time":1698936100366,"size":"262","metadata":{"time":1698936100366,"url":"http://registry.npmmirror.com/pascalcase/-/pascalcase-0.1.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/pascalcase/-/pascalcase-0.1.1.tgz"},"options":{"compress":true},"status":301}}

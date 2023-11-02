@@ -1,0 +1,2 @@
+
+be043a7eb1a06fbd21f7ccc6c3d3fe44c29373d4	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/diff/-/diff-3.2.0.tgz","integrity":null,"time":1698936101091,"size":"262","metadata":{"time":1698936101091,"url":"http://registry.npmmirror.com/diff/-/diff-3.2.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/diff/-/diff-3.2.0.tgz"},"options":{"compress":true},"status":301}}

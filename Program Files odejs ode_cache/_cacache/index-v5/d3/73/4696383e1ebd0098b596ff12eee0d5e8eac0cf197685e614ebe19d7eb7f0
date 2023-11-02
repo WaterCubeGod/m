@@ -1,0 +1,2 @@
+
+cc25fa10805b4f6fe6e4ea343c92ef7c51c55c23	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/micromatch/-/micromatch-2.3.11.tgz","integrity":null,"time":1698936100468,"size":"262","metadata":{"time":1698936100468,"url":"http://registry.npmmirror.com/micromatch/-/micromatch-2.3.11.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/micromatch/-/micromatch-2.3.11.tgz"},"options":{"compress":true},"status":301}}

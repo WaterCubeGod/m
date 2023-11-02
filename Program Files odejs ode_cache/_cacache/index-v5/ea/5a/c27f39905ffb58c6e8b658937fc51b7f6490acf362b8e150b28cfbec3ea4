@@ -1,0 +1,2 @@
+
+66e93667a0e040d2ea5c0a6897529f2658b188ca	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/string_decoder/-/string_decoder-1.1.1.tgz","integrity":null,"time":1698936100226,"size":"262","metadata":{"time":1698936100226,"url":"http://registry.npmmirror.com/string_decoder/-/string_decoder-1.1.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/string_decoder/-/string_decoder-1.1.1.tgz"},"options":{"compress":true},"status":301}}

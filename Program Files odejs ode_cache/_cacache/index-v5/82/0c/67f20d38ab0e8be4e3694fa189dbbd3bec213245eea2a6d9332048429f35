@@ -1,0 +1,2 @@
+
+8265381cd022ae7b093507b3b1718e05a1d43d4d	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/object-assign/-/object-assign-4.1.1.tgz","integrity":null,"time":1698936100425,"size":"262","metadata":{"time":1698936100425,"url":"http://registry.npmmirror.com/object-assign/-/object-assign-4.1.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/object-assign/-/object-assign-4.1.1.tgz"},"options":{"compress":true},"status":301}}

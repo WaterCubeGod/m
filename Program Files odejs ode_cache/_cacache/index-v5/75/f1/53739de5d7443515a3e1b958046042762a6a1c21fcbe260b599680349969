@@ -1,0 +1,2 @@
+
+8d4e155a4fe2438f4c9dbbbaae772ce312b56157	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/invariant/-/invariant-2.2.4.tgz","integrity":null,"time":1698936100643,"size":"262","metadata":{"time":1698936100643,"url":"http://registry.npmmirror.com/invariant/-/invariant-2.2.4.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/invariant/-/invariant-2.2.4.tgz"},"options":{"compress":true},"status":301}}

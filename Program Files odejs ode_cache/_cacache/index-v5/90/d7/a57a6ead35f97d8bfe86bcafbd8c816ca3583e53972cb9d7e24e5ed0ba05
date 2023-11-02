@@ -1,0 +1,2 @@
+
+acdad5fc37a2f0b60eff968dfac4a116b1e60564	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/acorn/-/acorn-3.3.0.tgz","integrity":null,"time":1698936102003,"size":"262","metadata":{"time":1698936102003,"url":"http://registry.npmmirror.com/acorn/-/acorn-3.3.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:41 GMT","location":"https://registry.npmmirror.com/acorn/-/acorn-3.3.0.tgz"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+59ba6c5bd44f5e26bf8fc7ada5237fb00aa88682	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/es6-symbol/-/es6-symbol-3.1.1.tgz","integrity":null,"time":1698936100981,"size":"262","metadata":{"time":1698936100981,"url":"http://registry.npmmirror.com/es6-symbol/-/es6-symbol-3.1.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/es6-symbol/-/es6-symbol-3.1.1.tgz"},"options":{"compress":true},"status":301}}

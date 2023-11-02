@@ -1,0 +1,2 @@
+
+c73b20d858fadfe99af874b7c20239a7ce186e0a	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/depd/-/depd-1.1.2.tgz","integrity":null,"time":1698936101090,"size":"262","metadata":{"time":1698936101090,"url":"http://registry.npmmirror.com/depd/-/depd-1.1.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/depd/-/depd-1.1.2.tgz"},"options":{"compress":true},"status":301}}

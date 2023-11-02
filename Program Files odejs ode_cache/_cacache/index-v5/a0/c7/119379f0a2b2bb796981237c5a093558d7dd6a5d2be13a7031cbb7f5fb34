@@ -1,0 +1,2 @@
+
+d17a573b107022624cc43b2ca87e3a8d90de72a5	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz","integrity":null,"time":1698936100683,"size":"262","metadata":{"time":1698936100683,"url":"http://registry.npmmirror.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz"},"options":{"compress":true},"status":301}}

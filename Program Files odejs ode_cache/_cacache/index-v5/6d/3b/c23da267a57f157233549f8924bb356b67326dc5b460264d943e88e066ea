@@ -1,0 +1,2 @@
+
+475c3d61a1426424b2aca87670ad96db01965f52	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/co/-/co-4.6.0.tgz","integrity":null,"time":1698936101202,"size":"262","metadata":{"time":1698936101202,"url":"http://registry.npmmirror.com/co/-/co-4.6.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/co/-/co-4.6.0.tgz"},"options":{"compress":true},"status":301}}

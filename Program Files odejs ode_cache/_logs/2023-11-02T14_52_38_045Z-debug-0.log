@@ -1,0 +1,6 @@
+0 verbose cli D:\Code\nodejs\node.exe D:\Code\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@9.6.7
+2 info using node@v18.17.0
+3 timing npm:load:whichnode Completed in 2ms
+4 timing config:load:defaults Completed in 2ms
+5 timing config:load:file:D:\Code\nodejs\node_modules\npm\npmrc Completed in 2ms

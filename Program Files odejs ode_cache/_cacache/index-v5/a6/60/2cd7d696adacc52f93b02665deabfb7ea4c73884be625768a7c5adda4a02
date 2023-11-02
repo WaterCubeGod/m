@@ -1,0 +1,2 @@
+
+438d859c49030eab008fc5ac9af4ec48f22231c7	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/ee-first/-/ee-first-1.1.1.tgz","integrity":null,"time":1698936101046,"size":"262","metadata":{"time":1698936101046,"url":"http://registry.npmmirror.com/ee-first/-/ee-first-1.1.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/ee-first/-/ee-first-1.1.1.tgz"},"options":{"compress":true},"status":301}}

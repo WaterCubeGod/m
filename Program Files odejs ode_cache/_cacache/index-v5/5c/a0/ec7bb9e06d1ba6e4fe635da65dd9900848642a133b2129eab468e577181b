@@ -1,0 +1,2 @@
+
+0464ae9fa78605052d4794db6b7c931dc96a7626	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/istanbul/-/istanbul-0.4.5.tgz","integrity":null,"time":1698936100572,"size":"262","metadata":{"time":1698936100572,"url":"http://registry.npmmirror.com/istanbul/-/istanbul-0.4.5.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/istanbul/-/istanbul-0.4.5.tgz"},"options":{"compress":true},"status":301}}
