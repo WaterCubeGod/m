@@ -5,9 +5,10 @@ import My from '../components/routerComponents/My'
 import Team from '../components/routerComponents/Team'
 import Donation from '../components/routerComponents/Donation'
 import Study from '../components/routerComponents/Study'
-
+import Login from '../components/Login'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 
 Vue.use(VueRouter)
 
@@ -17,20 +18,31 @@ Vue.config.productionTip = false
 
 
 const router = new VueRouter({
-    routes: [
+    // routes: [
+    //     {
+    //         path: '/main',
+    //         component: Main,
+    //         children: [
+    //             { path: '/main/friend', name: 'friend', component: Friend },
+    //             { path: '/main/main', name: 'myMain', component: MainPage },
+    //             { path: '/main/my', name: 'my', component: My },
+    //             { path: '/main/team', name: 'team', component: Team },
+    //             { path: '/main/donation', name: 'donation', component: Donation },
+    //             { path: '/main/study', name: 'study', component: Study },
+    //         ]
+    //     },
+    //     { path: '/', redirect: '/main' },
+    // ]
+        routes: [
+            {  
+                path: '/',  
+                redirect: '/Login' // 将根路由重定向到登录界面  
+            },
         {
-            path: '/main',
-            component: Main,
-            children: [
-                { path: '/main/friend', name: 'friend', component: Friend },
-                { path: '/main/main', name: 'myMain', component: MainPage },
-                { path: '/main/my', name: 'my', component: My },
-                { path: '/main/team', name: 'team', component: Team },
-                { path: '/main/donation', name: 'donation', component: Donation },
-                { path: '/main/study', name: 'study', component: Study },
-            ]
-        },
-        { path: '/', redirect: '/main' },
+            path: '/',
+            component: Login,
+            
+        }
     ]
 })
 
