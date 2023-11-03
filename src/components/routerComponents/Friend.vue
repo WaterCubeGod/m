@@ -1,7 +1,7 @@
 <template>
     <el-container class="main-container">
         <el-header style="position: relative;">
-            <div style="position: absolute;right: 42%;">
+            <div style="position: absolute;width:70%">
                 <i class="el-icon-back" @click="handleBack" style="font-size: 40px;vertical-align: middle;"
                     v-if="!label"></i>
                 <el-input placeholder="请输入昵称进行搜索，可以直接回车搜索..." v-model="searchInput" class="searchClass" clearable
@@ -84,7 +84,7 @@
 
                     <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
                         <div>
-                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
+                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo" @keyup.enter.native="sendInfo"
                                 style="width: 80%;"></el-input>
                             <el-button slot="append" icon="el-icon-search" @click="sendInfo"
                                 style="width: 20%;height: 32px"></el-button>
@@ -238,7 +238,7 @@ export default {
     border-radius: 20px;
     background: #f4f4f4;
     line-height: 0px;
-    width: 400px;
+    width: 50%;
 }
 
 .searchClass .el-input-group__prepend {
