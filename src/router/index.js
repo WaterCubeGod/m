@@ -5,9 +5,14 @@ import My from '../components/routerComponents/My'
 import Team from '../components/routerComponents/Team'
 import Study from '../components/routerComponents/Study'
 import Donation from '../components/routerComponents/Donation'
+import DonationDetail from '../components/routerComponents/DonationDetail'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import userLogin from '../components/userLogin.vue'
+import userRegister from '../components/userRegister'
+
+
 
 Vue.use(VueRouter)
 
@@ -19,7 +24,13 @@ Vue.config.productionTip = false
 const router = new VueRouter({
     routes: [
         {
+            path: '/userLogin',
+            component: userLogin,
+            
+        },
+        {
             path: '/main',
+            name: 'main',
             component: Main,
             children: [
                 { path: '/main/friend', name: 'friend', component: Friend },
@@ -28,10 +39,18 @@ const router = new VueRouter({
                 { path: '/main/team', name: 'team', component: Team },
                 { path: '/main/donation', name: 'donation', component: Donation },
                 { path: '/main/study', name: 'study', component: Study },
+                { path: '/main/donationdetail', name: 'donationdetail', component: DonationDetail },
             ]
         },
-        { path: '/', redirect: '/main' },
+        {
+            path: '/userRegister',
+            component: userRegister,
+            
+        },
+        { path: '/', redirect: '/userRegister' },
     ]
+      
+    
 })
 
 export default router

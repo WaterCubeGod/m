@@ -56,7 +56,10 @@
         })
         .then(response=>{
             console.log(response.data)
-            this.$router.push('/main/friend');
+            this.$router.push({
+              path:'/main/donationdetail',
+              query:{donationData:response.data.data,}
+          });
         }
         );
         
