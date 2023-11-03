@@ -5,6 +5,7 @@ import My from '../components/routerComponents/My'
 import Team from '../components/routerComponents/Team'
 import Donation from '../components/routerComponents/Donation'
 import Study from '../components/routerComponents/Study'
+import Donation from '../components/routerComponents/Donation'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -28,6 +29,7 @@ const router = new VueRouter({
                 { path: '/main/team', name: 'team', component: Team },
                 { path: '/main/donation', name: 'donation', component: Donation },
                 { path: '/main/study', name: 'study', component: Study },
+                { path: '/main/donation', name: 'donation', component: Donation },
             ]
         },
         { path: '/', redirect: '/main' },
