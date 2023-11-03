@@ -84,9 +84,9 @@
 
                     <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
                         <div>
-                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
+                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo" @keyup.enter.native="sendInfo"
                                 style="width: 80%;"></el-input>
-                            <el-button slot="append" icon="el-icon-search" @click="sendInfo"
+                            <el-button slot="append" icon="el-icon-search" @click="sendInfo" 
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
                     </el-footer>
@@ -178,10 +178,10 @@ export default {
                     kind:0
                 });
                 this.chatList.push({
-                    belong: 1,
-                    to: this.currentRow.userID,
+                    fromID: 1,
+                    toID: this.currentRow.userID,
                     time: this.getNowDate(),
-                    data: this.chatInfo.trim(),
+                    content: this.chatInfo.trim(),
                 })
                 this.chatInfo = ''
             }
