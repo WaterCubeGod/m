@@ -1,0 +1,2 @@
+
+f142964b82f0126f7dce56e6681c12ebad590cce	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/mime-db/-/mime-db-1.36.0.tgz","integrity":null,"time":1698936100468,"size":"262","metadata":{"time":1698936100468,"url":"http://registry.npmmirror.com/mime-db/-/mime-db-1.36.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/mime-db/-/mime-db-1.36.0.tgz"},"options":{"compress":true},"status":301}}

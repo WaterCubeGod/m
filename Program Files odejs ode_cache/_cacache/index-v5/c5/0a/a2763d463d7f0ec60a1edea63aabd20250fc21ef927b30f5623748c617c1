@@ -1,0 +1,2 @@
+
+38cf8972c567db56744adc7776e989902a0dbeea	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/make-dir/-/make-dir-1.3.0.tgz","integrity":null,"time":1698936100473,"size":"262","metadata":{"time":1698936100473,"url":"http://registry.npmmirror.com/make-dir/-/make-dir-1.3.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/make-dir/-/make-dir-1.3.0.tgz"},"options":{"compress":true},"status":301}}

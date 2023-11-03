@@ -1,0 +1,2 @@
+
+ae101feae18e10c66b10c1840021d5c2b4833650	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/read-pkg/-/read-pkg-1.1.0.tgz","integrity":null,"time":1698936101779,"size":"262","metadata":{"time":1698936101779,"url":"http://registry.npmmirror.com/read-pkg/-/read-pkg-1.1.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/read-pkg/-/read-pkg-1.1.0.tgz"},"options":{"compress":true},"status":301}}

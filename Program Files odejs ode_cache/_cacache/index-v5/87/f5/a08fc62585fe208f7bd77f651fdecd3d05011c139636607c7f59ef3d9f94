@@ -1,0 +1,2 @@
+
+63aa5d3a634b05741fb32643364f101ed77962ca	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/is-my-json-valid/-/is-my-json-valid-2.20.5.tgz","integrity":null,"time":1698936100607,"size":"262","metadata":{"time":1698936100607,"url":"http://registry.npmmirror.com/is-my-json-valid/-/is-my-json-valid-2.20.5.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/is-my-json-valid/-/is-my-json-valid-2.20.5.tgz"},"options":{"compress":true},"status":301}}

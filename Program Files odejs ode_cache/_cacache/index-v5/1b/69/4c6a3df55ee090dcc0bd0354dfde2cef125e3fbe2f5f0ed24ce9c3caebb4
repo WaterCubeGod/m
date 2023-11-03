@@ -1,0 +1,2 @@
+
+f0ac43e8352f9562311732d65852b35eca1e709f	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/babel-core/-/babel-core-6.26.3.tgz","integrity":null,"time":1698936101531,"size":"262","metadata":{"time":1698936101531,"url":"http://registry.npmmirror.com/babel-core/-/babel-core-6.26.3.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/babel-core/-/babel-core-6.26.3.tgz"},"options":{"compress":true},"status":301}}

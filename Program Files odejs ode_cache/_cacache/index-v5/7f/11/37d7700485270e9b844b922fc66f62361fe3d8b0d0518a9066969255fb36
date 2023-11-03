@@ -1,0 +1,2 @@
+
+36e79f71a766a48d9fc14b7bfe5628773a394a0d	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/flat-cache/-/flat-cache-1.3.0.tgz","integrity":null,"time":1698936100858,"size":"262","metadata":{"time":1698936100858,"url":"http://registry.npmmirror.com/flat-cache/-/flat-cache-1.3.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/flat-cache/-/flat-cache-1.3.0.tgz"},"options":{"compress":true},"status":301}}

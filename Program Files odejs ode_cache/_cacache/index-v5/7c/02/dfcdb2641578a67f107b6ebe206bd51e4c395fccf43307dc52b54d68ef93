@@ -1,0 +1,2 @@
+
+2aa98db39e474290281e87f890b23058b98d30e1	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/split-string/-/split-string-3.1.0.tgz","integrity":null,"time":1698936100233,"size":"262","metadata":{"time":1698936100233,"url":"http://registry.npmmirror.com/split-string/-/split-string-3.1.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/split-string/-/split-string-3.1.0.tgz"},"options":{"compress":true},"status":301}}

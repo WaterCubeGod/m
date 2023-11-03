@@ -1,0 +1,2 @@
+
+f84cddc1504bfe2b6f1f68fb391ea43e1322d73b	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/useragent/-/useragent-2.3.0.tgz","integrity":null,"time":1698936100189,"size":"262","metadata":{"time":1698936100189,"url":"http://registry.npmmirror.com/useragent/-/useragent-2.3.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/useragent/-/useragent-2.3.0.tgz"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+85a96c89c0f161c37bb56ab7bc1d8781b940d5d7	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/semver/-/semver-5.5.1.tgz","integrity":null,"time":1698936100270,"size":"262","metadata":{"time":1698936100270,"url":"http://registry.npmmirror.com/semver/-/semver-5.5.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/semver/-/semver-5.5.1.tgz"},"options":{"compress":true},"status":301}}

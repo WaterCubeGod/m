@@ -1,0 +1,2 @@
+
+17f1f693311ea91625792717592155c2e4d92e0b	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/regex-cache/-/regex-cache-0.4.4.tgz","integrity":null,"time":1698936100309,"size":"262","metadata":{"time":1698936100309,"url":"http://registry.npmmirror.com/regex-cache/-/regex-cache-0.4.4.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/regex-cache/-/regex-cache-0.4.4.tgz"},"options":{"compress":true},"status":301}}
