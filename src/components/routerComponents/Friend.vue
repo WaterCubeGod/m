@@ -51,8 +51,8 @@
                     </el-header>
 
                     <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
-                        <infinite-loading direction="top" @infinite="infiniteHandler"></infinite-loading>
-                        <el-row v-for="(item) in chatList" :key="item.time" style="margin-top: 10px;">
+                        <infinite-loading :identifier="customIdentifier" direction="top" @infinite="infiniteHandler"></infinite-loading>
+                        <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
                             <div v-if="item.fromID !== 1">
                                 <el-col :span="4">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
@@ -106,7 +106,8 @@ export default {
     name: 'MyFriend',
     data() {
         return {
-            page: 1,
+            customIdentifier: true,
+            page: 0,
             tableHeight: 400,
             searchInput: '',
             chatInfo: '',
@@ -117,8 +118,8 @@ export default {
             listbtn: true,
             tableData: [
                 {
-                    name: '小乐',
-                    account: '东b',
+                    username: '小乐',
+                    address: '东b',
                     userID: 3
                 }
             ],
@@ -142,6 +143,11 @@ export default {
         }).then(response => {
             console.log(response.data.data)
             this.tableData = response.data.data
+            this.tableData.push({
+                username: '小乐',
+                address: '东b',
+                userID: 3
+            })
         }, error => {
             console.log('错误', error.message)
         })
@@ -180,18 +186,26 @@ export default {
                     to: this.currentRow.userID,
                     kind: 0,
                 });
-                this.chatList.push({
-                    fromID: 1,
-                    toID: this.currentRow.userID,
-                    time: this.getNowDate(),
-                    content: this.chatInfo.trim(),
-                })
                 this.chatInfo = ''
             }
         },
         handleCurrentChange(val) {
             this.drawer = this.listbtn;
-            this.currentRow = val;
+            if (this.currentRow !== val) {
+                this.chatList = []
+                this.page = 0
+                this.currentRow = val;
+                this.customIdentifier = true
+                this.connect()
+                this.$socket.onmessage = (event) => {
+                    console.log(JSON.parse(event.data))
+                    this.chatList.push(JSON.parse(event.data))
+                    console.log(this.chatList)
+                }
+            }
+            this.listbtn = true
+        },
+        infiniteHandler($state) {
             this.$axios({
                 method: 'GET',
                 url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
@@ -200,21 +214,19 @@ export default {
                 }
             }).then(response => {
                 if (response.data.data.length) {
-                    console.log(response.data)
                     this.page += 1
-                    this.chatList.unshift(response.data.data)
+                    for (var i = 0; i < response.data.data.length; i++) {
+                        this.chatList.unshift(response.data.data[i])
+                    }
+                    console.log(this.chatList)
                     $state.loaded();
                 } else {
                     $state.complete();
+                    this.customIdentifier = false
                 }
             }, error => {
                 console.log('错误', error.message)
             })
-            this.connect()
-            this.$socket.onmessage = (event) => {
-                console.log(JSON.parse(event.data))
-            }
-            this.listbtn = true
         },
         getNowDate() {
             var myDate = new Date;

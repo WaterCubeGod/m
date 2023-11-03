@@ -3,7 +3,6 @@ import Friend from '../components/routerComponents/Friend'
 import MainPage from '../components/routerComponents/MainPage'
 import My from '../components/routerComponents/My'
 import Team from '../components/routerComponents/Team'
-import Donation from '../components/routerComponents/Donation'
 import Study from '../components/routerComponents/Study'
 
 import Vue from 'vue'
