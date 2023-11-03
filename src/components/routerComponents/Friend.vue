@@ -181,7 +181,7 @@ export default {
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
                 this.$socket.sendObj({
-                    message: this.chatInfo.trim(),
+                    message: this.chatInfo.trim(), 
                     from: 1,
                     to: this.currentRow.userID,
                     kind: 0,
@@ -191,7 +191,7 @@ export default {
         },
         handleCurrentChange(val) {
             this.drawer = this.listbtn;
-            if (this.currentRow !== val) {
+            if (this.currentRow !== val && this.drawer) {
                 this.chatList = []
                 this.page = 0
                 this.currentRow = val;
@@ -208,7 +208,7 @@ export default {
         infiniteHandler($state) {
             this.$axios({
                 method: 'GET',
-                url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
+                url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID + '/0',
                 params: {
                     page: this.page
                 }
