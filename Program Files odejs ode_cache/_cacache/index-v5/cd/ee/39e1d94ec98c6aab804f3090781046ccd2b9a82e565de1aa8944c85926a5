@@ -1,0 +1,2 @@
+
+09bfc1cb280cb6269ba199cffcdf82d84d50b790	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/xtend/-/xtend-4.0.1.tgz","integrity":null,"time":1698936100160,"size":"262","metadata":{"time":1698936100160,"url":"http://registry.npmmirror.com/xtend/-/xtend-4.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/xtend/-/xtend-4.0.1.tgz"},"options":{"compress":true},"status":301}}

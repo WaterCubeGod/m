@@ -1,0 +1,2 @@
+
+3a6408e81a8eea7c760e5c4113c30c2895a35a0b	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/safe-buffer/-/safe-buffer-5.1.2.tgz","integrity":null,"time":1698936100286,"size":"262","metadata":{"time":1698936100286,"url":"http://registry.npmmirror.com/safe-buffer/-/safe-buffer-5.1.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/safe-buffer/-/safe-buffer-5.1.2.tgz"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+cbdd5700b76cb8a77e3726507e106fd9c7a5abbc	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz","integrity":null,"time":1698936100742,"size":"262","metadata":{"time":1698936100742,"url":"http://registry.npmmirror.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz"},"options":{"compress":true},"status":301}}

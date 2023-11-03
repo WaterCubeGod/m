@@ -1,0 +1,2 @@
+
+7a168d4a0c5ac0f940073e30f056f61bc14390da	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/socket.io-parser/-/socket.io-parser-2.3.1.tgz","integrity":null,"time":1698936100248,"size":"262","metadata":{"time":1698936100248,"url":"http://registry.npmmirror.com/socket.io-parser/-/socket.io-parser-2.3.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/socket.io-parser/-/socket.io-parser-2.3.1.tgz"},"options":{"compress":true},"status":301}}

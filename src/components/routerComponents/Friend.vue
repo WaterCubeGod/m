@@ -1,7 +1,7 @@
 <template>
     <el-container class="main-container">
         <el-header style="position: relative;">
-            <div style="position: absolute;right: 42%;">
+            <div style="position: absolute;width:70%">
                 <i class="el-icon-back" @click="handleBack" style="font-size: 40px;vertical-align: middle;"
                     v-if="!label"></i>
                 <el-input placeholder="请输入昵称进行搜索，可以直接回车搜索..." v-model="searchInput" class="searchClass" clearable
@@ -51,8 +51,9 @@
                     </el-header>
 
                     <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
-                        <el-row v-for="(item) in chatList" :key="item.time" style="margin-top: 10px;">
-                            <div v-if="item.belong !== 1">
+                        <infinite-loading :identifier="customIdentifier" direction="top" @infinite="infiniteHandler"></infinite-loading>
+                        <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
+                            <div v-if="item.fromID !== 1">
                                 <el-col :span="4">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
@@ -61,7 +62,7 @@
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
-                                        {{ item.data }}
+                                        {{ item.content }}
                                     </div>
                                 </el-col>
                             </div>
@@ -71,7 +72,7 @@
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
-                                        {{ item.data }}
+                                        {{ item.content }}
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -85,7 +86,7 @@
                     <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
                         <div>
                             <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
-                                style="width: 80%;"></el-input>
+                                @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
                             <el-button slot="append" icon="el-icon-search" @click="sendInfo"
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
@@ -99,11 +100,14 @@
 <script>
 import Vue from 'vue'
 import VueNativeSock from 'vue-native-websocket'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
     name: 'MyFriend',
     data() {
         return {
+            customIdentifier: true,
+            page: 0,
             tableHeight: 400,
             searchInput: '',
             chatInfo: '',
@@ -114,8 +118,8 @@ export default {
             listbtn: true,
             tableData: [
                 {
-                    name: '小乐',
-                    account: '东b',
+                    username: '小乐',
+                    address: '东b',
                     userID: 3
                 }
             ],
@@ -139,6 +143,11 @@ export default {
         }).then(response => {
             console.log(response.data.data)
             this.tableData = response.data.data
+            this.tableData.push({
+                username: '小乐',
+                address: '东b',
+                userID: 3
+            })
         }, error => {
             console.log('错误', error.message)
         })
@@ -171,26 +180,53 @@ export default {
         },
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
-                this.$socket.sendObj(this.chatInfo.trim());
-                this.chatList.push({
-                    belong: 1,
+                this.$socket.sendObj({
+                    message: this.chatInfo.trim(),
+                    from: 1,
                     to: this.currentRow.userID,
-                    time: this.getNowDate(),
-                    data: this.chatInfo.trim(),
-                })
+                    kind: 0,
+                });
                 this.chatInfo = ''
             }
         },
         handleCurrentChange(val) {
             this.drawer = this.listbtn;
-            this.currentRow = val;
-            this.connect()
-            this.$socket.onmessage = (event) => {
-                const receivedData = JSON.parse(event.data);
-                this.receivedData = receivedData;
-                console.log(receivedData)
+            if (this.currentRow !== val) {
+                this.chatList = []
+                this.page = 0
+                this.currentRow = val;
+                this.customIdentifier = true
+                this.connect()
+                this.$socket.onmessage = (event) => {
+                    console.log(JSON.parse(event.data))
+                    this.chatList.push(JSON.parse(event.data))
+                    console.log(this.chatList)
+                }
             }
             this.listbtn = true
+        },
+        infiniteHandler($state) {
+            this.$axios({
+                method: 'GET',
+                url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
+                params: {
+                    page: this.page
+                }
+            }).then(response => {
+                if (response.data.data.length) {
+                    this.page += 1
+                    for (var i = 0; i < response.data.data.length; i++) {
+                        this.chatList.unshift(response.data.data[i])
+                    }
+                    console.log(this.chatList)
+                    $state.loaded();
+                } else {
+                    $state.complete();
+                    this.customIdentifier = false
+                }
+            }, error => {
+                console.log('错误', error.message)
+            })
         },
         getNowDate() {
             var myDate = new Date;
@@ -227,6 +263,9 @@ export default {
     },
     async created() {
 
+    },
+    components: {
+        InfiniteLoading,
     }
 
 }
@@ -238,7 +277,7 @@ export default {
     border-radius: 20px;
     background: #f4f4f4;
     line-height: 0px;
-    width: 400px;
+    width: 50%;
 }
 
 .searchClass .el-input-group__prepend {

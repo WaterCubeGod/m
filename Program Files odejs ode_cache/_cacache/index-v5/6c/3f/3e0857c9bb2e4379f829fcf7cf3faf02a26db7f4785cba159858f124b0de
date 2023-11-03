@@ -1,0 +1,2 @@
+
+768b26b78bd18666d7ffe40ea58a550131c912be	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/commander/-/commander-2.9.0.tgz","integrity":null,"time":1698936101774,"size":"262","metadata":{"time":1698936101774,"url":"http://registry.npmmirror.com/commander/-/commander-2.9.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/commander/-/commander-2.9.0.tgz"},"options":{"compress":true},"status":301}}

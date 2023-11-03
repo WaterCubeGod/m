@@ -1,0 +1,2 @@
+
+fca6bfefe8ea87373de435019e223968bc01fdac	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/ent/-/ent-2.2.0.tgz","integrity":null,"time":1698936101042,"size":"262","metadata":{"time":1698936101042,"url":"http://registry.npmmirror.com/ent/-/ent-2.2.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/ent/-/ent-2.2.0.tgz"},"options":{"compress":true},"status":301}}

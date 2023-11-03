@@ -1,0 +1,2 @@
+
+098270150d2bcbcb83ff042a4acda366ecbc48d4	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/resolve/-/resolve-1.8.1.tgz","integrity":null,"time":1698936100290,"size":"262","metadata":{"time":1698936100290,"url":"http://registry.npmmirror.com/resolve/-/resolve-1.8.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/resolve/-/resolve-1.8.1.tgz"},"options":{"compress":true},"status":301}}

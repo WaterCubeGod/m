@@ -1,0 +1,2 @@
+
+aa44c9f24fb0eecd2ad828d87614e9588d5e7ba0	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/safe-regex/-/safe-regex-1.1.0.tgz","integrity":null,"time":1698936100271,"size":"262","metadata":{"time":1698936100270,"url":"http://registry.npmmirror.com/safe-regex/-/safe-regex-1.1.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/safe-regex/-/safe-regex-1.1.0.tgz"},"options":{"compress":true},"status":301}}

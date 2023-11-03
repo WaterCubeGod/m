@@ -1,0 +1,2 @@
+
+6466bdd3716ec6279fd3d38276c08410301f2995	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/custom-event/-/custom-event-1.0.1.tgz","integrity":null,"time":1698936101162,"size":"262","metadata":{"time":1698936101162,"url":"http://registry.npmmirror.com/custom-event/-/custom-event-1.0.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/custom-event/-/custom-event-1.0.1.tgz"},"options":{"compress":true},"status":301}}

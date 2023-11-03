@@ -1,0 +1,2 @@
+
+f4880ee42890913623d66302361093c452428c90	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/errno/-/errno-0.1.7.tgz","integrity":null,"time":1698936101043,"size":"262","metadata":{"time":1698936101043,"url":"http://registry.npmmirror.com/errno/-/errno-0.1.7.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/errno/-/errno-0.1.7.tgz"},"options":{"compress":true},"status":301}}

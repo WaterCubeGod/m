@@ -1,0 +1,2 @@
+
+f8bf646986438988e3339ae1d3c5a1c4aafdaa53	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/brorand/-/brorand-1.1.0.tgz","integrity":null,"time":1698936101337,"size":"262","metadata":{"time":1698936101337,"url":"http://registry.npmmirror.com/brorand/-/brorand-1.1.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/brorand/-/brorand-1.1.0.tgz"},"options":{"compress":true},"status":301}}

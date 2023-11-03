@@ -1,0 +1,2 @@
+
+8541ab425a801776645badf37f0203245b6b818f	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/ajv/-/ajv-4.11.8.tgz","integrity":null,"time":1698936101573,"size":"262","metadata":{"time":1698936101573,"url":"http://registry.npmmirror.com/ajv/-/ajv-4.11.8.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/ajv/-/ajv-4.11.8.tgz"},"options":{"compress":true},"status":301}}

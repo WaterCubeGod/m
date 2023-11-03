@@ -1,0 +1,2 @@
+
+6c3edfed61d606f7cb3a05df8a0c73a9b5f3970b	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/async-validator/-/async-validator-1.8.5.tgz","integrity":null,"time":1698936101599,"size":"262","metadata":{"time":1698936101599,"url":"http://registry.npmmirror.com/async-validator/-/async-validator-1.8.5.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/async-validator/-/async-validator-1.8.5.tgz"},"options":{"compress":true},"status":301}}

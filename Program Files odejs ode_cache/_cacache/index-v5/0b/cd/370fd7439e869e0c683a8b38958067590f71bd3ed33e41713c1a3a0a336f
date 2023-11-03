@@ -1,0 +1,2 @@
+
+f8bab76f91ff26c47a0cb480316aed0d23adf743	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/espree/-/espree-3.5.4.tgz","integrity":null,"time":1698936100974,"size":"262","metadata":{"time":1698936100974,"url":"http://registry.npmmirror.com/espree/-/espree-3.5.4.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/espree/-/espree-3.5.4.tgz"},"options":{"compress":true},"status":301}}

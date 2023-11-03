@@ -1,0 +1,2 @@
+
+6524a2ea381eb943dc78b3275276c5623d4f1bc7	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/abbrev/-/abbrev-1.0.9.tgz","integrity":null,"time":1698936101579,"size":"262","metadata":{"time":1698936101579,"url":"http://registry.npmmirror.com/abbrev/-/abbrev-1.0.9.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/abbrev/-/abbrev-1.0.9.tgz"},"options":{"compress":true},"status":301}}

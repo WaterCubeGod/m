@@ -1,0 +1,2 @@
+
+c84631eb6201ef50a2a2e00d64892ebf8f7443b4	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/eslint-plugin-node/-/eslint-plugin-node-4.2.3.tgz","integrity":null,"time":1698936100948,"size":"262","metadata":{"time":1698936100948,"url":"http://registry.npmmirror.com/eslint-plugin-node/-/eslint-plugin-node-4.2.3.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/eslint-plugin-node/-/eslint-plugin-node-4.2.3.tgz"},"options":{"compress":true},"status":301}}

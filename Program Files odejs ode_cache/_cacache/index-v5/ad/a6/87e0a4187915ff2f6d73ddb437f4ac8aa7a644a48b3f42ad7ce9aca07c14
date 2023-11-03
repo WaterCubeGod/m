@@ -1,0 +1,2 @@
+
+0da736d458582eab30d748d31abeb1cd0de12ee8	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/cliui/-/cliui-3.2.0.tgz","integrity":null,"time":1698936101615,"size":"262","metadata":{"time":1698936101615,"url":"http://registry.npmmirror.com/cliui/-/cliui-3.2.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/cliui/-/cliui-3.2.0.tgz"},"options":{"compress":true},"status":301}}

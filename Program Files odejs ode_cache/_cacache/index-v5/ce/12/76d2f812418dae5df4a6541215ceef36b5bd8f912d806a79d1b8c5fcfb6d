@@ -1,0 +1,2 @@
+
+9df576f7fd110871caa24efecf1dd86255f2f3d3	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz","integrity":null,"time":1698936102002,"size":"262","metadata":{"time":1698936102002,"url":"http://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:41 GMT","location":"https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz"},"options":{"compress":true},"status":301}}

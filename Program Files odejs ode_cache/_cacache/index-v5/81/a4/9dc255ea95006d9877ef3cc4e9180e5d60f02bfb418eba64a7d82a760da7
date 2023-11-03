@@ -1,0 +1,2 @@
+
+aab86745d306ff02fc836c3573ad8199994fc767	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.5.8.tgz","integrity":null,"time":1698936100867,"size":"262","metadata":{"time":1698936100867,"url":"http://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.5.8.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.5.8.tgz"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+df84812024563c8fcce86ea0dc33d9b95ad562fa	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/glob-base/-/glob-base-0.3.0.tgz","integrity":null,"time":1698936100741,"size":"262","metadata":{"time":1698936100741,"url":"http://registry.npmmirror.com/glob-base/-/glob-base-0.3.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/glob-base/-/glob-base-0.3.0.tgz"},"options":{"compress":true},"status":301}}

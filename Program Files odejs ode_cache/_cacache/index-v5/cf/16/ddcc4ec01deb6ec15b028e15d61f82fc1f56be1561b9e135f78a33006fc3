@@ -1,0 +1,2 @@
+
+df89b81ec105bf5a22c98581f4e9656a494178af	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/babel-messages/-/babel-messages-6.23.0.tgz","integrity":null,"time":1698936101476,"size":"262","metadata":{"time":1698936101476,"url":"http://registry.npmmirror.com/babel-messages/-/babel-messages-6.23.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/babel-messages/-/babel-messages-6.23.0.tgz"},"options":{"compress":true},"status":301}}

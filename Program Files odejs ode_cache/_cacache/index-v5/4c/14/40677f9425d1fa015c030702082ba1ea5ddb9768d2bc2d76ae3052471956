@@ -1,0 +1,2 @@
+
+6c5b9e554237bfda95764e19560667aebc741eb5	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/ret/-/ret-0.1.15.tgz","integrity":null,"time":1698936100291,"size":"262","metadata":{"time":1698936100290,"url":"http://registry.npmmirror.com/ret/-/ret-0.1.15.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/ret/-/ret-0.1.15.tgz"},"options":{"compress":true},"status":301}}
