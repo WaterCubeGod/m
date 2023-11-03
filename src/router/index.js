@@ -5,9 +5,12 @@ import My from '../components/routerComponents/My'
 import Team from '../components/routerComponents/Team'
 import Donation from '../components/routerComponents/Donation'
 import Study from '../components/routerComponents/Study'
-import Login from '../components/Login'
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import userLogin from '../components/userLogin.vue'
+import userRegister from '../components/userRegister'
+
 
 
 Vue.use(VueRouter)
@@ -18,32 +21,34 @@ Vue.config.productionTip = false
 
 
 const router = new VueRouter({
-    // routes: [
-    //     {
-    //         path: '/main',
-    //         component: Main,
-    //         children: [
-    //             { path: '/main/friend', name: 'friend', component: Friend },
-    //             { path: '/main/main', name: 'myMain', component: MainPage },
-    //             { path: '/main/my', name: 'my', component: My },
-    //             { path: '/main/team', name: 'team', component: Team },
-    //             { path: '/main/donation', name: 'donation', component: Donation },
-    //             { path: '/main/study', name: 'study', component: Study },
-    //         ]
-    //     },
-    //     { path: '/', redirect: '/main' },
-    // ]
-        routes: [
-            {  
-                path: '/',  
-                redirect: '/Login' // 将根路由重定向到登录界面  
-            },
+    routes: [
         {
-            path: '/',
-            component: Login,
+            path: '/userLogin',
+            component: userLogin,
             
-        }
+        },
+        {
+            path: '/main',
+            name: 'main',
+            component: Main,
+            children: [
+                { path: '/main/friend', name: 'friend', component: Friend },
+                { path: '/main/main', name: 'myMain', component: MainPage },
+                { path: '/main/my', name: 'my', component: My },
+                { path: '/main/team', name: 'team', component: Team },
+                { path: '/main/donation', name: 'donation', component: Donation },
+                { path: '/main/study', name: 'study', component: Study },
+            ]
+        },
+        {
+            path: '/userRegister',
+            component: userRegister,
+            
+        },
+        { path: '/', redirect: '/userRegister' },
     ]
+      
+    
 })
 
 export default router
