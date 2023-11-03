@@ -85,9 +85,9 @@
 
                     <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
                         <div>
-                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
-                                @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
-                            <el-button slot="append" icon="el-icon-search" @click="sendInfo"
+                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo" @keyup.enter.native="sendInfo"
+                                style="width: 80%;"></el-input>
+                            <el-button slot="append" icon="el-icon-search" @click="sendInfo" 
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
                     </el-footer>
