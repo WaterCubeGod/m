@@ -52,7 +52,7 @@
 
                     <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
                         <el-row v-for="(item) in chatList" :key="item.time" style="margin-top: 10px;">
-                            <div v-if="item.belong !== 1">
+                            <div v-if="item.fromID !== 1">
                                 <el-col :span="4">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
@@ -61,7 +61,7 @@
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
-                                        {{ item.data }}
+                                        {{ item.content }}
                                     </div>
                                 </el-col>
                             </div>
@@ -71,7 +71,7 @@
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
-                                        {{ item.data }}
+                                        {{ item.content }}
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -86,7 +86,7 @@
                         <div>
                             <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo" @keyup.enter.native="sendInfo"
                                 style="width: 80%;"></el-input>
-                            <el-button slot="append" icon="el-icon-search" @click="sendInfo"
+                            <el-button slot="append" icon="el-icon-search" @click="sendInfo" 
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
                     </el-footer>
@@ -171,12 +171,17 @@ export default {
         },
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
-                this.$socket.sendObj(this.chatInfo.trim());
-                this.chatList.push({
-                    belong: 1,
+                this.$socket.sendObj({
+                    message: this.chatInfo.trim(),
+                    from: 1,
                     to: this.currentRow.userID,
+                    kind:0
+                });
+                this.chatList.push({
+                    fromID: 1,
+                    toID: this.currentRow.userID,
                     time: this.getNowDate(),
-                    data: this.chatInfo.trim(),
+                    content: this.chatInfo.trim(),
                 })
                 this.chatInfo = ''
             }
@@ -184,11 +189,20 @@ export default {
         handleCurrentChange(val) {
             this.drawer = this.listbtn;
             this.currentRow = val;
+            this.$axios({
+                    method: 'GET',
+                    url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
+                    
+                    
+                }).then(response => {
+                    console.log(response.data)
+                    this.chatList = response.data.data
+                }, error => {
+                    console.log('错误', error.message)
+                })
             this.connect()
             this.$socket.onmessage = (event) => {
-                const receivedData = JSON.parse(event.data);
-                this.receivedData = receivedData;
-                console.log(receivedData)
+                console.log(JSON.parse(event.data))
             }
             this.listbtn = true
         },

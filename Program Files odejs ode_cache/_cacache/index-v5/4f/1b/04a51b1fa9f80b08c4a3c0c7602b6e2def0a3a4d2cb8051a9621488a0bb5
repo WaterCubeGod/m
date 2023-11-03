@@ -1,0 +1,2 @@
+
+715b69cb5a1fbec07132de6859a3f8aab1003737	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/element-ui/-/element-ui-2.15.14.tgz","integrity":null,"time":1698936101589,"size":"262","metadata":{"time":1698936101589,"url":"http://registry.npmmirror.com/element-ui/-/element-ui-2.15.14.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/element-ui/-/element-ui-2.15.14.tgz"},"options":{"compress":true},"status":301}}

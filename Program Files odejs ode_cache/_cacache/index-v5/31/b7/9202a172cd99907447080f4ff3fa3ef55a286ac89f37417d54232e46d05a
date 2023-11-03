@@ -1,0 +1,2 @@
+
+55251e1b88ee7ff626eea590c03fc380edecb67f	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/resolve/-/resolve-1.1.7.tgz","integrity":null,"time":1698936101802,"size":"262","metadata":{"time":1698936101801,"url":"http://registry.npmmirror.com/resolve/-/resolve-1.1.7.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/resolve/-/resolve-1.1.7.tgz"},"options":{"compress":true},"status":301}}

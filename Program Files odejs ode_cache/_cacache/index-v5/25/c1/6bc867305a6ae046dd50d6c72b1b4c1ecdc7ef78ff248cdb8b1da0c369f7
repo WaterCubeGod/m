@@ -1,0 +1,2 @@
+
+b6472fec421fba699694cc92b89dac1a9be00b49	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/yeast/-/yeast-0.1.2.tgz","integrity":null,"time":1698936100134,"size":"262","metadata":{"time":1698936100134,"url":"http://registry.npmmirror.com/yeast/-/yeast-0.1.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:38 GMT","location":"https://registry.npmmirror.com/yeast/-/yeast-0.1.2.tgz"},"options":{"compress":true},"status":301}}

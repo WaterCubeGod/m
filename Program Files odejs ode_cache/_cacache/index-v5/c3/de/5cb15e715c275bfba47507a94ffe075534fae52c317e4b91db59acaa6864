@@ -1,0 +1,2 @@
+
+a76db4818a96e4c0285ac1f151f335a60c5c6cae	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/create-hmac/-/create-hmac-1.1.7.tgz","integrity":null,"time":1698936101169,"size":"262","metadata":{"time":1698936101169,"url":"http://registry.npmmirror.com/create-hmac/-/create-hmac-1.1.7.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/create-hmac/-/create-hmac-1.1.7.tgz"},"options":{"compress":true},"status":301}}

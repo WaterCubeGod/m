@@ -1,0 +1,2 @@
+
+49dc16e430dd3539cadd4b40cddfe7756892059a	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/dateformat/-/dateformat-1.0.12.tgz","integrity":null,"time":1698936101170,"size":"262","metadata":{"time":1698936101170,"url":"http://registry.npmmirror.com/dateformat/-/dateformat-1.0.12.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/dateformat/-/dateformat-1.0.12.tgz"},"options":{"compress":true},"status":301}}

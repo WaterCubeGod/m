@@ -1,0 +1,2 @@
+
+b0365a1127772a0dfc823ce79cff47178cc677c9	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/arraybuffer.slice/-/arraybuffer.slice-0.0.6.tgz","integrity":null,"time":1698936101555,"size":"262","metadata":{"time":1698936101555,"url":"http://registry.npmmirror.com/arraybuffer.slice/-/arraybuffer.slice-0.0.6.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/arraybuffer.slice/-/arraybuffer.slice-0.0.6.tgz"},"options":{"compress":true},"status":301}}

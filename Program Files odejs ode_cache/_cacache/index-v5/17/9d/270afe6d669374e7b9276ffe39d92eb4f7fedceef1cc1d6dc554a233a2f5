@@ -1,0 +1,2 @@
+
+939d48cb7f56f645a0b04a819ccc081e915f9f84	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/has-binary/-/has-binary-0.1.7.tgz","integrity":null,"time":1698936100734,"size":"262","metadata":{"time":1698936100734,"url":"http://registry.npmmirror.com/has-binary/-/has-binary-0.1.7.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/has-binary/-/has-binary-0.1.7.tgz"},"options":{"compress":true},"status":301}}

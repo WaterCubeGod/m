@@ -1,0 +1,2 @@
+
+2b0ec36fc355a3751a98c5026e4e2ed7b1caa169	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/braces/-/braces-2.3.2.tgz","integrity":null,"time":1698936101664,"size":"262","metadata":{"time":1698936101664,"url":"http://registry.npmmirror.com/braces/-/braces-2.3.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:40 GMT","location":"https://registry.npmmirror.com/braces/-/braces-2.3.2.tgz"},"options":{"compress":true},"status":301}}

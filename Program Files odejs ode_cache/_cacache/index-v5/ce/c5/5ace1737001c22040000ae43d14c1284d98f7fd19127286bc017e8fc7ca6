@@ -1,0 +1,2 @@
+
+0f049d4a79f086533adb9d816096996e5119f732	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/set-blocking/-/set-blocking-2.0.0.tgz","integrity":null,"time":1698936100269,"size":"262","metadata":{"time":1698936100269,"url":"http://registry.npmmirror.com/set-blocking/-/set-blocking-2.0.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/set-blocking/-/set-blocking-2.0.0.tgz"},"options":{"compress":true},"status":301}}

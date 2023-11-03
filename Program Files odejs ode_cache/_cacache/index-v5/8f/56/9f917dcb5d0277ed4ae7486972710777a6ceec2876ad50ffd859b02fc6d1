@@ -1,0 +1,2 @@
+
+1b7d37f0f863dc53aaa0d8fe4cd6c39e60100e1e	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/growl/-/growl-1.9.2.tgz","integrity":null,"time":1698936100740,"size":"262","metadata":{"time":1698936100739,"url":"http://registry.npmmirror.com/growl/-/growl-1.9.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/growl/-/growl-1.9.2.tgz"},"options":{"compress":true},"status":301}}

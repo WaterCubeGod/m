@@ -1,0 +1,2 @@
+
+803fa7e12543e9135e2434b77f11db72c7f337da	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/mime/-/mime-1.6.0.tgz","integrity":null,"time":1698936100467,"size":"262","metadata":{"time":1698936100467,"url":"http://registry.npmmirror.com/mime/-/mime-1.6.0.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/mime/-/mime-1.6.0.tgz"},"options":{"compress":true},"status":301}}

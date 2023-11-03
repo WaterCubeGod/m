@@ -1,0 +1,2 @@
+
+77c56685de4ad1135923f4b5f12f332bf31f21ab	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz","integrity":null,"time":1698936100559,"size":"262","metadata":{"time":1698936100559,"url":"http://registry.npmmirror.com/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz"},"options":{"compress":true},"status":301}}

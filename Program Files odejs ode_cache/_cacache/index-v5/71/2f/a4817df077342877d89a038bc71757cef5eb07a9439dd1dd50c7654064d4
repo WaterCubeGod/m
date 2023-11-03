@@ -1,0 +1,2 @@
+
+0422416eb2a883d36d7f26dacdca3980e82c83e4	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/static-extend/-/static-extend-0.1.2.tgz","integrity":null,"time":1698936100232,"size":"262","metadata":{"time":1698936100231,"url":"http://registry.npmmirror.com/static-extend/-/static-extend-0.1.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/static-extend/-/static-extend-0.1.2.tgz"},"options":{"compress":true},"status":301}}

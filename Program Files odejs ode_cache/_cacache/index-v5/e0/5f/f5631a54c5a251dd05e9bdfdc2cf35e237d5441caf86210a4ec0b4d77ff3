@@ -1,0 +1,2 @@
+
+b221fc712c6014e4848f63b0bd887a35262a9d53	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/regjsparser/-/regjsparser-0.1.5.tgz","integrity":null,"time":1698936100298,"size":"262","metadata":{"time":1698936100298,"url":"http://registry.npmmirror.com/regjsparser/-/regjsparser-0.1.5.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Thu, 02 Nov 2023 14:41:39 GMT","location":"https://registry.npmmirror.com/regjsparser/-/regjsparser-0.1.5.tgz"},"options":{"compress":true},"status":301}}
