@@ -51,6 +51,7 @@
                     </el-header>
 
                     <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
+                        <infinite-loading direction="top" @infinite="infiniteHandler"></infinite-loading>
                         <el-row v-for="(item) in chatList" :key="item.time" style="margin-top: 10px;">
                             <div v-if="item.fromID !== 1">
                                 <el-col :span="4">
@@ -84,9 +85,9 @@
 
                     <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
                         <div>
-                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo" @keyup.enter.native="sendInfo"
-                                style="width: 80%;"></el-input>
-                            <el-button slot="append" icon="el-icon-search" @click="sendInfo" 
+                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
+                                @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
+                            <el-button slot="append" icon="el-icon-search" @click="sendInfo"
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
                     </el-footer>
@@ -99,11 +100,13 @@
 <script>
 import Vue from 'vue'
 import VueNativeSock from 'vue-native-websocket'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
     name: 'MyFriend',
     data() {
         return {
+            page: 1,
             tableHeight: 400,
             searchInput: '',
             chatInfo: '',
@@ -175,7 +178,7 @@ export default {
                     message: this.chatInfo.trim(),
                     from: 1,
                     to: this.currentRow.userID,
-                    kind:0
+                    kind: 0,
                 });
                 this.chatList.push({
                     fromID: 1,
@@ -190,16 +193,23 @@ export default {
             this.drawer = this.listbtn;
             this.currentRow = val;
             this.$axios({
-                    method: 'GET',
-                    url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
-                    
-                    
-                }).then(response => {
+                method: 'GET',
+                url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
+                params: {
+                    page: this.page
+                }
+            }).then(response => {
+                if (response.data.data.length) {
                     console.log(response.data)
-                    this.chatList = response.data.data
-                }, error => {
-                    console.log('错误', error.message)
-                })
+                    this.page += 1
+                    this.chatList.unshift(response.data.data)
+                    $state.loaded();
+                } else {
+                    $state.complete();
+                }
+            }, error => {
+                console.log('错误', error.message)
+            })
             this.connect()
             this.$socket.onmessage = (event) => {
                 console.log(JSON.parse(event.data))
@@ -241,6 +251,9 @@ export default {
     },
     async created() {
 
+    },
+    components: {
+        InfiniteLoading,
     }
 
 }
