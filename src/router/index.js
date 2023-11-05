@@ -6,6 +6,7 @@ import Team from '../components/routerComponents/Team'
 import Study from '../components/routerComponents/Study'
 import Donation from '../components/routerComponents/Donation'
 import DonationDetail from '../components/routerComponents/DonationDetail'
+import Money from '../components/routerComponents/Money'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -30,6 +31,7 @@ const router = new VueRouter({
                 { path: '/main/donation', name: 'donation', component: Donation },
                 { path: '/main/study', name: 'study', component: Study },
                 { path: '/main/donationdetail', name: 'donationdetail', component: DonationDetail },
+                { path: '/main/money', name: 'money', component: Money },
             ]
         },
         { path: '/', redirect: '/main' },
