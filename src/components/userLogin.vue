@@ -43,21 +43,15 @@ export default {
    login() {  
       try {  
         //向后台发送登录请求，，并且需要POST数据{username: this.username, password: this.password}  
-        const response = axios
-        .post('http://localhost:8087/userLogin', { username: this.username, password: this.password })
+        axios.post('http://localhost:8087/userLogin', { username: this.username, password: this.password })
         .then(response => {
             // 检查后台返回的数据中是否包含成功标志，例如一个特定的状态码或者字段。这里只是一个示例，具体的处理方式需要根据您的业务逻辑来确定。  
             if (response.data.msg === '登录成功') {  
-                console.log(response.data.data)  
-                this.$router.push({ path: '/main', params: { id: 1 } })  
+                this.$router.push({ path: '/main', params: { user: response.data.data} })  
             } else {  
                 console.log('登录失败：' + response.data.message)  
             }  
-        });  
-        // 根据响应结果进行处理，例如检查是否成功登录，然后给用户反馈。这里只是一个示例，具体的处理方式需要根据您的业务逻辑来确定。  
-        console.log(response);
-        
-        
+        });
       
       } catch (error) {  
         // 处理错误，例如给用户反馈错误信息。这里只是一个示例，具体的处理方式需要根据您的业务逻辑来确定。  
