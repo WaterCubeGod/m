@@ -37,11 +37,13 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="" min-width="30%">
-                        <template slot-scope="scope">
-                            <el-button v-if="label" size="mini"
-                                @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                            <el-button v-else size="mini" @click="handleEdit(scope.$index, scope.row)">添加好友</el-button>
-                        </template>
+                        <el-badge :value="12" class="badge" style="width: 100%;">
+                            <template slot-scope="scope">
+                                <el-button v-if="label" size="mini"
+                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
+                                <el-button v-else size="mini" @click="handleEdit(scope.$index, scope.row)">添加好友</el-button>
+                            </template>
+                        </el-badge>
                     </el-table-column>
                 </el-table>
             </el-col>
@@ -63,7 +65,7 @@
                             </el-popover>
                         </template>
                     </el-table-column>
-                    <el-table-column label=""  min-width="30%">
+                    <el-table-column label="" min-width="30%">
                         <template slot-scope="scope">
                             <el-button v-if="label" size="mini"
                                 @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
@@ -150,7 +152,6 @@ export default {
             listbtn: true,
             tableData: [],
             chatList: [],
-
         };
     },
     mounted() {
@@ -388,5 +389,10 @@ export default {
     height: 8px;
     background-color: transparent;
     /* 滚动条背景颜色 */
+}
+
+.badge {
+  margin-top: 10px;
+  margin-right: 40px;
 }
 </style>
