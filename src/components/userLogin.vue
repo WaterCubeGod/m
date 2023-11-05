@@ -47,7 +47,9 @@ export default {
         .then(response => {
             // 检查后台返回的数据中是否包含成功标志，例如一个特定的状态码或者字段。这里只是一个示例，具体的处理方式需要根据您的业务逻辑来确定。  
             if (response.data.msg === '登录成功') {  
-                this.$router.push({ path: '/main', params: { user: response.data.data} })  
+                this.$router.push({ path: '/main', params: { user: response.data.data} })
+                this.$cookies.set('userID', response.data.data.userID)
+                this.$cookies.set('username', response.data.data.username)
             } else {  
                 console.log('登录失败：' + response.data.message)  
             }  

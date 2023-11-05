@@ -165,7 +165,7 @@ export default {
     },
     methods: {
         connect() {
-            Vue.use(VueNativeSock, 'ws://localhost:8087/websocket/1/' + this.currentRow.userID, {
+            Vue.use(VueNativeSock, 'ws://localhost:8087/websocket/' + this.$cookies.get('userID') +  '/' + this.currentRow.userID, {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -194,7 +194,7 @@ export default {
             if (this.chatInfo.trim() !== '') {
                 this.$socket.sendObj({
                     message: this.chatInfo.trim(),
-                    from: this.$route.params.user.userID,
+                    from: this.$cookies.get('userID'),
                     to: this.currentRow.userID,
                     kind: 0,
                 });
@@ -208,8 +208,6 @@ export default {
                 this.page = 0
                 this.currentRow = val;
                 this.customIdentifier = true
-                console.log(this.currentRow.userID)
-                console.log('ws://localhost:8087/websocket/1/' + this.currentRow.userID)
                 this.connect()
                 this.$socket.onmessage = (event) => {
                     console.log(JSON.parse(event.data))
@@ -222,7 +220,7 @@ export default {
         infiniteHandler($state) {
             this.$axios({
                 method: 'GET',
-                url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
+                url: 'http://localhost:8087/getHistoryMessage/' + this.$cookies.get('userID') + '/' + this.currentRow.userID,
                 params: {
                     page: this.page
                 }
@@ -232,8 +230,6 @@ export default {
                     for (var i = 0; i < response.data.data.length; i++) {
                         this.chatList.unshift(response.data.data[i])
                     }
-                    console.log(this.page)
-                    console.log(this.chatList)
                     $state.loaded();
                 } else {
                     $state.complete();
@@ -281,13 +277,11 @@ export default {
                 method: 'POST',
                 url: 'http://localhost:8087/showFriendList',
                 data: {
-                    userID: 1,
-                    passwird: this.$route.params.user
+                    userID: this.$cookies.get('userID'),
+                    password: this.$cookies.get('username')
                 }
             }).then(response => {
                 this.tableData = response.data.data
-                console.log(this.$route.params.user)
-                console.log(response.data.data)
             }, error => {
                 console.log('错误', error.message)
             })
