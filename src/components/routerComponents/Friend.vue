@@ -36,17 +36,18 @@
                                     <div>{{ scope.row.username }}</div>
                                     <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
                                     <el-tag>{{ scope.row.address }}</el-tag>
-                                </div>
+                            </div>
                             </el-popover>
+                            <div>
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }"> <el-button size="mini">视频聊天</el-button> </router-link>
+                            </div>
                         </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="17%">
                         <template slot-scope="scope">
                         
-                                <el-button v-if="label" size="mini"
-                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                                <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
+                                
                     </template>
                     </el-table-column>
 

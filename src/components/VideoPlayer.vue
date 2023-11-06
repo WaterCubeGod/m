@@ -35,8 +35,8 @@
     mounted() {
     
     
-      console.log("111"+this.$route.query.toID)         
-      this.toID = this.$route.query.toID;
+      console.log("111"+this.$route.params.toID)         
+      this.toID = this.$route.params.toID;
       this.fromID = this.$cookies.get("userID");
       
       this.createSocket();
@@ -48,20 +48,7 @@
       this.creatOffer();
       
       
-                   
-      
-  
-      
-  
-      
-  
-      
-  
-      
-      
-  
-      
-  
+            
       
     },
     methods: {
@@ -87,7 +74,7 @@
       //创建webSocket示例
       async createSocket() {
         console.log("222"+this.NET.BASE_URL.http)
-            Vue.use(VueNativeSock, this.NET.BASE_URL.http+'videoWebsocket/'+this.fromID, {
+            Vue.use(VueNativeSock, this.NET.BASE_URL.ws +  'videoWebsocket/'+this.fromID, {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数

@@ -61,7 +61,7 @@ const router = new VueRouter({
         },
         {
             name:'videoPlayer',
-            path:'/videoPlayer',
+            path:'/videoPlayer/:toID',
             component:VideoPlayer,
         },
         {
