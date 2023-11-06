@@ -45,7 +45,7 @@
                             <template slot-scope="scope">
                                 <el-button v-if="label" size="mini"
                                     @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                                <el-button v-else size="mini" @click="dialogInfo.systemMessageVisible = true">添加好友</el-button>
+                                <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
                             </template>
                         </el-badge>
                     </el-table-column>
@@ -54,9 +54,14 @@
             </el-col>
 
             <el-col style="height: 100%;" :span="8">
-                <el-table :data="tableData" style="height: 100%;" :max-height="tableHeight" highlight-current-row
-                    @row-click="handleCurrentChange">
+                <el-table :data="applicationList" style="height: 100%;" :max-height="tableHeight" highlight-current-row
+                    @row-click="handleApplicationChange">
                     <el-table-column v-if="label" label="我的申请" min-width="30%">
+                        <template>
+                            <el-avatar icon="el-icon-user-solid"></el-avatar>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-else label="申请记录" min-width="30%">
                         <template>
                             <el-avatar icon="el-icon-user-solid"></el-avatar>
                         </template>
@@ -64,9 +69,10 @@
                     <el-table-column label="" min-width="30%">
                         <template slot-scope="scope">
                             <el-popover trigger="hover" placement="top">
-                                <p>姓名: {{ scope.row.username }}</p>
                                 <div slot="reference" class="name-wrapper">
-                                    <div>{{ scope.row.username }}</div>
+                                    <div>{{ scope.row.fromID }}</div>
+                                    <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
+                                    <el-tag>{{ scope.row.additionalMessage }}</el-tag>
                                 </div>
                             </el-popover>
                         </template>
@@ -138,22 +144,23 @@
         </el-drawer>
 
         <el-dialog title="添加好友" :visible.sync="dialogInfo.systemMessageVisible">
-                        <el-form :model="currentRow">
-                            <el-form-item label="昵称" :label-width="dialogInfo.formLabelWidth">
-                                <el-input v-model="currentRow.username" autocomplete="off"></el-input>
-                            </el-form-item>
-                            <el-form-item label="地址" :label-width="dialogInfo.formLabelWidth">
-                                <el-select v-model="currentRow.region" placeholder="请选择活动区域">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-form>
-                        <div slot="footer" class="dialog-footer">
-                            <el-button @click="dialogInfo.systemMessageVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="dialogInfo.systemMessageVisible = false">确 定</el-button>
-                        </div>
-                    </el-dialog>
+            <el-form :model="currentRow">
+                <el-form-item label="昵称" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ currentRow.username }}</div>
+                </el-form-item>
+                <el-form-item label="地址" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ currentRow.address }}</div>
+                </el-form-item>
+                <el-form-item label="留言" :label-width="dialogInfo.formLabelWidth">
+                    <el-input v-model="addtionalMessage" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogInfo.systemMessageVisible = false">取 消</el-button>
+                <el-button type="primary" @click="sendSystemMessage">确 定</el-button>
+            </div>
+        </el-dialog>
+
     </el-container>
 </template>
 
@@ -187,10 +194,14 @@ export default {
                 systemMessageVisible: false,
                 formLabelWidth: '120px',
             },
-
+            addtionalMessage: '',
+            applicationList: [],
+            applicationRow: {},
         };
     },
     mounted() {
+        console.log(this.NET.BASE_URL)
+        console.log(this.NET.BASE_URL.http + 'showFriendList')
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
@@ -198,6 +209,7 @@ export default {
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
         this.handleFriend()
+        this.handleApplication()
         this.connect()
         this.$socket.onmessage = (event) => {
             console.log(JSON.parse(event.data))
@@ -207,7 +219,7 @@ export default {
     },
     methods: {
         connect() {
-            Vue.use(VueNativeSock, 'ws://172.22.21.89:8087/websocket/' + this.$cookies.get('userID'), {
+            Vue.use(VueNativeSock, this.NET.BASE_URL.ws +  'websocket/' + this.$cookies.get('userID'), {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -215,7 +227,7 @@ export default {
             })
             this.$axios({
                 method: 'GET',
-                url: 'http://172.22.21.89:8087/getUnReadMessages',
+                url: this.NET.BASE_URL.http + 'getUnReadMessages',
                 params: {
                     userID: parseInt(this.$cookies.get('userID')),
                 }
@@ -230,7 +242,7 @@ export default {
                 this.label = false
                 this.$axios({
                     method: 'POST',
-                    url: 'http://172.22.21.89:8087/searchUser',
+                    url: this.NET.BASE_URL.http + 'searchUser',
                     data: {
                         username: this.searchInput,
                     }
@@ -241,6 +253,12 @@ export default {
                 }, error => {
                     console.log('错误', error.message)
                 })
+            } else {
+                this.$message({
+                    message: '您还未输入任何有效字符',
+                    type: 'warning',
+                    duration: 1000
+                });
             }
         },
         sendInfo() {
@@ -264,10 +282,16 @@ export default {
             }
             this.listbtn = true
         },
+        handleApplicationChange(val) {
+            if (this.applicationRow !== val) {
+                this.applicationRow = val
+
+            }
+        },
         infiniteHandler($state) {
             this.$axios({
                 method: 'GET',
-                url: 'http://172.22.21.89:8087/getHistoryMessage/' + this.$cookies.get('userID') + '/' + this.currentRow.userID,
+                url: this.NET.BASE_URL.http + 'getHistoryMessage/' + this.$cookies.get('userID') + '/' + this.currentRow.userID,
                 params: {
                     page: this.page
                 }
@@ -322,7 +346,7 @@ export default {
         handleFriend() {
             this.$axios({
                 method: 'POST',
-                url: 'http://172.22.21.89:8087/showFriendList',
+                url: this.NET.BASE_URL.http + 'showFriendList',
                 data: {
                     userID: this.$cookies.get('userID'),
                     password: this.$cookies.get('username')
@@ -353,7 +377,42 @@ export default {
         //             }
         //         }
         //     }
-        // }
+        // },
+        handleApplication() {
+            this.$axios({
+                method: 'GET',
+                url: this.NET.BASE_URL.http + 'getAllApplication',
+                params: {
+                    userID: this.user.userID
+                }
+            }).then(response => {
+                console.log(response.data.data)
+                this.applicationList = response.data.data
+            }, error => {
+                console.log('错误', error.message)
+            })
+        },
+        handleOpenDialog() {
+            this.listbtn = false
+            this.dialogInfo.systemMessageVisible = true
+        },
+        sendSystemMessage() {
+            this.dialogInfo.systemMessageVisible = false
+            this.$axios({
+                method: 'POST',
+                url: this.NET.BASE_URL.http + 'sendSystemMessage',
+                data: {
+                    fromID: this.$cookies.get('userID'),
+                    toID: this.currentRow.userID,
+                    addtionalMessage: this.addtionalMessage,
+                    kind: 'friendApplication'
+                }
+            }).then(response => {
+                if (response.data.code === 1) alert("成功")
+            }, error => {
+                console.log('错误', error.message)
+            })
+        },
     },
     async created() {
 
