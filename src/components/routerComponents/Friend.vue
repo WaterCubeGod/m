@@ -154,7 +154,7 @@ export default {
     },
     methods: {
         connect() {
-            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/websocket/1/' + this.currentRow.userID, {
+            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/websocket', {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -191,7 +191,7 @@ export default {
         },
         handleCurrentChange(val) {
             this.drawer = this.listbtn;
-            if (this.currentRow !== val) {
+            if (this.currentRow !== val && this.drawer) {
                 this.chatList = []
                 this.page = 0
                 this.currentRow = val;

@@ -2,7 +2,7 @@
     <el-table
       :data="tableData"
       height="250"
-      border
+      
       style="width: 100%">
       <el-table-column
         prop="donationID"
