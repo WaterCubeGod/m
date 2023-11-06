@@ -409,7 +409,7 @@ export default {
         handleVideoChat() {     
             // 使用 Vue Router 跳转到指定页面并传递参数
             this.$router.push({
-                path: '/videoPlayer/:toID',
+                path: '/videoPlayer',
                 params: {
                     toID:this.currentRow.userID
                 }
