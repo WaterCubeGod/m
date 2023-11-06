@@ -30,6 +30,7 @@
                             <el-popover trigger="hover" placement="top">
                                 <p>姓名: {{ scope.row.username }}</p>
                                 <p>住址: {{ scope.row.address }}</p>
+
                                 
                                 <div slot="reference" class="name-wrapper">
                                     <div>{{ scope.row.username }}</div>
@@ -42,11 +43,10 @@
 
                     <el-table-column label="" min-width="30%">
                         <el-badge :value="12" class="badge" style="width: 100%;">
-                            <template slot-scope="scope">
-                                <el-button v-if="label" size="mini"
-                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
+                            <template>
+                                <el-button v-if="label" size="mini" @click="handleVideoChat()">视频聊天</el-button>
                                 <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
-                            </template>
+                        </template>
                         </el-badge>
                     </el-table-column>
 
@@ -78,13 +78,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="申请记录" min-width="30%">
-                        <template slot-scope="scope">
-                            <div>
-                                    <router-link :to="{ name: 'videoPlayer', params: {toID: scope.row.userID } }">
-                                        <el-button size="mini">视频聊天</el-button>
-                                    </router-link>
-                            </div>
-                        </template>
+                        
                     </el-table-column>
                 </el-table>
             </el-col>
@@ -340,9 +334,7 @@ export default {
             this.searchInput = ''
             this.handleFriend()
         },
-        handleVideoChat() {
-            this.listbtn = false
-        },
+        
         handleFriend() {
             this.$axios({
                 method: 'POST',
@@ -412,6 +404,16 @@ export default {
             }, error => {
                 console.log('错误', error.message)
             })
+        },
+
+        handleVideoChat() {     
+            // 使用 Vue Router 跳转到指定页面并传递参数
+            this.$router.push({
+                path: '/videoPlayer/:toID',
+                params: {
+                    toID:this.currentRow.userID
+                }
+            });
         },
     },
     async created() {
