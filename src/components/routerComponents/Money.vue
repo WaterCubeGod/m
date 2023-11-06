@@ -12,33 +12,17 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <div>
-            <el-statistic group-separator="," :precision="2" :value="value2" :title="账户金额"></el-statistic>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div>
-            <el-statistic title="收益">
-              <template slot="formatter">456/2</template>
+            <el-statistic title="总资产" value="account">
+              <template slot="formatter">{{ account }}</template>
             </el-statistic>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
-            <el-statistic group-separator="," :precision="2" decimal-separator="." :value="value1" :title="title">
+            <el-statistic title="总收益" value="totalAmount">
+              <template slot="formatter">{{ totalAmount }}</template>
               <template slot="prefix"><i class="el-icon-s-flag" style="color: red"></i></template>
               <template slot="suffix"><i class="el-icon-s-flag" style="color: blue"></i></template>
-            </el-statistic>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div>
-            <el-statistic :value="like ? 521 : 520" title="Feedback">
-              <template slot="suffix">
-                <span @click="like = !like" class="like">
-                  <i class="el-icon-star-on" style="color:red" v-show="!!like"></i>
-                  <i class="el-icon-star-off" v-show="!like"></i>
-                </span>
-              </template>
             </el-statistic>
           </div>
         </el-col>
@@ -49,37 +33,64 @@
   </template>
   
   <script>
+
   export default {
       name: 'MyPage',
       data() {
       return {
-        tableData: [{
-            moneyID: '2016-05-03',
-            amount: '王小虎',
-            fromID: '上海市普陀区金沙江路 1518 弄',
-            message:'666'
-        }, {
-            moneyID: '2016-05-02',
-            amount: '王小虎',
-            fromID: '上海市普陀区金沙江路 1518 弄',
-            message:'666'
-        }, {
-            moneyID: '2016-05-04',
-            amount: '王小虎',
-            fromID: '上海市普陀区金沙江路 1518 弄',
-            message:'666'
-        }, {
-            moneyID: '2016-05-01',
-            amount: '王小虎',
-            fromID: '上海市普陀区金沙江路 1518 弄',
-            message:'666'
-        }],
+        tableData: [],
+        account:getCookieValue('userAccount'),
         like: true,
-        value1: 4154.564,
-        value2: 1314,
+        totalAmount:0,
       }
+    },
+    mounted() {
+      this.fetchData();
+      console.log(getCookieValue('userAccount'))
+    },
+    methods:{
+      fetchData() {
+      this.$axios({
+        method: 'POST',
+        url: 'http://localhost:8087/getMoney',
+        params: {
+          id: getCookieValue('userID')
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        if (response.data.code === 1) {
+          const money = response.data.data;
+          const tableData = money.map(money => ({
+            moneyID: money.moneyID,
+            amount: money.amount,
+            fromID: money.fromID,
+            message:money.message
+          }));
+          this.tableData = tableData;
+
+          this.totalAmount = money.reduce((sum, money) => sum + money.amount, 0);
+        } else {
+          console.log(response.data.msg);
+        }
+      })
+      .catch(error => {
+        console.log('错误', error.message);
+      });
+    }
     }
   }
+
+  function getCookieValue(cookieName) {
+  var cookies = document.cookie.split('; ');
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].split('=');
+    if (cookie[0] === cookieName) {
+      return cookie[1];
+    }
+  }
+  return null;
+}
   </script>
   
   <style>

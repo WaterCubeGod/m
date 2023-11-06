@@ -7,7 +7,7 @@ import Study from '../components/routerComponents/Study'
 import Donation from '../components/routerComponents/Donation'
 import DonationDetail from '../components/routerComponents/DonationDetail'
 import Money from '../components/routerComponents/Money'
-
+import VideoPlayer from '../components/VideoPlayer'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import userLogin from '../components/userLogin.vue'
@@ -58,6 +58,11 @@ const router = new VueRouter({
             path: '/userRegister',
             component: userRegister,
             
+        },
+        {
+            name:'videoPlayer',
+            path:'/videoPlayer/:toID',
+            component:VideoPlayer,
         },
         {
             path: '/userLogin',
