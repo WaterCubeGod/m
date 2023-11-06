@@ -43,7 +43,7 @@ export default {
    login() {  
       try {  
         //向后台发送登录请求，，并且需要POST数据{username: this.username, password: this.password}  
-        axios.post('http://172.22.21.89:8087/userLogin', { username: this.username, password: this.password })
+        axios.post(this.NET.BASE_URL.http + 'userLogin', { username: this.username, password: this.password })
         .then(response => {
             // 检查后台返回的数据中是否包含成功标志，例如一个特定的状态码或者字段。这里只是一个示例，具体的处理方式需要根据您的业务逻辑来确定。  
             if (response.data.msg === '登录成功') {  
