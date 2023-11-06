@@ -50,6 +50,8 @@ export default {
                 this.$router.push({ path: '/main', params: { user: response.data.data} })
                 this.$cookies.set('userID', response.data.data.userID)
                 this.$cookies.set('username', response.data.data.username)
+                this.$cookies.set('userAccount', response.data.data.account)
+                
             } else {  
                 console.log('登录失败：' + response.data.message)  
             }  
