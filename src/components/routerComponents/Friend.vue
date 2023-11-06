@@ -28,6 +28,7 @@
                             <el-popover trigger="hover" placement="top">
                                 <p>姓名: {{ scope.row.username }}</p>
                                 <p>住址: {{ scope.row.address }}</p>
+                                
                                 <div slot="reference" class="name-wrapper">
                                     <div>{{ scope.row.username }}</div>
                                     <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
@@ -38,11 +39,7 @@
                     </el-table-column>
                     <el-table-column label="" min-width="30%">
                         <el-badge :value="12" class="badge" style="width: 100%;">
-                            <template slot-scope="scope">
-                                <el-button v-if="label" size="mini"
-                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                                <el-button v-else size="mini" @click="handleEdit(scope.$index, scope.row)">添加好友</el-button>
-                            </template>
+                            
                         </el-badge>
                     </el-table-column>
                 </el-table>
@@ -67,9 +64,11 @@
                     </el-table-column>
                     <el-table-column label="" min-width="30%">
                         <template slot-scope="scope">
-                            <el-button v-if="label" size="mini"
-                                @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                            <el-button v-else size="mini" @click="handleEdit(scope.$index, scope.row)">添加好友</el-button>
+                            <div>
+                                    <router-link :to="{ name: 'videoPlayer', params: {toID: scope.row.userID } }">
+                                        <el-button size="mini">视频聊天</el-button>
+                                    </router-link>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>

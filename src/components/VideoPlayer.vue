@@ -1,0 +1,191 @@
+<template>
+    <div>
+      <div>
+        <video id="localVideo"  autoplay playsinline controls="false"></video>
+        <video id="remoteVideo"  autoplay playsinline controls="false"></video>
+        <button @click="kaishi">kaishi</button>
+      </div>
+    </div>
+</template>
+  
+  
+  
+  
+<script>
+    
+    import Vue from 'vue'
+    import VueNativeSock from 'vue-native-websocket'
+    
+  
+  
+  export default {
+      name: 'videoPlayer',
+      data() {
+      return {
+        peerConnection: null,
+        configuration :{ 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] },
+        fromID :null,
+        toID:null,
+      };
+    },
+  
+    mounted() {
+    
+    
+                 
+    console.log(this.$route.params.toID);
+    console.log(this.$cookies.get("userID"));
+      this.toID = this.$route.params.toID;
+      this.fromID = this.$cookies.get("userID");
+      
+      
+      
+      
+      
+  
+      this.peerConnectionInit();
+  
+      this.playVideoFromCamera();
+  
+      this.createSocket();
+  
+      this.webSocketInit();
+  
+      
+  
+      
+      
+  
+      
+  
+      
+    },
+    methods: {
+      async playVideoFromCamera() {
+        try {
+          const constraints = { video: true, audio: true };
+          const localStream = await navigator.mediaDevices.getUserMedia(constraints);
+
+          localStream.getTracks().forEach(track => {
+            this.peerConnection.addTrack(track, localStream);
+          });
+          const videoElement = document.querySelector('video#localVideo');
+          videoElement.srcObject = localStream;
+        } catch (error) {
+          console.error('Error opening video camera.', error);
+        }
+      },
+  
+      async kaishi(){
+        this.creatOffer();
+      },
+  
+      async createSocket() {
+            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/videoWebsocket/'+this.fromID, {
+                format: 'json',
+                reconnection: true, // 自动重连
+                reconnectionAttempts: 5, // 重连尝试次数
+                reconnectionDelay: 3000, // 重连延迟（毫秒）
+            })
+        },
+  
+      
+  
+      async creatOffer(){
+        
+        this.peerConnection.createOffer().then(offer => {
+        this.peerConnection.setLocalDescription(offer);
+        this.$socket.sendObj({
+            toID:this.toID,
+            event: "offer",
+            data: {
+                sdp: offer
+            }
+          });
+        
+      });
+    
+    },
+      
+      async peerConnectionInit(){
+        this.peerConnection = new RTCPeerConnection(this.configuration);  
+  
+        this.peerConnection.onicecandidate = (e)=> {
+  
+          if (e.candidate) {
+            this.$socket.sendObj({
+                toID:this.toID,
+                event: "iceCandidate",
+                data: {
+                    candidate: e.candidate
+                }
+            });
+          }
+        }
+  
+        this.peerConnection.onaddstream = (e) =>{        
+          const videoElement = document.querySelector('video#remoteVideo');
+          videoElement.srcObject = e.stream;
+        }
+  
+      },
+  
+  
+      async webSocketInit(){
+        //连接成功
+        this.$socket.onopen = async() =>{
+          console.log('连接成功')
+        };
+        //server端请求关闭
+        this.$socket.onclose = async()=> {
+          console.log('连接关闭')
+        };
+        //error
+        this.$socket.onerror = async()=> {
+          console.log('发生错误')
+        };
+        //收到消息
+        this.$socket.onmessage = (event)=> {
+        
+          var json = JSON.parse(event.data);
+                    
+          if(json.toID ===this.fromID){
+              
+            //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述
+            if(json.event === "iceCandidate"&&json.data.candidate) {
+              this.peerConnection.addIceCandidate(new RTCIceCandidate(json.data.candidate));
+            }else if(json.event==='offer'){
+              console.log("offer:"+json.toID);    
+              this.peerConnection.setRemoteDescription(json.data.sdp);
+              this.peerConnection.createAnswer().then(answer => {
+                this.peerConnection.setLocalDescription(answer);                       
+                this.$socket.sendObj({
+                  toID:this.toID,
+                  event: "answer",
+                  data: {
+                    sdp: answer
+                  }
+                });
+              })
+            }else if(json.event ==='answer'){
+                console.log("answer:"+json.toID);
+              this.peerConnection.setRemoteDescription(json.data.sdp);                    
+            }
+          }        
+        };
+      },
+  
+      
+  
+     
+  
+        
+  
+    },
+  };
+  
+  
+</script>
+  
+  
+  
