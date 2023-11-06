@@ -1,29 +1,29 @@
 <template>
   <el-table
     :data="tableData"
-    height="250"
+    height="800"
     border
     style="width: 100%">
     <el-table-column
       prop="donationID"
       label="捐助编号"
-      width="180">
+      width="400">
     </el-table-column>
     <el-table-column
       prop="donationName"
       label="捐助物"
-      width="180">
+      width="400">
     </el-table-column>
     <el-table-column
       prop="number"
       label="数量"
-      width="180">
+      width="400">
     </el-table-column>
     <el-table-column>
       <template slot-scope="scope">
         <el-button
           size="mini"
-          type="danger"
+          type="primary"
           @click="handleDonate(scope.row)">捐助详情</el-button>
       </template>
     </el-table-column>
