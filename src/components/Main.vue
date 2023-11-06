@@ -29,7 +29,11 @@
                         </el-menu-item>
                         <el-menu-item index="/main/donation">
                             <i class="el-icon-shopping-bag-1"></i>
-                            <span slot="title">物品捐助</span>
+                            <span slot="title">捐助物查看</span>
+                        </el-menu-item>
+                        <el-menu-item index="/main/money">
+                            <i class="el-icon-shopping-bag-1"></i>
+                            <span slot="title">捐助资金管理</span>
                         </el-menu-item>
                     </el-menu>
                 </el-aside>

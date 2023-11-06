@@ -9,39 +9,80 @@
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
             </div>
         </el-header>
+        <el-row style="height: 100%;" :gutter="20">
+            <el-col style="height: 100%;" :span="16">
+                <el-table :data="tableData" style="height: 100%;" :max-height="tableHeight" highlight-current-row
+                    @row-click="handleCurrentChange">
+                    <el-table-column v-if="label" label="好友列表" min-width="20%">
+                        <template>
+                            <el-avatar icon="el-icon-user-solid"></el-avatar>
+                        </template>
+                    </el-table-column>
 
-        <el-table :data="tableData" style="width: 70%" :max-height="tableHeight" highlight-current-row
-            @row-click="handleCurrentChange">
-            <el-table-column v-if="label" label="好友列表" width="100">
-                <template>
-                    <el-avatar icon="el-icon-user-solid"></el-avatar>
-                </template>
-            </el-table-column>
-            <el-table-column v-else label="查找结果" width="100">
-                <template>
-                    <el-avatar icon="el-icon-user-solid"></el-avatar>
-                </template>
-            </el-table-column>
-            <el-table-column label="" width="180">
-                <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p>姓名: {{ scope.row.username }}</p>
-                        <p>住址: {{ scope.row.address }}</p>
-                        <div slot="reference" class="name-wrapper">
-                            <div>{{ scope.row.username }}</div>
-                            <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
-                            <el-tag>{{ scope.row.address }}</el-tag>
-                        </div>
-                    </el-popover>
-                </template>
-            </el-table-column>
-            <el-table-column label="">
-                <template slot-scope="scope">
-                    <el-button v-if="label" size="mini" @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                    <el-button v-else size="mini" @click="handleEdit(scope.$index, scope.row)">添加好友</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+                    <el-table-column v-else label="查找结果" min-width="20%">
+                        <template>
+                            <el-avatar icon="el-icon-user-solid"></el-avatar>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column label="" min-width="50%">
+                        <template slot-scope="scope">
+                            <el-popover trigger="hover" placement="top">
+                                <p>姓名: {{ scope.row.username }}</p>
+                                <p>住址: {{ scope.row.address }}</p>
+                                
+                                <div slot="reference" class="name-wrapper">
+                                    <div>{{ scope.row.username }}</div>
+                                    <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
+                                    <el-tag>{{ scope.row.address }}</el-tag>
+                                </div>
+                            </el-popover>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column label="" min-width="30%">
+                        <el-badge :value="12" class="badge" style="width: 100%;">
+                            <template slot-scope="scope">
+                                <el-button v-if="label" size="mini"
+                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
+                                <el-button v-else size="mini" @click="dialogInfo.systemMessageVisible = true">添加好友</el-button>
+                            </template>
+                        </el-badge>
+                    </el-table-column>
+
+                </el-table>
+            </el-col>
+
+            <el-col style="height: 100%;" :span="8">
+                <el-table :data="tableData" style="height: 100%;" :max-height="tableHeight" highlight-current-row
+                    @row-click="handleCurrentChange">
+                    <el-table-column v-if="label" label="我的申请" min-width="30%">
+                        <template>
+                            <el-avatar icon="el-icon-user-solid"></el-avatar>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="" min-width="30%">
+                        <template slot-scope="scope">
+                            <el-popover trigger="hover" placement="top">
+                                <p>姓名: {{ scope.row.username }}</p>
+                                <div slot="reference" class="name-wrapper">
+                                    <div>{{ scope.row.username }}</div>
+                                </div>
+                            </el-popover>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="申请记录" min-width="30%">
+                        <template slot-scope="scope">
+                            <div>
+                                    <router-link :to="{ name: 'videoPlayer', params: {toID: scope.row.userID } }">
+                                        <el-button size="mini">视频聊天</el-button>
+                                    </router-link>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
 
         <el-drawer :visible.sync="drawer" :with-header="false" style="position: absolute" z-index="-1">
             <div style="position:absolute;top:0;left:0;width:100%;height:100%;">
@@ -51,9 +92,10 @@
                     </el-header>
 
                     <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
-                        <infinite-loading :identifier="customIdentifier" direction="top" @infinite="infiniteHandler"></infinite-loading>
+                        <infinite-loading :identifier="customIdentifier" direction="top"
+                            @infinite="infiniteHandler"></infinite-loading>
                         <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
-                            <div v-if="item.fromID !== 1">
+                            <div v-if="item.fromID !== user.userID">
                                 <el-col :span="4">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
@@ -94,6 +136,24 @@
                 </el-container>
             </div>
         </el-drawer>
+
+        <el-dialog title="添加好友" :visible.sync="dialogInfo.systemMessageVisible">
+                        <el-form :model="currentRow">
+                            <el-form-item label="昵称" :label-width="dialogInfo.formLabelWidth">
+                                <el-input v-model="currentRow.username" autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="地址" :label-width="dialogInfo.formLabelWidth">
+                                <el-select v-model="currentRow.region" placeholder="请选择活动区域">
+                                    <el-option label="区域一" value="shanghai"></el-option>
+                                    <el-option label="区域二" value="beijing"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogInfo.systemMessageVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogInfo.systemMessageVisible = false">确 定</el-button>
+                        </div>
+                    </el-dialog>
     </el-container>
 </template>
 
@@ -101,6 +161,7 @@
 import Vue from 'vue'
 import VueNativeSock from 'vue-native-websocket'
 import InfiniteLoading from 'vue-infinite-loading'
+
 
 export default {
     name: 'MyFriend',
@@ -116,14 +177,16 @@ export default {
             currentRow: {},
             label: true,
             listbtn: true,
-            tableData: [
-                {
-                    username: '小乐',
-                    address: '东b',
-                    userID: 3
-                }
-            ],
+            tableData: [],
             chatList: [],
+            user: {
+                userID: parseInt(this.$cookies.get('userID'))
+            },
+            messageCountList: [],
+            dialogInfo: {
+                systemMessageVisible: false,
+                formLabelWidth: '120px',
+            },
 
         };
     },
@@ -131,26 +194,16 @@ export default {
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
-        window.onresize = function () {//用于使表格高度自适应的方法  
+        window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
-        this.$axios({
-            method: 'POST',
-            url: 'http://localhost:8087/showFriendList',
-            data: {
-                userID: 1
-            }
-        }).then(response => {
-            console.log(response.data.data)
-            this.tableData = response.data.data
-            this.tableData.push({
-                username: '小乐',
-                address: '东b',
-                userID: 3
-            })
-        }, error => {
-            console.log('错误', error.message)
-        })
+        this.handleFriend()
+        this.connect()
+        this.$socket.onmessage = (event) => {
+            console.log(JSON.parse(event.data))
+            this.chatList.push(JSON.parse(event.data))
+            console.log(this.chatList)
+        }
     },
     methods: {
         connect() {
@@ -160,18 +213,30 @@ export default {
                 reconnectionAttempts: 5, // 重连尝试次数
                 reconnectionDelay: 3000, // 重连延迟（毫秒）
             })
+            this.$axios({
+                method: 'GET',
+                url: 'http://172.22.21.89:8087/getUnReadMessages',
+                params: {
+                    userID: parseInt(this.$cookies.get('userID')),
+                }
+            }).then(response => {
+                this.messageCountList.message = response.data.data
+            }, error => {
+                console.log('错误', error.message)
+            })
         },
         search() {
             if (this.searchInput !== '') {
                 this.label = false
                 this.$axios({
                     method: 'POST',
-                    url: 'http://localhost:8087/searchUser',
+                    url: 'http://172.22.21.89:8087/searchUser',
                     data: {
                         username: this.searchInput,
                     }
                 }).then(response => {
                     console.log(response.data)
+                    this.tableData = response.data.data
                     this.label = false
                 }, error => {
                     console.log('错误', error.message)
@@ -182,7 +247,7 @@ export default {
             if (this.chatInfo.trim() !== '') {
                 this.$socket.sendObj({
                     message: this.chatInfo.trim(),
-                    from: 1,
+                    from: this.$cookies.get('userID'),
                     to: this.currentRow.userID,
                     kind: 0,
                 });
@@ -196,19 +261,13 @@ export default {
                 this.page = 0
                 this.currentRow = val;
                 this.customIdentifier = true
-                this.connect()
-                this.$socket.onmessage = (event) => {
-                    console.log(JSON.parse(event.data))
-                    this.chatList.push(JSON.parse(event.data))
-                    console.log(this.chatList)
-                }
             }
             this.listbtn = true
         },
         infiniteHandler($state) {
             this.$axios({
                 method: 'GET',
-                url: 'http://localhost:8087/getHistoryMessage/1/' + this.currentRow.userID,
+                url: 'http://172.22.21.89:8087/getHistoryMessage/' + this.$cookies.get('userID') + '/' + this.currentRow.userID,
                 params: {
                     page: this.page
                 }
@@ -218,7 +277,6 @@ export default {
                     for (var i = 0; i < response.data.data.length; i++) {
                         this.chatList.unshift(response.data.data[i])
                     }
-                    console.log(this.chatList)
                     $state.loaded();
                 } else {
                     $state.complete();
@@ -256,10 +314,46 @@ export default {
         handleBack() {
             this.label = true
             this.searchInput = ''
+            this.handleFriend()
         },
         handleVideoChat() {
             this.listbtn = false
-        }
+        },
+        handleFriend() {
+            this.$axios({
+                method: 'POST',
+                url: 'http://172.22.21.89:8087/showFriendList',
+                data: {
+                    userID: this.$cookies.get('userID'),
+                    password: this.$cookies.get('username')
+                }
+            }).then(response => {
+                this.tableData = response.data.data
+            }, error => {
+                console.log('错误', error.message)
+            })
+        },
+        // handleMessageCount(messages) {
+        //     for (let i = 0; i < this.tableData.length; i++) {
+        //         this.messageCountList.push({
+        //             userID: this.tableData.le,
+        //             count: 0,
+        //             message: ''
+        //         })
+        //     }
+        //     for (let i = 0; i < this.tableData.length; i++) {
+        //         this.messageCountList.push({
+        //             userID: 0,
+        //             count: 0,
+        //             message: ''
+        //         })
+        //         for (let j = 0; j < messages.length; j++) {
+        //             if (messages[j].fromID === this.tableData[i].userID) {
+
+        //             }
+        //         }
+        //     }
+        // }
     },
     async created() {
 
@@ -357,5 +451,10 @@ export default {
     height: 8px;
     background-color: transparent;
     /* 滚动条背景颜色 */
+}
+
+.badge {
+    margin-top: 10px;
+    margin-right: 40px;
 }
 </style>
