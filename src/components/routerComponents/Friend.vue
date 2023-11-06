@@ -31,6 +31,7 @@
                                 <p>姓名: {{ scope.row.username }}</p>
                                 <p>住址: {{ scope.row.address }}</p>
 
+                                
                                 <div slot="reference" class="name-wrapper">
                                     <div>{{ scope.row.username }}</div>
                                     <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
@@ -353,10 +354,7 @@ export default {
             this.searchInput = ''
             this.handleFriend()
         },
-        handleVideoChat() {
-            this.listbtn = false
-            console.log('handleVideoChat')
-        },
+        
         handleFriend() {
             this.$axios({
                 method: 'POST',
@@ -464,6 +462,16 @@ export default {
             }).catch((e) => {
                 this.$message.error(e.message)
             })
+        },
+
+        handleVideoChat() {     
+            // 使用 Vue Router 跳转到指定页面并传递参数
+            this.$router.push({
+                path: '/videoPlayer',
+                params: {
+                    toID:this.currentRow.userID
+                }
+            });
         },
     },
     async created() {

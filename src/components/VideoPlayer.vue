@@ -1,11 +1,11 @@
 <template>
+  <div>
     <div>
-      <div>
-        <video id="localVideo"  autoplay playsinline controls="false"></video>
-        <video id="remoteVideo"  autoplay playsinline controls="false"></video>
-        <button @click="kaishi">kaishi</button>
-      </div>
+      <video id="localVideo"  autoplay playsinline controls="false"></video>
+      <video id="remoteVideo"  autoplay playsinline controls="false"></video>
+        
     </div>
+  </div>
 </template>
   
   
@@ -26,30 +26,34 @@
         configuration :{ 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] },
         fromID :null,
         toID:null,
+        localVideoId: 'localVideo',
+        remoteVideoId: 'remoteVideo',
+        isSmallVideo: false
       };
     },
   
     mounted() {
     
     
-                 
-    console.log(this.$route.params.toID);
-    console.log(this.$cookies.get("userID"));
-      this.toID = this.$route.params.toID;
+      console.log("111"+this.$route.query.toID)         
+      this.toID = this.$route.query.toID;
       this.fromID = this.$cookies.get("userID");
       
-      
-      
-      
-      
-  
-      this.peerConnectionInit();
-  
-      this.playVideoFromCamera();
-  
       this.createSocket();
   
       this.webSocketInit();
+
+      
+      this.peerConnectionInit();
+      this.creatOffer();
+      
+      
+                   
+      
+  
+      
+  
+      
   
       
   
@@ -61,6 +65,8 @@
       
     },
     methods: {
+
+      //打开本地视频，并将本地媒体流添加到PeerConnection中
       async playVideoFromCamera() {
         try {
           const constraints = { video: true, audio: true };
@@ -76,12 +82,12 @@
         }
       },
   
-      async kaishi(){
-        this.creatOffer();
-      },
+      
   
+      //创建webSocket示例
       async createSocket() {
-            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/videoWebsocket/'+this.fromID, {
+        console.log("222"+this.NET.BASE_URL.http)
+            Vue.use(VueNativeSock, this.NET.BASE_URL.http+'videoWebsocket/'+this.fromID, {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -90,9 +96,11 @@
         },
   
       
-  
+      //开始发起视频，发生offer
       async creatOffer(){
         
+        this.playVideoFromCamera();
+
         this.peerConnection.createOffer().then(offer => {
         this.peerConnection.setLocalDescription(offer);
         this.$socket.sendObj({
@@ -107,6 +115,7 @@
     
     },
       
+    //实例化peerConnection并添加事件
       async peerConnectionInit(){
         this.peerConnection = new RTCPeerConnection(this.configuration);  
   
@@ -174,18 +183,38 @@
           }        
         };
       },
-  
+
+      //控制视频界面切换
+      toggleVideoSize() {
+        this.isSmallVideo = !this.isSmallVideo;
+      },
+
       
   
-     
-  
-        
+      
+          
   
     },
   };
   
   
 </script>
+
+<style>
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.small-video {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 200px;
+  height: 150px;
+}
+</style>
   
   
   
