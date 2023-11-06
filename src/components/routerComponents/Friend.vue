@@ -18,11 +18,13 @@
                             <el-avatar icon="el-icon-user-solid"></el-avatar>
                         </template>
                     </el-table-column>
+
                     <el-table-column v-else label="查找结果" min-width="20%">
                         <template>
                             <el-avatar icon="el-icon-user-solid"></el-avatar>
                         </template>
                     </el-table-column>
+
                     <el-table-column label="" min-width="50%">
                         <template slot-scope="scope">
                             <el-popover trigger="hover" placement="top">
@@ -37,17 +39,24 @@
                             </el-popover>
                         </template>
                     </el-table-column>
+
                     <el-table-column label="" min-width="30%">
                         <el-badge :value="12" class="badge" style="width: 100%;">
-                            
+                            <template slot-scope="scope">
+                                <el-button v-if="label" size="mini"
+                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
+                                <el-button v-else size="mini" @click="dialogInfo.systemMessageVisible = true">添加好友</el-button>
+                            </template>
                         </el-badge>
                     </el-table-column>
+
                 </el-table>
             </el-col>
+
             <el-col style="height: 100%;" :span="8">
                 <el-table :data="tableData" style="height: 100%;" :max-height="tableHeight" highlight-current-row
                     @row-click="handleCurrentChange">
-                    <el-table-column v-if="label" label="好友列表" min-width="30%">
+                    <el-table-column v-if="label" label="我的申请" min-width="30%">
                         <template>
                             <el-avatar icon="el-icon-user-solid"></el-avatar>
                         </template>
@@ -62,7 +71,7 @@
                             </el-popover>
                         </template>
                     </el-table-column>
-                    <el-table-column label="" min-width="30%">
+                    <el-table-column label="申请记录" min-width="30%">
                         <template slot-scope="scope">
                             <div>
                                     <router-link :to="{ name: 'videoPlayer', params: {toID: scope.row.userID } }">
@@ -86,7 +95,7 @@
                         <infinite-loading :identifier="customIdentifier" direction="top"
                             @infinite="infiniteHandler"></infinite-loading>
                         <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
-                            <div v-if="item.fromID !== 1">
+                            <div v-if="item.fromID !== user.userID">
                                 <el-col :span="4">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
@@ -127,6 +136,24 @@
                 </el-container>
             </div>
         </el-drawer>
+
+        <el-dialog title="添加好友" :visible.sync="dialogInfo.systemMessageVisible">
+                        <el-form :model="currentRow">
+                            <el-form-item label="昵称" :label-width="dialogInfo.formLabelWidth">
+                                <el-input v-model="currentRow.username" autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="地址" :label-width="dialogInfo.formLabelWidth">
+                                <el-select v-model="currentRow.region" placeholder="请选择活动区域">
+                                    <el-option label="区域一" value="shanghai"></el-option>
+                                    <el-option label="区域二" value="beijing"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogInfo.systemMessageVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogInfo.systemMessageVisible = false">确 定</el-button>
+                        </div>
+                    </el-dialog>
     </el-container>
 </template>
 
@@ -134,6 +161,7 @@
 import Vue from 'vue'
 import VueNativeSock from 'vue-native-websocket'
 import InfiniteLoading from 'vue-infinite-loading'
+
 
 export default {
     name: 'MyFriend',
@@ -151,24 +179,50 @@ export default {
             listbtn: true,
             tableData: [],
             chatList: [],
+            user: {
+                userID: parseInt(this.$cookies.get('userID'))
+            },
+            messageCountList: [],
+            dialogInfo: {
+                systemMessageVisible: false,
+                formLabelWidth: '120px',
+            },
+
         };
     },
     mounted() {
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
-        window.onresize = function () {//用于使表格高度自适应的方法  
+        window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
         this.handleFriend()
+        this.connect()
+        this.$socket.onmessage = (event) => {
+            console.log(JSON.parse(event.data))
+            this.chatList.push(JSON.parse(event.data))
+            console.log(this.chatList)
+        }
     },
     methods: {
         connect() {
-            Vue.use(VueNativeSock, 'ws://localhost:8087/websocket/' + this.$cookies.get('userID') +  '/' + this.currentRow.userID, {
+            Vue.use(VueNativeSock, 'ws://172.22.21.89:8087/websocket/' + this.$cookies.get('userID'), {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
                 reconnectionDelay: 3000, // 重连延迟（毫秒）
+            })
+            this.$axios({
+                method: 'GET',
+                url: 'http://172.22.21.89:8087/getUnReadMessages',
+                params: {
+                    userID: parseInt(this.$cookies.get('userID')),
+                }
+            }).then(response => {
+                this.messageCountList.message = response.data.data
+            }, error => {
+                console.log('错误', error.message)
             })
         },
         search() {
@@ -176,7 +230,7 @@ export default {
                 this.label = false
                 this.$axios({
                     method: 'POST',
-                    url: 'http://localhost:8087/searchUser',
+                    url: 'http://172.22.21.89:8087/searchUser',
                     data: {
                         username: this.searchInput,
                     }
@@ -207,19 +261,13 @@ export default {
                 this.page = 0
                 this.currentRow = val;
                 this.customIdentifier = true
-                this.connect()
-                this.$socket.onmessage = (event) => {
-                    console.log(JSON.parse(event.data))
-                    this.chatList.push(JSON.parse(event.data))
-                    console.log(this.chatList)
-                }
             }
             this.listbtn = true
         },
         infiniteHandler($state) {
             this.$axios({
                 method: 'GET',
-                url: 'http://localhost:8087/getHistoryMessage/' + this.$cookies.get('userID') + '/' + this.currentRow.userID,
+                url: 'http://172.22.21.89:8087/getHistoryMessage/' + this.$cookies.get('userID') + '/' + this.currentRow.userID,
                 params: {
                     page: this.page
                 }
@@ -274,7 +322,7 @@ export default {
         handleFriend() {
             this.$axios({
                 method: 'POST',
-                url: 'http://localhost:8087/showFriendList',
+                url: 'http://172.22.21.89:8087/showFriendList',
                 data: {
                     userID: this.$cookies.get('userID'),
                     password: this.$cookies.get('username')
@@ -284,7 +332,28 @@ export default {
             }, error => {
                 console.log('错误', error.message)
             })
-        }
+        },
+        // handleMessageCount(messages) {
+        //     for (let i = 0; i < this.tableData.length; i++) {
+        //         this.messageCountList.push({
+        //             userID: this.tableData.le,
+        //             count: 0,
+        //             message: ''
+        //         })
+        //     }
+        //     for (let i = 0; i < this.tableData.length; i++) {
+        //         this.messageCountList.push({
+        //             userID: 0,
+        //             count: 0,
+        //             message: ''
+        //         })
+        //         for (let j = 0; j < messages.length; j++) {
+        //             if (messages[j].fromID === this.tableData[i].userID) {
+
+        //             }
+        //         }
+        //     }
+        // }
     },
     async created() {
 
@@ -385,7 +454,7 @@ export default {
 }
 
 .badge {
-  margin-top: 10px;
-  margin-right: 40px;
+    margin-top: 10px;
+    margin-right: 40px;
 }
 </style>
