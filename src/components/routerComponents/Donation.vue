@@ -1,5 +1,5 @@
 <template>
-<<<<<<< HEAD
+<!-- <<<<<<< HEAD
     <el-table
       :data="tableData"
       height="250"
@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-=======
+======= -->
   <el-table
     :data="tableData"
     height="800"
@@ -45,7 +45,6 @@
     </el-table-column>
     <el-table-column>
       <template slot-scope="scope">
->>>>>>> b9ede21c4fd33b39f7d267a28283f0a89ac05f96
         <el-button
           size="mini"
           type="primary"

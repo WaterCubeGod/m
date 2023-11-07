@@ -1,0 +1,2 @@
+
+7b80a7785c33ea01cb6e40cca34a5ee47343f660	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/vue-cli-plugin-element","integrity":null,"time":1699272101954,"size":"262","metadata":{"time":1699272101954,"url":"http://registry.npmmirror.com/vue-cli-plugin-element","reqHeaders":{"accept":"application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*"},"resHeaders":{"content-type":"text/html","date":"Mon, 06 Nov 2023 12:01:41 GMT","location":"https://registry.npmmirror.com/vue-cli-plugin-element"},"options":{"compress":true},"status":301}}

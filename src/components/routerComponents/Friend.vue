@@ -80,9 +80,7 @@
                     <el-table-column label="申请记录" min-width="30%">
                         <template slot-scope="scope">
                             <div>
-                                    <router-link :to="{ name: 'videoPlayer', params: {toID: scope.row.userID } }">
-                                        <el-button size="mini">视频聊天</el-button>
-                                    </router-link>
+                                <el-button size="mini" @click="handleOpenDetail(scope.row)">查看信息</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -161,6 +159,24 @@
             </div>
         </el-dialog>
 
+        <el-dialog title="用户详情" :visible.sync="detailDialogVisable">
+            <el-form :model="userInfo">
+                <el-form-item label="昵称" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ userInfo.username }}</div>
+                </el-form-item>
+                <el-form-item label="地址" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ userInfo.address }}</div>
+                </el-form-item>
+                <el-form-item label="邮箱" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ userInfo.email }}</div>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="acceptOrReject('reject')">拒绝</el-button>
+                <el-button type="primary" @click="acceptOrReject('accept')">接受</el-button>
+            </div>
+        </el-dialog>
+
     </el-container>
 </template>
 
@@ -194,9 +210,12 @@ export default {
                 systemMessageVisible: false,
                 formLabelWidth: '120px',
             },
+            
+            detailDialogVisable:false,
             addtionalMessage: '',
             applicationList: [],
             applicationRow: {},
+            userInfo:{}
         };
     },
     mounted() {
@@ -227,7 +246,7 @@ export default {
             })
             this.$axios({
                 method: 'GET',
-                url: this.NET.BASE_URL.http + 'getUnReadMessages',
+                url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
                 params: {
                     userID: parseInt(this.$cookies.get('userID')),
                 }
@@ -285,8 +304,27 @@ export default {
         handleApplicationChange(val) {
             if (this.applicationRow !== val) {
                 this.applicationRow = val
-
             }
+        },
+        acceptOrReject(status){
+            
+            this.$axios({
+                    method: 'POST',
+                    url: this.NET.BASE_URL.http + 'solveApplication',
+                    data: {
+                        time:this.applicationRow.time,
+                        fromID:this.applicationRow.fromID,
+                        toID:this.applicationRow.toID,
+                        additionalMessage:this.applicationRow.additionalMessage,
+                        kind:this.applicationRow.kind,
+                        status:status
+                    }
+                }).then(response => {
+                    console.log(response.data.msg)
+                    this.detailDialogVisable=false
+                }, error => {
+                    console.log('错误', error.message)
+                })
         },
         infiniteHandler($state) {
             this.$axios({
@@ -381,7 +419,7 @@ export default {
         handleApplication() {
             this.$axios({
                 method: 'GET',
-                url: this.NET.BASE_URL.http + 'getAllApplication',
+                url: this.NET.BASE_URL.http + 'getUnSolvedApplication',
                 params: {
                     userID: this.user.userID
                 }
@@ -395,6 +433,28 @@ export default {
         handleOpenDialog() {
             this.listbtn = false
             this.dialogInfo.systemMessageVisible = true
+        },
+        handleOpenDetail(row){
+            this.detailDialogVisable=true
+            this.applicationRow = row
+            // console.log(this.applicationRow)
+            this.$axios({
+                method: 'GET',
+                url: this.NET.BASE_URL.http + 'getUserInfo',
+                params: {
+                   userID: this.applicationRow.fromID
+                }
+            }).then(response => {
+                if (response.data.code === 1) {
+                    this.userInfo=response.data.data
+                    console.log('信息查找成功')
+                    console.log(response.data)
+                }else{
+                    console.log('查找失败')
+                }
+            }, error => {
+                console.log('错误', error.message)
+            })
         },
         sendSystemMessage() {
             this.dialogInfo.systemMessageVisible = false
