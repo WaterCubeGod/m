@@ -389,9 +389,6 @@ export default {
             this.searchInput = ''
             this.handleFriend()
         },
-        handleVideoChat() {
-            this.listbtn = false
-        },
         handleFriend() {
             this.$axios({
                 method: 'POST',
@@ -492,6 +489,15 @@ export default {
             }, error => {
                 console.log('错误', error.message)
             })
+        },
+        handleVideoChat() {     
+            // 使用 Vue Router 跳转到指定页面并传递参数
+            this.$router.push({
+                path: '/videoPlayer',
+                params: {
+                    toID:this.currentRow.userID
+                }
+            });
         },
     },
     async created() {
