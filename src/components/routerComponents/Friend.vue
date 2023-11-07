@@ -30,27 +30,24 @@
                             <el-popover trigger="hover" placement="top">
                                 <p>姓名: {{ scope.row.username }}</p>
                                 <p>住址: {{ scope.row.address }}</p>
-
                                 
                                 <div slot="reference" class="name-wrapper">
                                     <div>{{ scope.row.username }}</div>
                                     <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
                                     <el-tag>{{ scope.row.address }}</el-tag>
-                            </div>
+                                </div>
                             </el-popover>
-                            <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }"> <el-button size="mini">视频聊天</el-button> </router-link>
-                            </div>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="" min-width="17%">
-                        
-                    </el-table-column>
-
-                    <el-table-column  label="" min-width="13%">
+                    <el-table-column label="" min-width="30%">
                         <template slot-scope="scope">
-                        <el-badge v-if="messageCountList[scope.$index].count !== 0" :value="messageCountList[scope.$index].count" class="badge" style="width: 0%;">
+                        <el-badge :value="messageCountList[scope.$index].count" class="badge" style="width: 100%;">
+                           
+                                <el-button v-if="label" size="mini"
+                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
+                                <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
+                           
                         </el-badge>
                     </template>
                     </el-table-column>
@@ -100,7 +97,7 @@
                         {{ this.currentRow.username }}
                     </el-header>
 
-                    <el-main style="position: absolute;height: 70%;width: 100%;top: 10%;" ref="chat">
+                    <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
                         <infinite-loading :identifier="customIdentifier" direction="top"
                             @infinite="infiniteHandler"></infinite-loading>
                         <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
@@ -134,18 +131,13 @@
 
                     </el-main>
 
-                    <el-footer style="position:absolute;top:80%;left:0;width:100%;height:10%;">
+                    <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
                         <div>
                             <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
                                 @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
                             <el-button slot="append" icon="el-icon-search" @click="sendInfo"
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
-                        <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-                            :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                            <el-avatar icon="el-icon-folder-opened" ref="file" :size=33
-                                @click.native="handleFileUpload"></el-avatar>
-                        </el-upload>
                     </el-footer>
                 </el-container>
             </div>
@@ -225,11 +217,12 @@ export default {
             addtionalMessage: '',
             applicationList: [],
             applicationRow: {},
-            count: 0,
             userInfo:{}
         };
     },
     mounted() {
+        console.log(this.NET.BASE_URL)
+        console.log(this.NET.BASE_URL.http + 'showFriendList')
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
@@ -237,8 +230,8 @@ export default {
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
         this.handleFriend()
-        this.handleMessageCount()
         this.handleApplication()
+        this.handleMessageCount()
         this.connect()
         this.$socket.onmessage = (event) => {
             console.log(JSON.parse(event.data))
@@ -248,7 +241,7 @@ export default {
     },
     methods: {
         connect() {
-            Vue.use(VueNativeSock, this.NET.BASE_URL.ws + 'websocket/' + this.$cookies.get('userID'), {
+            Vue.use(VueNativeSock, this.NET.BASE_URL.ws +  'websocket/' + this.$cookies.get('userID'), {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -308,9 +301,6 @@ export default {
                 this.page = 0
                 this.currentRow = val;
                 this.customIdentifier = true
-                this.messageCountList[this.messageCountList.findIndex(item => {
-                    if(item.message.fromID === this.currentRow.userID) return true
-                })].count = 0
             }
             this.listbtn = true
         },
@@ -391,7 +381,9 @@ export default {
             this.searchInput = ''
             this.handleFriend()
         },
-        
+        handleVideoChat() {
+            this.listbtn = false
+        },
         handleFriend() {
             this.$axios({
                 method: 'POST',
@@ -409,7 +401,7 @@ export default {
         handleMessageCount() {
             this.$axios({
                 method: 'GET',
-                url: this.NET.BASE_URL.http + 'getUnReadMessages',
+                url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
                 params: {
                     userID: this.user.userID
                 }
@@ -429,6 +421,7 @@ export default {
                         count: count,
                     })
                 }
+                console.log(11111111111111)
                 console.log(this.messageCountList)
                 console.log(this.messageCountList[0].count)
             }, error => {
@@ -491,46 +484,6 @@ export default {
             }, error => {
                 console.log('错误', error.message)
             })
-        },
-        // 打开文件
-        getFile() {
-            this.$refs.file.click()
-        },
-        handleFileUpload(event) {
-            console.log(1111)
-            // 阻止发生默认行为
-            event.preventDefault();
-            let formData = new FormData()
-            let file = this.$refs.file.files[0]
-            formData.append('file', file)
-            // console.log(formData.get('file'))
-            this.onUpload(formData)
-        },
-        // 上传文件
-        onUpload(formData) {
-            this.$axios({
-                url: this.NET.http + 'upload',
-                method: 'post',
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then((res) => {
-                this.mdl.pic = res.result.uri
-                this.$message.success(this.$t('UPLOAD_SUCCESS'))
-            }).catch((e) => {
-                this.$message.error(e.message)
-            })
-        },
-
-        handleVideoChat() {     
-            // 使用 Vue Router 跳转到指定页面并传递参数
-            this.$router.push({
-                path: '/videoPlayer',
-                params: {
-                    toID:this.currentRow.userID
-                }
-            });
         },
     },
     async created() {
