@@ -350,8 +350,6 @@ export default {
                 this.applicationRow = val
             }
         },
-        acceptOrReject(status) {
-
         acceptOrReject(status){
             // this.detailDialogVisable=false
             var homeThis=this
@@ -473,9 +471,6 @@ export default {
                         count: count,
                     })
                 }
-                console.log(11111111111111)
-                console.log(this.messageCountList)
-                console.log(this.messageCountList[0].count)
             }, error => {
                 console.log('错误', error.message)
             })
