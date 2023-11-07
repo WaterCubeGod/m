@@ -206,6 +206,16 @@
                 <el-button type="primary" @click="acceptOrReject('accept')">接受</el-button>
             </div>
         </el-dialog>
+        <el-dialog
+            title="提示"
+            :visible.sync="messageDialog.messageDialogVisable"
+            width="30%"
+            :before-close="handleClose">
+            <span>{{ messageDialog.message }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="closeMessageDialog">确 定</el-button>
+            </span>
+        </el-dialog>
 
     </el-container>
 </template>
@@ -342,23 +352,37 @@ export default {
         },
         acceptOrReject(status) {
 
+        acceptOrReject(status){
+            // this.detailDialogVisable=false
+            var homeThis=this
             this.$axios({
-                method: 'POST',
-                url: this.NET.BASE_URL.http + 'solveApplication',
-                data: {
-                    time: this.applicationRow.time,
-                    fromID: this.applicationRow.fromID,
-                    toID: this.applicationRow.toID,
-                    additionalMessage: this.applicationRow.additionalMessage,
-                    kind: this.applicationRow.kind,
-                    status: status
-                }
-            }).then(response => {
-                console.log(response.data.msg)
-                this.detailDialogVisable = false
-            }, error => {
-                console.log('错误', error.message)
-            })
+                    method: 'POST',
+                    url: this.NET.BASE_URL.http + 'solveApplication',
+                    data: {
+                        time:this.applicationRow.time,
+                        fromID:this.applicationRow.fromID,
+                        toID:this.applicationRow.toID,
+                        additionalMessage:this.applicationRow.additionalMessage,
+                        kind:this.applicationRow.kind,
+                        status:status
+                    }
+                }).then(response => {
+                    console.log(response.data.msg)
+                    homeThis.detailDialogVisable=false
+                    homeThis.messageDialog.messageDialogVisable=true
+                    if(response.data.code===1){
+                        if(status==='accept'){
+                            homeThis.messageDialog.message="接受成功"
+                        }else if(status==='reject'){
+                            homeThis.messageDialog.message="拒绝成功"
+
+                        }
+                    }else{
+                        homeThis.messageDialog.message="操作失败，卡咯"
+                    }
+                }, error => {
+                    console.log('错误', error.message)
+                })
         },
         infiniteHandler($state) {
             this.$axios({
@@ -411,9 +435,6 @@ export default {
             this.label = true
             this.searchInput = ''
             this.handleFriend()
-        },
-        handleVideoChat() {
-            this.listbtn = false
         },
         handleFriend() {
             this.$axios({
@@ -474,6 +495,7 @@ export default {
             })
         },
         handleOpenDialog() {
+            console.log()
             this.listbtn = false
             this.dialogInfo.systemMessageVisible = true
         },
@@ -500,6 +522,7 @@ export default {
             })
         },
         sendSystemMessage() {
+            var homeThis=this
             this.dialogInfo.systemMessageVisible = false
             this.$axios({
                 method: 'POST',
@@ -508,22 +531,38 @@ export default {
                     fromID: this.$cookies.get('userID'),
                     toID: this.currentRow.userID,
                     addtionalMessage: this.addtionalMessage,
-                    kind: 'friendApplication'
+                    kind: 'friendApplication',
+                    teamID:0
                 }
             }).then(response => {
-                if (response.data.code === 1) alert("成功")
+                if (response.data.code === 1) {
+                    homeThis.messageDialog.messageDialogVisable=true
+                    homeThis.messageDialog.message='申请发送成功！'
+                }
+                else{
+                    homeThis.messageDialog.messageDialogVisable=true
+                    homeThis.messageDialog.message='申请发送失败，已经向对方发送过申请'
+                }
             }, error => {
                 console.log('错误', error.message)
             })
         },
-        handleChange(file) {
-            console.log(file)
-            if (file) {
-                this.uploadFile = true
-                this.chatInfo = file.name
-            }
+        handleVideoChat() {     
+            // 使用 Vue Router 跳转到指定页面并传递参数
+            this.$router.push({
+                path: '/videoPlayer',
+                params: {
+                    toID:this.currentRow.userID
+                }
+            });
         },
-
+        closeMessageDialog(){
+            this.messageDialog.messageDialogVisable=false
+            this.reload()
+        },
+        reload(){
+            this.$router.go(0)
+        }
     },
     async created() {
         this.handleFriend()
