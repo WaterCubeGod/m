@@ -30,7 +30,7 @@
                             <el-popover trigger="hover" placement="top">
                                 <p>姓名: {{ scope.row.username }}</p>
                                 <p>住址: {{ scope.row.address }}</p>
-                                
+
                                 <div slot="reference" class="name-wrapper">
                                     <div>{{ scope.row.username }}</div>
                                     <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
@@ -43,20 +43,21 @@
                     <el-table-column label="" min-width="17%">
                         <template slot-scope="scope">
 
-                           
-                                <el-button v-if="label" size="mini"
-                                    @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                                <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
-                    </template>
+
+                            <el-button v-if="label" size="mini"
+                                @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
+                            <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
+                        </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="13%">
                         <template slot-scope="scope">
-                                <div v-if="messageCountList[scope.$index]">
-                                    <el-badge v-if="messageCountList[scope.$index].count !== 0" :value="messageCountList[scope.$index].count" class="badge" style="width: 100%;">
-                                    </el-badge>
-                                </div>
-                    </template>
+                            <div v-if="messageCountList[scope.$index]">
+                                <el-badge v-if="messageCountList[scope.$index].count !== 0"
+                                    :value="messageCountList[scope.$index].count" class="badge" style="width: 100%;">
+                                </el-badge>
+                            </div>
+                        </template>
                     </el-table-column>
 
 
@@ -105,7 +106,7 @@
                         {{ this.currentRow.username }}
                     </el-header>
 
-                    <el-main style="position: absolute;height: 80%;width: 100%;top: 10%;" ref="chat">
+                    <el-main style="position: absolute;height: 70%;width: 100%;top: 10%;" ref="chat">
                         <infinite-loading :identifier="customIdentifier" direction="top"
                             @infinite="infiniteHandler"></infinite-loading>
                         <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
@@ -114,21 +115,36 @@
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
                                 <el-col :span="20">
-                                    <div style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
                                         {{ item.content }}
                                     </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;height: 31px;display: inline-block;float: left">
+                                        <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">{{
+                                            item.content }}</el-link>
+                                    </div>
                                 </el-col>
                             </div>
                             <div v-else>
                                 <el-col :span="20">
-                                    <div style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
                                         {{ item.content }}
+                                    </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: right">
+                                        <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">
+                                            {{ item.content }}
+                                        </el-link>
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -139,13 +155,17 @@
 
                     </el-main>
 
-                    <el-footer style="position:absolute;top:90%;left:0;width:100%;height:100%;">
+                    <el-footer style="position:absolute;top:80%;left:0;width:100%;height:100%;">
                         <div>
                             <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
                                 @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
                             <el-button slot="append" icon="el-icon-search" @click="sendInfo"
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
+                        <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
+                            :on-change="handleChange" ref="uploadFile" :name="chatInfo">
+                            <i class="el-icon-folder-opened"></i>
+                        </el-upload>
                     </el-footer>
                 </el-container>
             </div>
@@ -220,16 +240,16 @@ export default {
                 systemMessageVisible: false,
                 formLabelWidth: '120px',
             },
-            
-            detailDialogVisable:false,
+            detailDialogVisable: false,
             addtionalMessage: '',
             applicationList: [],
             applicationRow: {},
-            userInfo:{}
+            userInfo: {},
+            uploadFile: false,
+            uploadURL: '',
         };
     },
     mounted() {
-        console.log(this.NET.BASE_URL)
         console.log(this.NET.BASE_URL.http + 'showFriendList')
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
@@ -237,9 +257,6 @@ export default {
         window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
-        this.handleFriend()
-        this.handleApplication()
-        this.handleMessageCount()
         this.connect()
         this.$socket.onmessage = (event) => {
             console.log(JSON.parse(event.data))
@@ -249,7 +266,7 @@ export default {
     },
     methods: {
         connect() {
-            Vue.use(VueNativeSock, this.NET.BASE_URL.ws +  'websocket/' + this.$cookies.get('userID'), {
+            Vue.use(VueNativeSock, this.NET.BASE_URL.ws + 'websocket/' + this.$cookies.get('userID'), {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -293,6 +310,10 @@ export default {
         },
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
+                if (this.uploadFile) {
+                    this.$refs.uploadFile.submit()
+                    this.uploadFile = false
+                }
                 this.$socket.sendObj({
                     message: this.chatInfo.trim(),
                     from: this.$cookies.get('userID'),
@@ -309,6 +330,8 @@ export default {
                 this.page = 0
                 this.currentRow = val;
                 this.customIdentifier = true
+                this.uploadURL = this.NET.BASE_URL.http + 'upload/'
+                    + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
             }
             this.listbtn = true
         },
@@ -317,25 +340,25 @@ export default {
                 this.applicationRow = val
             }
         },
-        acceptOrReject(status){
-            
+        acceptOrReject(status) {
+
             this.$axios({
-                    method: 'POST',
-                    url: this.NET.BASE_URL.http + 'solveApplication',
-                    data: {
-                        time:this.applicationRow.time,
-                        fromID:this.applicationRow.fromID,
-                        toID:this.applicationRow.toID,
-                        additionalMessage:this.applicationRow.additionalMessage,
-                        kind:this.applicationRow.kind,
-                        status:status
-                    }
-                }).then(response => {
-                    console.log(response.data.msg)
-                    this.detailDialogVisable=false
-                }, error => {
-                    console.log('错误', error.message)
-                })
+                method: 'POST',
+                url: this.NET.BASE_URL.http + 'solveApplication',
+                data: {
+                    time: this.applicationRow.time,
+                    fromID: this.applicationRow.fromID,
+                    toID: this.applicationRow.toID,
+                    additionalMessage: this.applicationRow.additionalMessage,
+                    kind: this.applicationRow.kind,
+                    status: status
+                }
+            }).then(response => {
+                console.log(response.data.msg)
+                this.detailDialogVisable = false
+            }, error => {
+                console.log('错误', error.message)
+            })
         },
         infiniteHandler($state) {
             this.$axios({
@@ -415,9 +438,9 @@ export default {
                 }
             }).then(response => {
                 console.log(response.data.data)
-                
+
                 for (var i = 0; i < this.tableData.length; i++) {
-                    
+
                     var item = response.data.data[0][0].filter(item => item.fromID === this.tableData[i].userID)[0]
                     var count = response.data.data[0][1][response.data.data[0][0].findIndex(item => {
                         if (item.fromID === this.tableData[i].userID) {
@@ -454,22 +477,22 @@ export default {
             this.listbtn = false
             this.dialogInfo.systemMessageVisible = true
         },
-        handleOpenDetail(row){
-            this.detailDialogVisable=true
+        handleOpenDetail(row) {
+            this.detailDialogVisable = true
             this.applicationRow = row
             // console.log(this.applicationRow)
             this.$axios({
                 method: 'GET',
                 url: this.NET.BASE_URL.http + 'getUserInfo',
                 params: {
-                   userID: this.applicationRow.fromID
+                    userID: this.applicationRow.fromID
                 }
             }).then(response => {
                 if (response.data.code === 1) {
-                    this.userInfo=response.data.data
+                    this.userInfo = response.data.data
                     console.log('信息查找成功')
                     console.log(response.data)
-                }else{
+                } else {
                     console.log('查找失败')
                 }
             }, error => {
@@ -493,9 +516,19 @@ export default {
                 console.log('错误', error.message)
             })
         },
+        handleChange(file) {
+            console.log(file)
+            if (file) {
+                this.uploadFile = true
+                this.chatInfo = file.name
+            }
+        },
+
     },
     async created() {
-
+        this.handleFriend()
+        this.handleApplication()
+        this.handleMessageCount()
     },
     components: {
         InfiniteLoading,
