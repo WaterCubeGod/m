@@ -1,12 +1,16 @@
 <template>
-  <div>
-    <div>
-      <video id="localVideo"  autoplay playsinline controls="false"></video>
-      <video id="remoteVideo"  autoplay playsinline controls="false"></video>
-        
+  <div class="video-container">
+    <div class="video-wrapper">
+      <video id="localVideo" autoplay playsinline controls="false"></video>
+    </div>
+    <div class="video-wrapper">
+      <video id="remoteVideo" autoplay playsinline controls="false"></video>
     </div>
   </div>
 </template>
+
+
+
   
   
   
@@ -26,26 +30,33 @@
         configuration :{ 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] },
         fromID :null,
         toID:null,
-        localVideoId: 'localVideo',
-        remoteVideoId: 'remoteVideo',
-        isSmallVideo: false
+        
       };
     },
   
     mounted() {
     
     
-      console.log("111"+this.$route.params.toID)         
+               
       this.toID = this.$route.params.toID;
       this.fromID = this.$cookies.get("userID");
       
+      
+
+      this.peerConnectionInit();
+
+      this.playVideoFromCamera();
+
       this.createSocket();
-  
+
       this.webSocketInit();
 
       
-      this.peerConnectionInit();
-      this.creatOffer();
+ 
+      
+      
+      
+     
       
       
             
@@ -72,9 +83,9 @@
       
   
       //创建webSocket示例
-      async createSocket() {
-        console.log("222"+this.NET.BASE_URL.http)
-            Vue.use(VueNativeSock, this.NET.BASE_URL.ws +  'videoWebsocket/'+this.fromID, {
+      createSocket() {
+        
+            Vue.use(VueNativeSock, 'ws://127.0.0.1:8087/videoWebsocket/'+this.fromID, {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
@@ -86,8 +97,6 @@
       //开始发起视频，发生offer
       async creatOffer(){
         
-        this.playVideoFromCamera();
-
         this.peerConnection.createOffer().then(offer => {
         this.peerConnection.setLocalDescription(offer);
         this.$socket.sendObj({
@@ -130,6 +139,7 @@
       async webSocketInit(){
         //连接成功
         this.$socket.onopen = async() =>{
+          this.creatOffer();
           console.log('连接成功')
         };
         //server端请求关闭
@@ -171,14 +181,7 @@
         };
       },
 
-      //控制视频界面切换
-      toggleVideoSize() {
-        this.isSmallVideo = !this.isSmallVideo;
-      },
-
-      
-  
-      
+     
           
   
     },
@@ -188,18 +191,13 @@
 </script>
 
 <style>
-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.video-container {
+  display: flex;
 }
 
-.small-video {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  width: 200px;
-  height: 150px;
+.video-wrapper {
+  flex: 1;
+  margin: 10px;
 }
 </style>
   

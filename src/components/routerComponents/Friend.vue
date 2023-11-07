@@ -45,10 +45,7 @@
                     </el-table-column>
 
                     <el-table-column label="" min-width="17%">
-                        <template slot-scope="scope">
                         
-                                
-                    </template>
                     </el-table-column>
 
                     <el-table-column  label="" min-width="13%">
