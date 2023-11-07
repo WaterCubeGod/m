@@ -12,7 +12,9 @@
       </el-descriptions-item>
       </el-descriptions>
   
+      <div class="button-container">
       <el-button type="primary" @click="() => handleButtonClick(this.donationData.donationID)">签收</el-button>
+      </div>
     </div>
   </template>
   
@@ -64,5 +66,11 @@
 
 .green-text {
   color: green;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  margin-top: 100px; /* 距离表格上方的间距 */
 }
   </style>

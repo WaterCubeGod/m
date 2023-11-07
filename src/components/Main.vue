@@ -1,7 +1,9 @@
 <template>
     <div class="main_page">
         <el-container id="elc">
-            <el-header>首页</el-header>
+            <el-header>
+                首页
+            </el-header>
             <el-container>
                 <el-aside width="200px">
                     <el-menu :default-active="this.activeIndex" class="el-menu-vertical-demo" @open="handleOpen"
@@ -32,8 +34,8 @@
                             <span slot="title">捐助物查看</span>
                         </el-menu-item>
                         <el-menu-item index="/main/money">
-                            <i class="el-icon-shopping-bag-1"></i>
-                            <span slot="title">捐助资金管理</span>
+                            <i class="el-icon-money"></i>
+                            <span slot="title">捐款接收</span>
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
@@ -108,4 +110,5 @@ export default {
     width: 100%;
     height: 100%;
 }
+
 </style>

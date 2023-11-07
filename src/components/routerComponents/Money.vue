@@ -1,25 +1,25 @@
 <template>
     <div class="container">
     <div class="table-wrapper">
-      <el-table :data="tableData" height="250" border style="width: 100%">
+      <el-table :data="tableData" height="700" border style="width: 100%">
         <el-table-column prop="moneyID" label="捐款编号" width="180"></el-table-column>
         <el-table-column prop="amount" label="金额" width="180"></el-table-column>
-        <el-table-column prop="fromID" label="捐款人编号"></el-table-column>
+        <el-table-column prop="fromID" label="捐款人编号" width="180"></el-table-column>
         <el-table-column prop="message" label="备注"></el-table-column>
       </el-table>
     </div>
     <div class="statistic-wrapper">
       <el-row :gutter="20">
-        <el-col :span="6">
+        <el-col :span="12">
           <div>
-            <el-statistic title="总资产" value="account">
+            <el-statistic title="总资产" value="account" class="el-icon-bank-card">
               <template slot="formatter">{{ account }}</template>
             </el-statistic>
           </div>
         </el-col>
         <el-col :span="6">
           <div>
-            <el-statistic title="总收益" value="totalAmount">
+            <el-statistic title="总收益" value="totalAmount" class="el-icon-coin">
               <template slot="formatter">{{ totalAmount }}</template>
               <template slot="prefix"><i class="el-icon-s-flag" style="color: red"></i></template>
               <template slot="suffix"><i class="el-icon-s-flag" style="color: blue"></i></template>

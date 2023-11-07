@@ -6,6 +6,9 @@ import router from './router/index'
 import axios from 'axios';
 import './plugins/element.js'
 import VueCookies from 'vue-cookies'
+import net from "@/constants/url"
+
+Vue.prototype.NET = net
 Vue.use(VueCookies)
 Vue.prototype.$axios = axios;
 
