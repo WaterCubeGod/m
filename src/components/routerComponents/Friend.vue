@@ -40,17 +40,25 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="" min-width="30%">
+                    <el-table-column label="" min-width="17%">
                         <template slot-scope="scope">
-                        <el-badge :value="messageCountList[scope.$index].count" class="badge" style="width: 100%;">
+
                            
                                 <el-button v-if="label" size="mini"
                                     @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
                                 <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
-                           
-                        </el-badge>
                     </template>
                     </el-table-column>
+
+                    <el-table-column label="" min-width="13%">
+                        <template slot-scope="scope">
+                                <div v-if="messageCountList[scope.$index]">
+                                    <el-badge v-if="messageCountList[scope.$index].count !== 0" :value="messageCountList[scope.$index].count" class="badge" style="width: 100%;">
+                                    </el-badge>
+                                </div>
+                    </template>
+                    </el-table-column>
+
 
                 </el-table>
             </el-col>
