@@ -193,7 +193,7 @@
             :before-close="handleClose">
             <span>{{ messageDialog.message }}</span>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="messageDialog.messageDialogVisable = false">确 定</el-button>
+                <el-button type="primary" @click="closeMessageDialog">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -359,7 +359,6 @@ export default {
                     }else{
                         homeThis.messageDialog.message="操作失败，卡咯"
                     }
-                    
                 }, error => {
                     console.log('错误', error.message)
                 })
@@ -536,6 +535,13 @@ export default {
                 }
             });
         },
+        closeMessageDialog(){
+            this.messageDialog.messageDialogVisable=false
+            this.reload()
+        },
+        reload(){
+            this.$router.go(0)
+        }
     },
     async created() {
 
