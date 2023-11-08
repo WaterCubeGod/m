@@ -31,32 +31,35 @@
                                 <p>姓名: {{ scope.row.username }}</p>
                                 <p>住址: {{ scope.row.address }}</p>
 
-                                
                                 <div slot="reference" class="name-wrapper">
                                     <div>{{ scope.row.username }}</div>
                                     <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
                                     <el-tag>{{ scope.row.address }}</el-tag>
-                            </div>
+                                </div>
                             </el-popover>
-                            <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }"> <el-button size="mini">视频聊天</el-button> </router-link>
-                            </div>
                         </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="17%">
                         <template slot-scope="scope">
-                        
-                                
-                    </template>
+
+
+                            <el-button v-if="label" size="mini"
+                                @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
+                            <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
+                        </template>
                     </el-table-column>
 
-                    <el-table-column  label="" min-width="13%">
+                    <el-table-column label="" min-width="13%">
                         <template slot-scope="scope">
-                        <el-badge v-if="messageCountList[scope.$index].count !== 0" :value="messageCountList[scope.$index].count" class="badge" style="width: 0%;">
-                        </el-badge>
-                    </template>
+                            <div v-if="messageCountList[scope.$index]">
+                                <el-badge v-if="messageCountList[scope.$index].count !== 0"
+                                    :value="messageCountList[scope.$index].count" class="badge" style="width: 100%;">
+                                </el-badge>
+                            </div>
+                        </template>
                     </el-table-column>
+
 
                 </el-table>
             </el-col>
@@ -88,9 +91,7 @@
                     <el-table-column label="申请记录" min-width="30%">
                         <template slot-scope="scope">
                             <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }">
-                                    <el-button size="mini">视频聊天</el-button>
-                                </router-link>
+                                <el-button size="mini" @click="handleOpenDetail(scope.row)">查看信息</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -114,21 +115,36 @@
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
                                 <el-col :span="20">
-                                    <div style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
                                         {{ item.content }}
                                     </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;height: 31px;display: inline-block;float: left">
+                                        <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">{{
+                                            item.content }}</el-link>
+                                    </div>
                                 </el-col>
                             </div>
                             <div v-else>
                                 <el-col :span="20">
-                                    <div style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
                                         {{ item.content }}
+                                    </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: right">
+                                        <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">
+                                            {{ item.content }}
+                                        </el-link>
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -139,18 +155,22 @@
 
                     </el-main>
 
-                    <el-footer style="position:absolute;top:80%;left:0;width:100%;height:10%;">
+                    <el-footer style="position:absolute;top:80%;left:0;width:100%;height:100%;">
                         <div>
                             <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
                                 @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
                             <el-button slot="append" icon="el-icon-search" @click="sendInfo"
                                 style="width: 20%;height: 32px"></el-button>
                         </div>
-                        <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-                            :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                            <el-avatar icon="el-icon-folder-opened" ref="file" :size=33
-                                @click.native="handleFileUpload"></el-avatar>
+                        <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
+                            :on-change="handleChange" ref="uploadFile" :name="chatInfo">
+                            <i class="el-icon-folder-opened"></i>
                         </el-upload>
+                        <div class="play-audio">
+                            <button @click="startRecording" :disabled="recording">开始录音</button>
+                            <button @click="stopRecording" :disabled="!recording">停止录音</button>
+                            <button @click="sendAudioData" :disabled="!recording">发送</button>
+                        </div>
                     </el-footer>
                 </el-container>
             </div>
@@ -172,6 +192,33 @@
                 <el-button @click="dialogInfo.systemMessageVisible = false">取 消</el-button>
                 <el-button type="primary" @click="sendSystemMessage">确 定</el-button>
             </div>
+        </el-dialog>
+
+        <el-dialog title="用户详情" :visible.sync="detailDialogVisable">
+            <el-form :model="userInfo">
+                <el-form-item label="昵称" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ userInfo.username }}</div>
+                </el-form-item>
+                <el-form-item label="地址" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ userInfo.address }}</div>
+                </el-form-item>
+                <el-form-item label="邮箱" :label-width="dialogInfo.formLabelWidth">
+                    <div>{{ userInfo.email }}</div>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="acceptOrReject('reject')">拒绝</el-button>
+                <el-button type="primary" @click="acceptOrReject('accept')">接受</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog
+            title="提示"
+            :visible.sync="messageDialog.messageDialogVisable"
+            width="30%">
+            <span>{{ messageDialog.message }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="closeMessageDialog">确 定</el-button>
+            </span>
         </el-dialog>
 
     </el-container>
@@ -207,27 +254,58 @@ export default {
                 systemMessageVisible: false,
                 formLabelWidth: '120px',
             },
+            messageDialog:{
+                messageDialogVisable:false,
+                message:''
+            },
+            detailDialogVisable: false,
             addtionalMessage: '',
             applicationList: [],
             applicationRow: {},
-            count: 0,
+            userInfo: {},
+            uploadFile: false,
+            uploadURL: '',
+            mediaRecorder: null,
+            audioChunks: [],
+            recording: false
         };
     },
     mounted() {
+        console.log(this.NET.BASE_URL.http + 'showFriendList')
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
         window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
-        this.handleFriend()
-        this.handleMessageCount()
-        this.handleApplication()
         this.connect()
+        
         this.$socket.onmessage = (event) => {
-            console.log(JSON.parse(event.data))
+            if(event.data instanceof Blob){
+                console.log('我是音频');
+        const audioContext = new AudioContext();
+        const audioData = event.data;
+        const fileReader = new FileReader();
+        
+        fileReader.onload = function() {
+            const arrayBuffer = fileReader.result; // 从 FileReader 中获取 ArrayBuffer
+            audioContext.decodeAudioData(arrayBuffer, (buffer) => {
+                const source = audioContext.createBufferSource();
+                source.buffer = buffer;
+                source.connect(audioContext.destination);
+                source.start();
+            });
+        };
+
+        fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
+            }else{
+                console.log('我是文字')
+
+                console.log(JSON.parse(event.data))
             this.chatList.push(JSON.parse(event.data))
             console.log(this.chatList)
+            }
+            
         }
     },
     methods: {
@@ -240,7 +318,7 @@ export default {
             })
             this.$axios({
                 method: 'GET',
-                url: this.NET.BASE_URL.http + 'getUnReadMessages',
+                url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
                 params: {
                     userID: parseInt(this.$cookies.get('userID')),
                 }
@@ -276,6 +354,10 @@ export default {
         },
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
+                if (this.uploadFile) {
+                    this.$refs.uploadFile.submit()
+                    this.uploadFile = false
+                }
                 this.$socket.sendObj({
                     message: this.chatInfo.trim(),
                     from: this.$cookies.get('userID'),
@@ -292,9 +374,8 @@ export default {
                 this.page = 0
                 this.currentRow = val;
                 this.customIdentifier = true
-                this.messageCountList[this.messageCountList.findIndex(item => {
-                    if(item.message.fromID === this.currentRow.userID) return true
-                })].count = 0
+                this.uploadURL = this.NET.BASE_URL.http + 'upload/'
+                    + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
             }
             this.listbtn = true
         },
@@ -302,6 +383,38 @@ export default {
             if (this.applicationRow !== val) {
                 this.applicationRow = val
             }
+        },
+        acceptOrReject(status){
+            // this.detailDialogVisable=false
+            var homeThis=this
+            this.$axios({
+                    method: 'POST',
+                    url: this.NET.BASE_URL.http + 'solveApplication',
+                    data: {
+                        time:this.applicationRow.time,
+                        fromID:this.applicationRow.fromID,
+                        toID:this.applicationRow.toID,
+                        additionalMessage:this.applicationRow.additionalMessage,
+                        kind:this.applicationRow.kind,
+                        status:status
+                    }
+                }).then(response => {
+                    console.log(response.data.msg)
+                    homeThis.detailDialogVisable=false
+                    homeThis.messageDialog.messageDialogVisable=true
+                    if(response.data.code===1){
+                        if(status==='accept'){
+                            homeThis.messageDialog.message="接受成功"
+                        }else if(status==='reject'){
+                            homeThis.messageDialog.message="拒绝成功"
+
+                        }
+                    }else{
+                        homeThis.messageDialog.message="操作失败，卡咯"
+                    }
+                }, error => {
+                    console.log('错误', error.message)
+                })
         },
         infiniteHandler($state) {
             this.$axios({
@@ -355,7 +468,13 @@ export default {
             this.searchInput = ''
             this.handleFriend()
         },
-        
+        handleChange(file) {
+            console.log(file)
+            if (file) {
+                this.uploadFile = true
+                this.chatInfo = file.name
+            }
+        },
         handleFriend() {
             this.$axios({
                 method: 'POST',
@@ -373,15 +492,15 @@ export default {
         handleMessageCount() {
             this.$axios({
                 method: 'GET',
-                url: this.NET.BASE_URL.http + 'getUnReadMessages',
+                url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
                 params: {
                     userID: this.user.userID
                 }
             }).then(response => {
                 console.log(response.data.data)
-                
+
                 for (var i = 0; i < this.tableData.length; i++) {
-                    
+
                     var item = response.data.data[0][0].filter(item => item.fromID === this.tableData[i].userID)[0]
                     var count = response.data.data[0][1][response.data.data[0][0].findIndex(item => {
                         if (item.fromID === this.tableData[i].userID) {
@@ -393,8 +512,6 @@ export default {
                         count: count,
                     })
                 }
-                console.log(this.messageCountList)
-                console.log(this.messageCountList[0].count)
             }, error => {
                 console.log('错误', error.message)
             })
@@ -402,7 +519,7 @@ export default {
         handleApplication() {
             this.$axios({
                 method: 'GET',
-                url: this.NET.BASE_URL.http + 'getAllApplication',
+                url: this.NET.BASE_URL.http + 'getUnSolvedApplication',
                 params: {
                     userID: this.user.userID
                 }
@@ -414,10 +531,34 @@ export default {
             })
         },
         handleOpenDialog() {
+            console.log()
             this.listbtn = false
             this.dialogInfo.systemMessageVisible = true
         },
+        handleOpenDetail(row) {
+            this.detailDialogVisable = true
+            this.applicationRow = row
+            // console.log(this.applicationRow)
+            this.$axios({
+                method: 'GET',
+                url: this.NET.BASE_URL.http + 'getUserInfo',
+                params: {
+                    userID: this.applicationRow.fromID
+                }
+            }).then(response => {
+                if (response.data.code === 1) {
+                    this.userInfo = response.data.data
+                    console.log('信息查找成功')
+                    console.log(response.data)
+                } else {
+                    console.log('查找失败')
+                }
+            }, error => {
+                console.log('错误', error.message)
+            })
+        },
         sendSystemMessage() {
+            var homeThis=this
             this.dialogInfo.systemMessageVisible = false
             this.$axios({
                 method: 'POST',
@@ -426,45 +567,22 @@ export default {
                     fromID: this.$cookies.get('userID'),
                     toID: this.currentRow.userID,
                     addtionalMessage: this.addtionalMessage,
-                    kind: 'friendApplication'
+                    kind: 'friendApplication',
+                    teamID:0
                 }
             }).then(response => {
-                if (response.data.code === 1) alert("成功")
+                if (response.data.code === 1) {
+                    homeThis.messageDialog.messageDialogVisable=true
+                    homeThis.messageDialog.message='申请发送成功！'
+                }
+                else{
+                    homeThis.messageDialog.messageDialogVisable=true
+                    homeThis.messageDialog.message='申请发送失败，已经向对方发送过申请'
+                }
             }, error => {
                 console.log('错误', error.message)
             })
         },
-        // 打开文件
-        getFile() {
-            this.$refs.file.click()
-        },
-        handleFileUpload(event) {
-            console.log(1111)
-            // 阻止发生默认行为
-            event.preventDefault();
-            let formData = new FormData()
-            let file = this.$refs.file.files[0]
-            formData.append('file', file)
-            // console.log(formData.get('file'))
-            this.onUpload(formData)
-        },
-        // 上传文件
-        onUpload(formData) {
-            this.$axios({
-                url: this.NET.http + 'upload',
-                method: 'post',
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then((res) => {
-                this.mdl.pic = res.result.uri
-                this.$message.success(this.$t('UPLOAD_SUCCESS'))
-            }).catch((e) => {
-                this.$message.error(e.message)
-            })
-        },
-
         handleVideoChat() {     
             // 使用 Vue Router 跳转到指定页面并传递参数
             this.$router.push({
@@ -474,9 +592,72 @@ export default {
                 }
             });
         },
+        closeMessageDialog(){
+            this.messageDialog.messageDialogVisable=false
+            this.reload()
+        },
+        reload(){
+            this.$router.go(0)
+        },
+        startRecording() {
+        if (!this.recording) {
+            console.log('录音咯1')
+          navigator.mediaDevices
+            .getUserMedia({ audio: true })
+            .then((stream) => {
+              this.audioChunks = [];
+              this.mediaRecorder = new MediaRecorder(stream);
+              console.log('录音咯2')
+              this.mediaRecorder.ondataavailable = (event) => {
+                console.log('录音咯3')
+                if (event.data.size > 0) {
+                  this.audioChunks.push(event.data);
+                }
+                console.log('录音4')
+                this.sendAudioData()
+              };
+              this.mediaRecorder.start();
+              this.recording = true;
+            })
+            .catch((error) => {
+              console.error('获取麦克风访问权限失败:', error);
+            });
+        }
+      },
+      stopRecording() {
+        console.log('录音结束咯1')
+        if (this.recording) {
+          this.mediaRecorder.stop();
+          this.recording = false;
+          console.log('录音结束咯2')
+  
+         
+          // 处理 audioBlob，可以上传到服务器或进行其他操作
+        }
+      },
+      getAudioData(){
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+          console.log(audioBlob)
+      },
+      sendAudioData(){
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+          console.log(audioBlob)
+          console.log('发送')
+          this.$socket.send(audioBlob)
+          this.$socket.sendObj({
+            message:audioBlob,
+            from: this.$cookies.get('userID'),
+            to: this.currentRow.userID,
+            kind: 2,
+            attach:0
+          }); // 发送二进制语音数据
+      }
+        
     },
     async created() {
-
+        this.handleFriend()
+        this.handleApplication()
+        this.handleMessageCount()
     },
     components: {
         InfiniteLoading,
