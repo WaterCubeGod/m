@@ -49,7 +49,8 @@ export default {
     name: 'MainPage',
     data() {
         return {
-            activeIndex: ''
+            activeIndex: '',
+            header: '',
         }
     },
     methods: {
