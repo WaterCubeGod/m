@@ -14,6 +14,8 @@ import userLogin from '../components/userLogin.vue'
 import userRegister from '../components/userRegister'
 import userExercise from '../components/routerComponents/userExercise'
 import videoLearning from '../components/routerComponents/videoLearning'
+import questionnaireList from '../components/routerComponents/questionnaireList'
+import showQuestionnaire from '../components/routerComponents/showQuestionnaire'
 
 
 Vue.use(VueRouter)
@@ -39,6 +41,7 @@ const router = new VueRouter({
                 { path: '/main/study', name: 'study', component: Study },
                 { path: '/main/donationdetail', name: 'donationdetail', component: DonationDetail },
                 { path: '/main/money', name: 'money', component: Money },
+               
             ]
         },
         {
@@ -46,11 +49,16 @@ const router = new VueRouter({
             name: 'study',
             component: Main,
             children: [
+                { path: '/study/questionnaireList', name:'questionnaireList', component: questionnaireList},
                 { path: '/study/userExercise', name: 'userExercise', component: userExercise },
                 { path: '/study/videoLearning', name: 'videoLearning', component: videoLearning },
+                { path: '/study/showQuestionnaire', name: 'showQuestionnaire', component: showQuestionnaire},
+                
+
                 
             ]
         },
+        
 
         
         
