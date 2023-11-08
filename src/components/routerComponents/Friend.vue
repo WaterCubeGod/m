@@ -38,13 +38,14 @@
                             </div>
                             </el-popover>
                             <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }">
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID,type:'video' } }">
                                     <el-button size="mini">视频聊天</el-button>
                                 </router-link>
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID,type:'audio' } }">
+                                    <el-button size="mini">语音聊天</el-button>
+                                </router-link>
                             </div>
-                            <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }"> <el-button size="mini">视频聊天</el-button> </router-link>
-                            </div>
+                       
                         </template>
                     </el-table-column>
 
@@ -91,13 +92,7 @@
                                                     </template>
                     </el-table-column>
                     <el-table-column label="申请记录" min-width="30%">
-                        <template slot-scope="scope">
-                            <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }">
-                                    <el-button size="mini">视频聊天</el-button>
-                                </router-link>
-                            </div>
-                        </template>
+                        
                     </el-table-column>
                 </el-table>
             </el-col>

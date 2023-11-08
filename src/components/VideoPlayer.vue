@@ -8,8 +8,8 @@
       <video id="remoteVideo" autoplay playsinline controls="false"></video>
     </div>
     <div>
-    <button @click="requestAgree">发起视频</button>
-    <button v-show="showButtons" @click="responeAgree('true')">同意</button>
+    <button @click="requestAgree">{{ this.buttonString }}</button>
+    <button v-show="showButtons" @click="responeAgree('true')" >同意</button>
     <button v-show="showButtons" @click="responeAgree('false')">拒绝</button>
   </div>
 
@@ -38,8 +38,9 @@
         configuration :{ 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] },
         fromID :null,
         toID:null,
-        showButtons: false
-
+        showButtons: false,
+        type:null,
+        buttonString:null
       
       };
     },
@@ -50,16 +51,23 @@
                
       this.toID = this.$route.params.toID;
       this.fromID = this.$cookies.get("userID");
+      this.type=this.$route.params.type;
       
-      
+      if(this.type==='audio'){
+        this.buttonString='发起语音'
+      }else{
+        this.buttonString='发起视频'
+      }
+
+      this.createSocket();
+
+      this.webSocketInit();
 
       this.peerConnectionInit();
 
       this.playVideoFromCamera();
 
-      this.createSocket();
-
-      this.webSocketInit();
+      
      
       
             
@@ -71,7 +79,14 @@
       //打开本地视频，并将本地媒体流添加到PeerConnection中
       async playVideoFromCamera() {
         try {
-          const constraints = { video: true, audio: true };
+          let constraints=null;
+          if(this.type==='audio'){
+            constraints = {  audio: true };
+          }else{
+            constraints = { video: true, audio: true };
+          }
+          console.log(constraints);
+          
           const localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
           localStream.getTracks().forEach(track => {
@@ -93,7 +108,7 @@
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
-                reconnectionDelay: 3000, // 重连延迟（毫秒）
+                reconnectionDelay: 100, // 重连延迟（毫秒）
             })
         },
   
