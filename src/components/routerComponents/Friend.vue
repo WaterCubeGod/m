@@ -31,33 +31,35 @@
                                 <p>姓名: {{ scope.row.username }}</p>
                                 <p>住址: {{ scope.row.address }}</p>
 
-                                <div slot="reference" class="name-wrapper">
+                                                                <div slot="reference" class="name-wrapper">
                                     <div>{{ scope.row.username }}</div>
                                     <!-- <el-tag size="medium" color="white">{{ scope.row.name }}</el-tag> -->
                                     <el-tag>{{ scope.row.address }}</el-tag>
-                                </div>
+                            </div>
                             </el-popover>
+                            <div>
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }">
+                                    <el-button size="mini">视频聊天</el-button>
+                                </router-link>
+                            </div>
+                            <div>
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }"> <el-button size="mini">视频聊天</el-button> </router-link>
+                            </div>
                         </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="17%">
-                        <template slot-scope="scope">
-
-
-                            <el-button v-if="label" size="mini"
-                                @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                            <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
-                        </template>
+                        
                     </el-table-column>
 
                     <el-table-column label="" min-width="13%">
                         <template slot-scope="scope">
-                            <div v-if="messageCountList[scope.$index]">
+                        <div v-if="messageCountList[scope.$index]">
                                 <el-badge v-if="messageCountList[scope.$index].count !== 0"
                                     :value="messageCountList[scope.$index].count" class="badge" style="width: 100%;">
-                                </el-badge>
-                            </div>
-                        </template>
+                        </el-badge>
+</div>
+                    </template>
                     </el-table-column>
 
 
@@ -86,12 +88,14 @@
                                     <el-tag>{{ scope.row.additionalMessage }}</el-tag>
                                 </div>
                             </el-popover>
-                        </template>
+                                                    </template>
                     </el-table-column>
                     <el-table-column label="申请记录" min-width="30%">
                         <template slot-scope="scope">
                             <div>
-                                <el-button size="mini" @click="handleOpenDetail(scope.row)">查看信息</el-button>
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID } }">
+                                    <el-button size="mini">视频聊天</el-button>
+                                </router-link>
                             </div>
                         </template>
                     </el-table-column>
@@ -121,7 +125,7 @@
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else style="border-style: solid;solid: #000;
+<div v-else style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
@@ -138,7 +142,7 @@
                                 border-radius: 7px;display: inline-block;float: right">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else style="border-style: solid;solid: #000;
+<div v-else style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
@@ -166,7 +170,7 @@
                             :on-change="handleChange" ref="uploadFile" :name="chatInfo">
                             <i class="el-icon-folder-opened"></i>
                         </el-upload>
-                        <div class="play-audio">
+<div class="play-audio">
                             <button @click="startRecording" :disabled="recording">开始录音</button>
                             <button @click="stopRecording" :disabled="!recording">停止录音</button>
                             <button @click="sendAudioData" :disabled="!recording">发送</button>
@@ -194,7 +198,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="用户详情" :visible.sync="detailDialogVisable">
+<el-dialog title="用户详情" :visible.sync="detailDialogVisable">
             <el-form :model="userInfo">
                 <el-form-item label="昵称" :label-width="dialogInfo.formLabelWidth">
                     <div>{{ userInfo.username }}</div>
@@ -254,7 +258,7 @@ export default {
                 systemMessageVisible: false,
                 formLabelWidth: '120px',
             },
-            messageDialog:{
+messageDialog:{
                 messageDialogVisable:false,
                 message:''
             },
@@ -271,17 +275,20 @@ export default {
         };
     },
     mounted() {
-        console.log(this.NET.BASE_URL.http + 'showFriendList')
+console.log(this.NET.BASE_URL.http + 'showFriendList')
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
         window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
+        this.handleFriend()
+        this.handleMessageCount()
+        this.handleApplication()
         this.connect()
-        
+
         this.$socket.onmessage = (event) => {
-            if(event.data instanceof Blob){
+if(event.data instanceof Blob){
                 console.log('我是音频');
         const audioContext = new AudioContext();
         const audioData = event.data;
@@ -301,10 +308,10 @@ export default {
             }else{
                 console.log('我是文字')
 
-                console.log(JSON.parse(event.data))
+            console.log(JSON.parse(event.data))
             this.chatList.push(JSON.parse(event.data))
             console.log(this.chatList)
-            }
+}
             
         }
     },
@@ -354,7 +361,7 @@ export default {
         },
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
-                if (this.uploadFile) {
+if (this.uploadFile) {
                     this.$refs.uploadFile.submit()
                     this.uploadFile = false
                 }
@@ -384,7 +391,7 @@ export default {
                 this.applicationRow = val
             }
         },
-        acceptOrReject(status){
+acceptOrReject(status){
             // this.detailDialogVisable=false
             var homeThis=this
             this.$axios({
@@ -498,9 +505,9 @@ export default {
                 }
             }).then(response => {
                 console.log(response.data.data)
-
+                
                 for (var i = 0; i < this.tableData.length; i++) {
-
+                    
                     var item = response.data.data[0][0].filter(item => item.fromID === this.tableData[i].userID)[0]
                     var count = response.data.data[0][1][response.data.data[0][0].findIndex(item => {
                         if (item.fromID === this.tableData[i].userID) {
@@ -512,6 +519,8 @@ export default {
                         count: count,
                     })
                 }
+                console.log(this.messageCountList)
+                console.log(this.messageCountList[0].count)
             }, error => {
                 console.log('错误', error.message)
             })
@@ -531,11 +540,11 @@ export default {
             })
         },
         handleOpenDialog() {
-            console.log()
+console.log()
             this.listbtn = false
             this.dialogInfo.systemMessageVisible = true
         },
-        handleOpenDetail(row) {
+handleOpenDetail(row) {
             this.detailDialogVisable = true
             this.applicationRow = row
             // console.log(this.applicationRow)
@@ -558,7 +567,7 @@ export default {
             })
         },
         sendSystemMessage() {
-            var homeThis=this
+var homeThis=this
             this.dialogInfo.systemMessageVisible = false
             this.$axios({
                 method: 'POST',
@@ -569,6 +578,7 @@ export default {
                     addtionalMessage: this.addtionalMessage,
                     kind: 'friendApplication',
                     teamID:0
+                    
                 }
             }).then(response => {
                 if (response.data.code === 1) {
@@ -583,7 +593,7 @@ export default {
                 console.log('错误', error.message)
             })
         },
-        handleVideoChat() {     
+                handleVideoChat() {     
             // 使用 Vue Router 跳转到指定页面并传递参数
             this.$router.push({
                 path: '/videoPlayer',
@@ -592,7 +602,7 @@ export default {
                 }
             });
         },
-        closeMessageDialog(){
+closeMessageDialog(){
             this.messageDialog.messageDialogVisable=false
             this.reload()
         },
@@ -655,7 +665,7 @@ export default {
         
     },
     async created() {
-        this.handleFriend()
+this.handleFriend()
         this.handleApplication()
         this.handleMessageCount()
     },
