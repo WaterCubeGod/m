@@ -37,17 +37,20 @@
                                     <el-tag>{{ scope.row.address }}</el-tag>
                                 </div>
                             </el-popover>
+                            <div>
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'video' } }">
+                                    <el-button size="mini">视频聊天</el-button>
+                                </router-link>
+                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'audio' } }">
+                                    <el-button size="mini">语音聊天</el-button>
+                                </router-link>
+                            </div>
+
                         </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="17%">
-                        <template slot-scope="scope">
 
-
-                            <el-button v-if="label" size="mini"
-                                @click="handleVideoChat(scope.$index, scope.row)">视频聊天</el-button>
-                            <el-button v-else size="mini" @click="handleOpenDialog">添加好友</el-button>
-                        </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="13%">
@@ -89,11 +92,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="申请记录" min-width="30%">
-                        <template slot-scope="scope">
-                            <div>
-                                <el-button size="mini" @click="handleOpenDetail(scope.row)">查看信息</el-button>
-                            </div>
-                        </template>
+
                     </el-table-column>
                 </el-table>
             </el-col>
@@ -165,6 +164,11 @@
                             :on-change="handleChange" ref="uploadFile" :name="chatInfo">
                             <el-button type="primary" size="mini" class="el-icon-folder-opened"></el-button>
                         </el-upload>
+                        <div class="play-audio">
+                            <button @click="startRecording" :disabled="recording">开始录音</button>
+                            <button @click="stopRecording" :disabled="!recording">停止录音</button>
+                            <button @click="sendAudioData" :disabled="!recording">发送</button>
+                        </div>
                     </el-footer>
                 </el-container>
             </div>
@@ -256,6 +260,9 @@ export default {
             userInfo: {},
             uploadFile: false,
             uploadURL: '',
+            mediaRecorder: null,
+            audioChunks: [],
+            recording: false
         };
     },
     mounted() {
@@ -266,31 +273,54 @@ export default {
         window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
+        this.handleFriend()
+        this.handleMessageCount()
+        this.handleApplication()
         this.connect()
+
         this.$socket.onmessage = (event) => {
-            let message = JSON.parse(event.data)
-            this.chatList.push(message)
-            if (message.fromID !== this.currentRow.userID && message.fromID !== this.user.userID) {
-                this.messageCountList[this.messageCountList.findIndex(item => {
-                    if (item.message.fromID === message.fromID) {
-                        return true;
-                    }
-                })].count++
+            if (event.data instanceof Blob) {
+                console.log('我是音频');
+                const audioContext = new AudioContext();
+                const audioData = event.data;
+                const fileReader = new FileReader();
+
+                fileReader.onload = function () {
+                    const arrayBuffer = fileReader.result; // 从 FileReader 中获取 ArrayBuffer
+                    audioContext.decodeAudioData(arrayBuffer, (buffer) => {
+                        const source = audioContext.createBufferSource();
+                        source.buffer = buffer;
+                        source.connect(audioContext.destination);
+                        source.start();
+                    });
+                };
+
+                fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
+            } else {
+                this.chatList.push(message)
+                if (message.fromID !== this.currentRow.userID && message.fromID !== this.user.userID) {
+                    this.messageCountList[this.messageCountList.findIndex(item => {
+                        if (item.message.fromID === message.fromID) {
+                            return true;
+                        }
+                    })].count++
+                }
+                this.handleScrollBottom()
+                if (this.currentRow.userID === message.fromID && this.drawer) {
+                    this.$axios({
+                        method: 'GET',
+                        url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
+                        params: {
+                            fromID: message.fromID,
+                            toID: message.toID,
+                            kind: 0
+                        }
+                    }).then(error => {
+                        console.log('错误', error.message)
+                    })
+                }
             }
-            this.handleScrollBottom()
-            if (this.currentRow.userID === message.fromID && this.drawer) {
-                this.$axios({
-                    method: 'GET',
-                    url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
-                    params: {
-                        fromID: message.fromID,
-                        toID: message.toID,
-                        kind: 0
-                    }
-                }).then(error => {
-                    console.log('错误', error.message)
-                })
-            }
+
         }
     },
     methods: {
@@ -459,6 +489,13 @@ export default {
             this.searchInput = ''
             this.handleFriend()
         },
+        handleChange(file) {
+            console.log(file)
+            if (file) {
+                this.uploadFile = true
+                this.chatInfo = file.name
+            }
+        },
         handleFriend() {
             this.$axios({
                 method: 'POST',
@@ -496,6 +533,8 @@ export default {
                         count: count,
                     })
                 }
+                console.log(this.messageCountList)
+                console.log(this.messageCountList[0].count)
             }, error => {
                 console.log('错误', error.message)
             })
@@ -588,7 +627,61 @@ export default {
         },
         reload() {
             this.$router.go(0)
+        },
+        startRecording() {
+            if (!this.recording) {
+                console.log('录音咯1')
+                navigator.mediaDevices
+                    .getUserMedia({ audio: true })
+                    .then((stream) => {
+                        this.audioChunks = [];
+                        this.mediaRecorder = new MediaRecorder(stream);
+                        console.log('录音咯2')
+                        this.mediaRecorder.ondataavailable = (event) => {
+                            console.log('录音咯3')
+                            if (event.data.size > 0) {
+                                this.audioChunks.push(event.data);
+                            }
+                            console.log('录音4')
+                            this.sendAudioData()
+                        };
+                        this.mediaRecorder.start();
+                        this.recording = true;
+                    })
+                    .catch((error) => {
+                        console.error('获取麦克风访问权限失败:', error);
+                    });
+            }
+        },
+        stopRecording() {
+            console.log('录音结束咯1')
+            if (this.recording) {
+                this.mediaRecorder.stop();
+                this.recording = false;
+                console.log('录音结束咯2')
+
+
+                // 处理 audioBlob，可以上传到服务器或进行其他操作
+            }
+        },
+        getAudioData() {
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            console.log(audioBlob)
+        },
+        sendAudioData() {
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            console.log(audioBlob)
+            console.log('发送')
+            this.$socket.send(audioBlob)
+            this.$socket.sendObj({
+                message: audioBlob,
+                from: this.$cookies.get('userID'),
+                to: this.currentRow.userID,
+                kind: 2,
+                attach: 0
+            }); // 发送二进制语音数据
         }
+
     },
     async created() {
         this.handleFriend()

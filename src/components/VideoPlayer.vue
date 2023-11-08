@@ -7,6 +7,12 @@
     <div class="video-wrapper">
       <video id="remoteVideo" autoplay playsinline controls="false"></video>
     </div>
+    <div>
+    <button @click="requestAgree">{{ this.buttonString }}</button>
+    <button v-show="showButtons" @click="responeAgree('true')" >同意</button>
+    <button v-show="showButtons" @click="responeAgree('false')">拒绝</button>
+  </div>
+
   </div>
 </template>
 
@@ -21,6 +27,7 @@
     import Vue from 'vue'
     import VueNativeSock from 'vue-native-websocket'
     
+    
   
   
   export default {
@@ -31,11 +38,9 @@
         configuration :{ 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] },
         fromID :null,
         toID:null,
-
-        localVideoId: 'localVideo',
-        remoteVideoId: 'remoteVideo',
-        isSmallVideo: false
-
+        showButtons: false,
+        type:null,
+        buttonString:null
       
       };
     },
@@ -46,22 +51,26 @@
                
       this.toID = this.$route.params.toID;
       this.fromID = this.$cookies.get("userID");
+      this.type=this.$route.params.type;
       
-      
-
-      this.peerConnectionInit();
-
-      this.playVideoFromCamera();
+      if(this.type==='audio'){
+        this.buttonString='发起语音'
+      }else{
+        this.buttonString='发起视频'
+      }
 
       this.createSocket();
 
       this.webSocketInit();
 
-      
       this.peerConnectionInit();
-      this.creatOffer();
+
+      this.playVideoFromCamera();
+
       
+     
       
+            
             
       
     },
@@ -70,7 +79,14 @@
       //打开本地视频，并将本地媒体流添加到PeerConnection中
       async playVideoFromCamera() {
         try {
-          const constraints = { video: true, audio: true };
+          let constraints=null;
+          if(this.type==='audio'){
+            constraints = {  audio: true };
+          }else{
+            constraints = { video: true, audio: true };
+          }
+          console.log(constraints);
+          
           const localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
           localStream.getTracks().forEach(track => {
@@ -87,21 +103,18 @@
   
       //创建webSocket示例
       async createSocket() {
-        console.log("222"+this.NET.BASE_URL.http)
+        
             Vue.use(VueNativeSock, this.NET.BASE_URL.ws +  'videoWebsocket/'+this.fromID, {
                 format: 'json',
                 reconnection: true, // 自动重连
                 reconnectionAttempts: 5, // 重连尝试次数
-                reconnectionDelay: 3000, // 重连延迟（毫秒）
+                reconnectionDelay: 100, // 重连延迟（毫秒）
             })
         },
   
       
       //开始发起视频，发生offer
-      async creatOffer(){
-        
-        this.playVideoFromCamera();
-
+      async creatOffer(){       
         this.peerConnection.createOffer().then(offer => {
         this.peerConnection.setLocalDescription(offer);
         this.$socket.sendObj({
@@ -139,12 +152,31 @@
         }
   
       },
+
+      
+
+      async requestAgree(){
+        this.$socket.sendObj({
+                toID:this.toID,
+                event: "requestAgree",
+            });
+      },
+
+      async responeAgree(isAgree){
+        this.$socket.sendObj({
+                toID:this.toID,
+                event: "responeAgree",
+                data:{
+                  isAgree:isAgree
+                }
+            });
+            this.showButtons = false;
+      },
   
   
       async webSocketInit(){
         //连接成功
         this.$socket.onopen = async() =>{
-          this.creatOffer();
           console.log('连接成功')
         };
         //server端请求关闭
@@ -181,15 +213,22 @@
             }else if(json.event ==='answer'){
                 console.log("answer:"+json.toID);
               this.peerConnection.setRemoteDescription(json.data.sdp);                    
+            }else if(json.event ==='noOnline'){
+              window.alert('对方不在线');
+            }else if(json.event ==='requestAgree'){
+              this.showButtons = true;
+            }else if(json.event === 'responeAgree'){
+              if(json.data.isAgree==='true'){
+                this.creatOffer();
+              }else{
+                window.alert('对方拒绝视频')
+              }
             }
           }        
         };
       },
 
-      //控制视频界面切换
-      toggleVideoSize() {
-        this.isSmallVideo = !this.isSmallVideo;
-      },
+      
 
       
   
