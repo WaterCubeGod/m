@@ -297,30 +297,30 @@ export default {
 
                 fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
             } else {
+                let message = JSON.parse(event.data)
                 this.chatList.push(message)
-                if (message.fromID !== this.currentRow.userID && message.fromID !== this.user.userID) {
+                if ((message.fromID !== this.currentRow.userID || !this.drawer) && message.fromID !== this.user.userID) {
                     this.messageCountList[this.messageCountList.findIndex(item => {
                         if (item.message.fromID === message.fromID) {
                             return true;
                         }
                     })].count++
                 }
-                this.handleScrollBottom()
-                if (this.currentRow.userID === message.fromID && this.drawer) {
-                    this.$axios({
-                        method: 'GET',
-                        url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
-                        params: {
-                            fromID: message.fromID,
-                            toID: message.toID,
-                            kind: 0
-                        }
-                    }).then(error => {
-                        console.log('错误', error.message)
-                    })
-                }
+                // if (this.currentRow.userID === message.fromID && this.drawer) {
+                //     this.$axios({
+                //         method: 'GET',
+                //         url: this.NET.BASE_URL.http + 'changeMessageStatusInTime',
+                //         params: {
+                //             fromID: message.fromID,
+                //             toID: message.toID,
+                //             kind: 0
+                //         }
+                //     }).then(error => {
+                //         console.log('错误', error.message)
+                //     })
+                // }
             }
-
+            this.handleScrollBottom()
         }
     },
     methods: {
@@ -392,6 +392,11 @@ export default {
                 this.customIdentifier = true
                 this.uploadURL = this.NET.BASE_URL.http + 'upload/'
                     + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
+                console.log(this.messageCountList[this.messageCountList.findIndex(item => {
+                    if (item.message.fromID === this.currentRow.userID) {
+                        return true;
+                    }
+                })].count)
                 this.messageCountList[this.messageCountList.findIndex(item => {
                     if (item.message.fromID === this.currentRow.userID) {
                         return true;
@@ -605,12 +610,6 @@ export default {
             }, error => {
                 console.log('错误', error.message)
             })
-        },
-        handleChange(file) {
-            if (file) {
-                this.uploadFile = true
-                this.chatInfo = file.name
-            }
         },
         handleVideoChat() {
             // 使用 Vue Router 跳转到指定页面并传递参数
