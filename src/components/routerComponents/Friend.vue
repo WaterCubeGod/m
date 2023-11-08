@@ -115,36 +115,48 @@
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
                                 <el-col :span="20">
-                                    <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0&&item.kind===0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else style="border-style: solid;solid: #000;
+                                    <div v-else-if="item.attach !== 0&&item.kind===0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left">
                                         <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">{{
                                             item.content }}</el-link>
                                     </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;height: 31px;display: inline-block;float: left">
+                                        <el-button size="mini" @click="listenAudio()">语音消息</el-button>
+                                    </div>
                                 </el-col>
                             </div>
                             <div v-else>
                                 <el-col :span="20">
-                                    <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0&&item.kind===0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else style="border-style: solid;solid: #000;
+                                    <div v-else-if="item.attach !== 0&&item.kind===0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
                                         <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">
                                             {{ item.content }}
                                         </el-link>
+                                    </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: right">
+                                        <el-button size="mini" @click="listenAudio(item.attach)">语音消息</el-button>
                                     </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -167,9 +179,9 @@
                             <i class="el-icon-folder-opened"></i>
                         </el-upload>
                         <div class="play-audio">
-                            <button @click="startRecording" :disabled="recording">开始录音</button>
-                            <button @click="stopRecording" :disabled="!recording">停止录音</button>
-                            <button @click="sendAudioData" :disabled="!recording">发送</button>
+                            <button @click="startRecording" v-show="!recording">开始录音</button>
+                            <button @click="stopRecording" v-show="recording">停止录音</button>
+                            <button @click="sendAudioData" v-show="sendShow">发送</button>
                         </div>
                     </el-footer>
                 </el-container>
@@ -267,7 +279,8 @@ export default {
             uploadURL: '',
             mediaRecorder: null,
             audioChunks: [],
-            recording: false
+            recording: false,
+            sendShow:false
         };
     },
     mounted() {
@@ -279,7 +292,7 @@ export default {
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
         this.connect()
-        
+        var homeThis=this
         this.$socket.onmessage = (event) => {
             if(event.data instanceof Blob){
                 console.log('我是音频');
@@ -300,10 +313,23 @@ export default {
         fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
             }else{
                 console.log('我是文字')
-
-                console.log(JSON.parse(event.data))
-            this.chatList.push(JSON.parse(event.data))
-            console.log(this.chatList)
+                console.log(isNaN(Number('1223')))
+                console.log(typeof(JSON.parse(event.data)))
+                if(!isNaN(Number(JSON.parse(event.data)))){
+                    console.log('发送语音文本')
+                    
+                    homeThis.$socket.sendObj({
+                        from: this.$cookies.get('userID'),
+                        to: this.currentRow.userID,
+                        kind: 2,
+                        attach:Number(JSON.parse(event.data))
+                    })
+                }else{
+                    console.log('发送支持本')
+                    this.chatList.push(JSON.parse(event.data))
+                    console.log(this.chatList)
+                }
+            
             }
             
         }
@@ -612,9 +638,9 @@ export default {
                 console.log('录音咯3')
                 if (event.data.size > 0) {
                   this.audioChunks.push(event.data);
+                  this.sendShow=true
                 }
-                console.log('录音4')
-                this.sendAudioData()
+                
               };
               this.mediaRecorder.start();
               this.recording = true;
@@ -625,14 +651,9 @@ export default {
         }
       },
       stopRecording() {
-        console.log('录音结束咯1')
         if (this.recording) {
           this.mediaRecorder.stop();
           this.recording = false;
-          console.log('录音结束咯2')
-  
-         
-          // 处理 audioBlob，可以上传到服务器或进行其他操作
         }
       },
       getAudioData(){
@@ -640,20 +661,32 @@ export default {
           console.log(audioBlob)
       },
       sendAudioData(){
+        this.sendShow=false
+        this.recording=true
             const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
           console.log(audioBlob)
           console.log('发送')
           this.$socket.send(audioBlob)
-          this.$socket.sendObj({
-            message:audioBlob,
+        //   this.$socket.sendObj({
+        //     message:audioBlob,
+        //     from: this.$cookies.get('userID'),
+        //     to: this.currentRow.userID,
+        //     kind: 2,
+        //     attach:0
+        //   }); // 发送二进制语音数据
+      },
+      listenAudio(attach){
+        this.$socket.sendObj({
+            message:'999',
             from: this.$cookies.get('userID'),
             to: this.currentRow.userID,
-            kind: 2,
-            attach:0
+            kind: 999,
+            attach:attach
           }); // 发送二进制语音数据
-      }
+    },
         
     },
+   
     async created() {
         this.handleFriend()
         this.handleApplication()
