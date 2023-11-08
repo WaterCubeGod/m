@@ -2,7 +2,7 @@
     <div class="main_page">
         <el-container id="elc">
             <el-header>
-                首页
+                <div>首页</div>
             </el-header>
             <el-container>
                 <el-aside width="200px">
@@ -53,7 +53,8 @@ export default {
     name: 'MainPage',
     data() {
         return {
-            activeIndex: ''
+            activeIndex: '',
+            header: '',
         }
     },
     methods: {

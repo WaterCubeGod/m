@@ -99,72 +99,71 @@
             </el-col>
         </el-row>
 
-        <el-drawer :visible.sync="drawer" :with-header="false" style="position: absolute" z-index="-1">
+        <el-drawer :visible.sync="drawer" :with-header="false" size="50%">
             <div style="position:absolute;top:0;left:0;width:100%;height:100%;">
                 <el-container style="height: 100%;">
-                    <el-header style="position: relative;width: 100%;height: 10%;background: #add6fa;">
+                    <el-header style="width: 100%;height: 10%;background: #add6fa;">
                         {{ this.currentRow.username }}
                     </el-header>
 
-                    <el-main style="position: absolute;height: 70%;width: 100%;top: 10%;" ref="chat">
+                    <el-main style="position: absolute;height: 75%;width: 100%;top: 10%;" ref="chat">
                         <infinite-loading :identifier="customIdentifier" direction="top"
                             @infinite="infiniteHandler"></infinite-loading>
                         <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
                             <div v-if="item.fromID !== user.userID">
-                                <el-col :span="4">
+                                <el-col :span="2">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
                                 <el-col :span="20">
                                     <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
-                                border-radius: 7px;height: 31px;display: inline-block;float: left">
+                                border-radius: 7px;display: inline-block;float: left;text-align: left;">
                                         {{ item.content }}
                                     </div>
                                     <div v-else style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
-                                border-radius: 7px;height: 31px;display: inline-block;float: left">
+                                border-radius: 7px;height: 31px;display: inline-block;float: left;text-align: left;">
                                         <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">{{
                                             item.content }}</el-link>
                                     </div>
                                 </el-col>
                             </div>
                             <div v-else>
-                                <el-col :span="20">
+                                <el-col :span="20" :offset="2">
                                     <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
-                                border-radius: 7px;display: inline-block;float: right">
+                                border-radius: 7px;display: inline-block;float: right;text-align: left;">
                                         {{ item.content }}
                                     </div>
                                     <div v-else style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
-                                border-radius: 7px;display: inline-block;float: right">
+                                border-radius: 7px;display: inline-block;float: right;;text-align: left;">
                                         <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">
                                             {{ item.content }}
                                         </el-link>
                                     </div>
                                 </el-col>
-                                <el-col :span="4">
+                                <el-col :span="2" style="float: right">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
                             </div>
                         </el-row>
-
                     </el-main>
 
-                    <el-footer style="position:absolute;top:80%;left:0;width:100%;height:100%;">
+                    <el-footer style="position:absolute;top: 85%;left:0;width:100%;height: 15%;">
                         <div>
                             <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
-                                @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
-                            <el-button slot="append" icon="el-icon-search" @click="sendInfo"
-                                style="width: 20%;height: 32px"></el-button>
+                                @keyup.enter.native="sendInfo" style="width: 80%"></el-input>
+                            <el-button @click="sendInfo" type="primary" size="mini"
+                                style="width: 20%;height: 32px">发送</el-button>
                         </div>
                         <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
                             :on-change="handleChange" ref="uploadFile" :name="chatInfo">
-                            <i class="el-icon-folder-opened"></i>
+                            <el-button type="primary" size="mini" class="el-icon-folder-opened"></el-button>
                         </el-upload>
                     </el-footer>
                 </el-container>
@@ -206,11 +205,7 @@
                 <el-button type="primary" @click="acceptOrReject('accept')">接受</el-button>
             </div>
         </el-dialog>
-        <el-dialog
-            title="提示"
-            :visible.sync="messageDialog.messageDialogVisable"
-            width="30%"
-            :before-close="handleClose">
+        <el-dialog title="提示" :visible.sync="messageDialog.messageDialogVisable" width="30%">
             <span>{{ messageDialog.message }}</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="closeMessageDialog">确 定</el-button>
@@ -250,6 +245,10 @@ export default {
                 systemMessageVisible: false,
                 formLabelWidth: '120px',
             },
+            messageDialog: {
+                messageDialogVisable: false,
+                message: ''
+            },
             detailDialogVisable: false,
             addtionalMessage: '',
             applicationList: [],
@@ -269,9 +268,29 @@ export default {
         }
         this.connect()
         this.$socket.onmessage = (event) => {
-            console.log(JSON.parse(event.data))
-            this.chatList.push(JSON.parse(event.data))
-            console.log(this.chatList)
+            let message = JSON.parse(event.data)
+            this.chatList.push(message)
+            if (message.fromID !== this.currentRow.userID && message.fromID !== this.user.userID) {
+                this.messageCountList[this.messageCountList.findIndex(item => {
+                    if (item.message.fromID === message.fromID) {
+                        return true;
+                    }
+                })].count++
+            }
+            this.handleScrollBottom()
+            if (this.currentRow.userID === message.fromID && this.drawer) {
+                this.$axios({
+                    method: 'GET',
+                    url: this.NET.BASE_URL.http + 'getP2PUnReadMessages',
+                    params: {
+                        fromID: message.fromID,
+                        toID: message.toID,
+                        kind: 0
+                    }
+                }).then(error => {
+                    console.log('错误', error.message)
+                })
+            }
         }
     },
     methods: {
@@ -301,7 +320,7 @@ export default {
                     method: 'POST',
                     url: this.NET.BASE_URL.http + 'searchUser',
                     data: {
-                        username: this.searchInput,
+                        username: this.searchInput.trim(),
                     }
                 }).then(response => {
                     console.log(response.data)
@@ -331,6 +350,7 @@ export default {
                     kind: 0,
                 });
                 this.chatInfo = ''
+                this.handleScrollBottom()
             }
         },
         handleCurrentChange(val) {
@@ -342,6 +362,11 @@ export default {
                 this.customIdentifier = true
                 this.uploadURL = this.NET.BASE_URL.http + 'upload/'
                     + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
+                this.messageCountList[this.messageCountList.findIndex(item => {
+                    if (item.message.fromID === this.currentRow.userID) {
+                        return true;
+                    }
+                })].count = 0
             }
             this.listbtn = true
         },
@@ -350,37 +375,37 @@ export default {
                 this.applicationRow = val
             }
         },
-        acceptOrReject(status){
+        acceptOrReject(status) {
             // this.detailDialogVisable=false
-            var homeThis=this
+            var homeThis = this
             this.$axios({
-                    method: 'POST',
-                    url: this.NET.BASE_URL.http + 'solveApplication',
-                    data: {
-                        time:this.applicationRow.time,
-                        fromID:this.applicationRow.fromID,
-                        toID:this.applicationRow.toID,
-                        additionalMessage:this.applicationRow.additionalMessage,
-                        kind:this.applicationRow.kind,
-                        status:status
-                    }
-                }).then(response => {
-                    console.log(response.data.msg)
-                    homeThis.detailDialogVisable=false
-                    homeThis.messageDialog.messageDialogVisable=true
-                    if(response.data.code===1){
-                        if(status==='accept'){
-                            homeThis.messageDialog.message="接受成功"
-                        }else if(status==='reject'){
-                            homeThis.messageDialog.message="拒绝成功"
+                method: 'POST',
+                url: this.NET.BASE_URL.http + 'solveApplication',
+                data: {
+                    time: this.applicationRow.time,
+                    fromID: this.applicationRow.fromID,
+                    toID: this.applicationRow.toID,
+                    additionalMessage: this.applicationRow.additionalMessage,
+                    kind: this.applicationRow.kind,
+                    status: status
+                }
+            }).then(response => {
+                console.log(response.data.msg)
+                homeThis.detailDialogVisable = false
+                homeThis.messageDialog.messageDialogVisable = true
+                if (response.data.code === 1) {
+                    if (status === 'accept') {
+                        homeThis.messageDialog.message = "接受成功"
+                    } else if (status === 'reject') {
+                        homeThis.messageDialog.message = "拒绝成功"
 
-                        }
-                    }else{
-                        homeThis.messageDialog.message="操作失败，卡咯"
                     }
-                }, error => {
-                    console.log('错误', error.message)
-                })
+                } else {
+                    homeThis.messageDialog.message = "操作失败，卡咯"
+                }
+            }, error => {
+                console.log('错误', error.message)
+            })
         },
         infiniteHandler($state) {
             this.$axios({
@@ -424,9 +449,9 @@ export default {
         },
         handleScrollBottom() {
             this.$nextTick(() => {
-                let scrollElem = this.$refs.chat;
-                scrollElem.scrollTo(0, scrollElem.scrollHeight)
-                // scrollElem.scrollTo({ top: scrollElem.scrollHeight, behavior: 'smooth' });
+                let scrollElem = this.$refs.chat
+                scrollElem.scrollTop = scrollElem.scrollHeight
+                console.log(scrollElem, scrollElem.scrollTop, scrollElem.scrollHeight)
             });
         },
         handleBack() {
@@ -517,7 +542,7 @@ export default {
             })
         },
         sendSystemMessage() {
-            var homeThis=this
+            var homeThis = this
             this.dialogInfo.systemMessageVisible = false
             this.$axios({
                 method: 'POST',
@@ -527,35 +552,41 @@ export default {
                     toID: this.currentRow.userID,
                     addtionalMessage: this.addtionalMessage,
                     kind: 'friendApplication',
-                    teamID:0
+                    teamID: 0
                 }
             }).then(response => {
                 if (response.data.code === 1) {
-                    homeThis.messageDialog.messageDialogVisable=true
-                    homeThis.messageDialog.message='申请发送成功！'
+                    homeThis.messageDialog.messageDialogVisable = true
+                    homeThis.messageDialog.message = '申请发送成功！'
                 }
-                else{
-                    homeThis.messageDialog.messageDialogVisable=true
-                    homeThis.messageDialog.message='申请发送失败，已经向对方发送过申请'
+                else {
+                    homeThis.messageDialog.messageDialogVisable = true
+                    homeThis.messageDialog.message = '申请发送失败，已经向对方发送过申请'
                 }
             }, error => {
                 console.log('错误', error.message)
             })
         },
-        handleVideoChat() {     
+        handleChange(file) {
+            if (file) {
+                this.uploadFile = true
+                this.chatInfo = file.name
+            }
+        },
+        handleVideoChat() {
             // 使用 Vue Router 跳转到指定页面并传递参数
             this.$router.push({
                 path: '/videoPlayer',
                 params: {
-                    toID:this.currentRow.userID
+                    toID: this.currentRow.userID
                 }
             });
         },
-        closeMessageDialog(){
-            this.messageDialog.messageDialogVisable=false
+        closeMessageDialog() {
+            this.messageDialog.messageDialogVisable = false
             this.reload()
         },
-        reload(){
+        reload() {
             this.$router.go(0)
         }
     },
