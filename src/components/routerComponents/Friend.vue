@@ -120,12 +120,18 @@
                                 border-radius: 7px;display: inline-block;float: left;text-align: left;">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else style="border-style: solid;solid: #000;
+                                    <div v-else-if="item.attach !== 0&&item.kind===0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left;text-align: left;">
                                         <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">{{
                                             item.content }}</el-link>
+                                    </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: left">
+                                        <el-button size="mini" @click="listenAudio(item.attach)">语音消息</el-button>
                                     </div>
                                 </el-col>
                             </div>
@@ -326,19 +332,19 @@ export default {
                         }
                     })].count++
                 }
-                // if (this.currentRow.userID === message.fromID && this.drawer) {
-                //     this.$axios({
-                //         method: 'GET',
-                //         url: this.NET.BASE_URL.http + 'changeMessageStatusInTime',
-                //         params: {
-                //             fromID: message.fromID,
-                //             toID: message.toID,
-                //             kind: 0
-                //         }
-                //     }).then(error => {
-                //         console.log('错误', error.message)
-                //     })
-                // }
+                if (this.currentRow.userID === message.fromID && this.drawer) {
+                    this.$axios({
+                        method: 'GET',
+                        url: this.NET.BASE_URL.http + 'changeMessageStatusInTime',
+                        params: {
+                            fromID: message.fromID,
+                            toID: message.toID,
+                            kind: 0
+                        }
+                    }).then(error => {
+                        console.log('错误', error.message)
+                    })
+                }
                 }
             
             }
@@ -419,12 +425,16 @@ export default {
                         return true;
                     }
                 })].count)
+                
+            }
+            if(this.drawer){
                 this.messageCountList[this.messageCountList.findIndex(item => {
                     if (item.message.fromID === this.currentRow.userID) {
                         return true;
                     }
                 })].count = 0
             }
+            
             this.listbtn = true
         },
         handleApplicationChange(val) {
@@ -560,8 +570,6 @@ export default {
                         count: count,
                     })
                 }
-                console.log(this.messageCountList)
-                console.log(this.messageCountList[0].count)
             }, error => {
                 console.log('错误', error.message)
             })
