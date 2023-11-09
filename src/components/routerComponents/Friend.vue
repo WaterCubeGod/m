@@ -155,7 +155,8 @@
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
-                                        <el-button size="mini" @click="listenAudio(item.attach)">语音消息</el-button>
+                                        <el-button type="primary" size="mini" @click="listenAudio(item.attach)" style="background-color: #add6fa; border-width: 1px;
+                                border-radius: 7px;height: 35px;color: #000;">语音消息<i class="el-icon-video-play" v-show="!broadCasting"></i><i class="el-icon-video-pause" v-show="broadCasting"></i></el-button>
                                     </div>
                                 </el-col>
                                 <el-col :span="2" style="float: right">
@@ -165,21 +166,25 @@
                         </el-row>
                     </el-main>
 
-                    <el-footer style="position:absolute;top: 85%;left:0;width:100%;height: 15%;">
+                    <el-footer style="position:absolute;top: 85%;left:0;width:100%;height: 10%;border-top: 1px solid rgb(167, 165, 165);">
                         <div>
+                            <el-button type="primary" size="mini" @click="startRecording" 
+                                style="width: 10%;height: 32px"><i class="el-icon-microphone"></i></el-button>
                             <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
-                                @keyup.enter.native="sendInfo" style="width: 80%"></el-input>
+                                @keyup.enter.native="sendInfo" style="width: 65%"></el-input>
                             <el-button @click="sendInfo" type="primary" size="mini"
-                                style="width: 20%;height: 32px">发送</el-button>
+                                style="width: 15%;height: 32px">发送</el-button>
+                                <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
+                                    :on-change="handleChange" ref="uploadFile" :name="chatInfo"  style="width: 10%;height: 32px;display:inline-block;">
+                                    <el-button type="primary" size="mini" class="el-icon-folder-opened" style="height: 32px;"></el-button>
+                                </el-upload>
                         </div>
-                        <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
-                            :on-change="handleChange" ref="uploadFile" :name="chatInfo">
-                            <el-button type="primary" size="mini" class="el-icon-folder-opened"></el-button>
-                        </el-upload>
-                        <div class="play-audio">
-                            <button @click="startRecording" v-show="!recording">开始录音</button>
-                            <button @click="stopRecording" v-show="recording">停止录音</button>
-                            <button @click="sendAudioData" v-show="sendShow">发送</button>
+                        
+                        <div class="play-audio" v-show="audioDivVisable">
+                            
+                            <el-button type="primary" size="mini" @click="stopRecording" v-show="stopRecordingAudio" style="margin: auto;margin-top: 10px;">停止录音</el-button>
+                            <el-button type="primary" size="mini" @click="sendAudioData" v-show="sendShow" style=" float: left;margin-left: 10px;margin-top: 10px;">发送</el-button>
+                            <el-button type="primary" size="mini" @click="quitSend" v-show="sendShow" style=" float:right;margin-right: 10px;margin-top: 10px;">取消</el-button>
                         </div>
                     </el-footer>
                 </el-container>
@@ -275,7 +280,10 @@ export default {
             mediaRecorder: null,
             audioChunks: [],
             recording: false,
-            sendShow:false
+            stopRecordingAudio:false,
+            audioDivVisable:false,
+            sendShow:false,
+            broadCasting:false,
         };
     },
     mounted() {
@@ -290,11 +298,17 @@ export default {
         this.handleMessageCount()
         this.handleApplication()
         this.connect()
-        var homeThis=this
+        
         this.$socket.onmessage = (event) => {
+            var homeThis=this
             if (event.data instanceof Blob) {
                 console.log('我是音频');
+                // this.broadCasting=true;
                 const audioContext = new AudioContext();
+                audioContext.onstatechange=()=>{
+                    console.log(audioContext.state)
+                    if(audioContext.state==='running')this.broadCasting=true;
+                }
                 const audioData = event.data;
                 const fileReader = new FileReader();
 
@@ -305,6 +319,9 @@ export default {
                         source.buffer = buffer;
                         source.connect(audioContext.destination);
                         source.start();
+                        source.onended=()=>{
+                            homeThis.broadCasting=false;
+                        }
                     });
                 };
 
@@ -659,15 +676,12 @@ export default {
         },
         startRecording() {
         if (!this.recording) {
-            console.log('录音咯1')
           navigator.mediaDevices
             .getUserMedia({ audio: true })
             .then((stream) => {
               this.audioChunks = [];
               this.mediaRecorder = new MediaRecorder(stream);
-              console.log('录音咯2')
               this.mediaRecorder.ondataavailable = (event) => {
-                console.log('录音咯3')
                 if (event.data.size > 0) {
                   this.audioChunks.push(event.data);
                   this.sendShow=true
@@ -676,6 +690,8 @@ export default {
               };
               this.mediaRecorder.start();
               this.recording = true;
+              this.stopRecordingAudio=true;
+              this.audioDivVisable=true
             })
             .catch((error) => {
               console.error('获取麦克风访问权限失败:', error);
@@ -685,7 +701,8 @@ export default {
       stopRecording() {
         if (this.recording) {
           this.mediaRecorder.stop();
-          this.recording = false;
+        //   this.recording = false;
+        this.stopRecordingAudio=false
         }
       },
       getAudioData(){
@@ -694,7 +711,9 @@ export default {
       },
       sendAudioData(){
         this.sendShow=false
-        this.recording=true
+        this.recording=false
+        this.stopRecordingAudio=false
+        this.audioDivVisable=false
             const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
           console.log(audioBlob)
           console.log('发送')
@@ -707,6 +726,11 @@ export default {
         //     attach:0
         //   }); // 发送二进制语音数据
       },
+      quitSend(){
+        this.sendShow=false
+        this.recording=false
+        this.audioDivVisable=false
+      },
       listenAudio(attach){
         this.$socket.sendObj({
             message:'999',
@@ -716,6 +740,9 @@ export default {
             attach:attach
           }); // 发送二进制语音数据
     },
+    broadCastOrStop(){
+        
+    }
         
     },
    
@@ -823,4 +850,14 @@ export default {
     margin-top: 10px;
     margin-right: 40px;
 }
+.play-audio{
+    
+    width: 200px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 20px;
+
+}
+
 </style>
