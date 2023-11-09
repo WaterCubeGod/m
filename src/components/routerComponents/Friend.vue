@@ -37,20 +37,25 @@
                                     <el-tag>{{ scope.row.address }}</el-tag>
                                 </div>
                             </el-popover>
-                            <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'video' } }">
-                                    <el-button size="mini">视频聊天</el-button>
-                                </router-link>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'audio' } }">
-                                    <el-button size="mini">语音聊天</el-button>
-                                </router-link>
-                            </div>
-
                         </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="17%">
-
+                        <template slot-scope="scope">
+                            <div v-if="label || friendData.some(item => item.userID === scope.row.userID)">
+                                <router-link
+                                    :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'video' } }">
+                                    <el-button size="mini">视频聊天</el-button>
+                                </router-link>
+                                <router-link
+                                    :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'audio' } }">
+                                    <el-button size="mini">语音聊天</el-button>
+                                </router-link>
+                            </div>
+                            <div v-else>
+                                <el-button @click="handleOpenDialog" size="mini">添加好友</el-button>
+                            </div>
+                        </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="13%">
@@ -105,22 +110,23 @@
                         {{ this.currentRow.username }}
                     </el-header>
 
-                    <el-main style="position: absolute;height: 75%;width: 100%;top: 10%;" ref="chat">
+                    <el-main style="position: absolute;height: 75%;width: 100%;top: 10%;" class="chat-main">
                         <infinite-loading :identifier="customIdentifier" direction="top"
                             @infinite="infiniteHandler"></infinite-loading>
-                        <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
+                        <el-row v-for="(item, $index) in checkShowRule(chatList, 'time')" :key="$index" style="margin-top: 10px;">
+                            <div v-if="item.is_show_time">{{ toggleTime(item.time).time }}</div>
                             <div v-if="item.fromID !== user.userID">
-                                <el-col :span="2" :offset="2">
+                                <el-col :span="2">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
                                 <el-col :span="20">
-                                    <div v-if="item.attach === 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: left;text-align: left;">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else-if="item.attach !== 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-else-if="item.attach !== 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left;text-align: left;">
@@ -137,13 +143,13 @@
                             </div>
                             <div v-else>
                                 <el-col :span="20" :offset="2">
-                                    <div v-if="item.attach === 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right;text-align: left;">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else-if="item.attach !== 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-else-if="item.attach !== 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right;;text-align: left;">
@@ -172,14 +178,20 @@
                             <el-button @click="sendInfo" type="primary" size="mini"
                                 style="width: 20%;height: 32px">发送</el-button>
                         </div>
-                        <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
-                            :on-change="handleChange" ref="uploadFile" :name="chatInfo">
-                            <el-button type="primary" size="mini" class="el-icon-folder-opened"></el-button>
-                        </el-upload>
-                        <div class="play-audio">
-                            <button @click="startRecording" v-show="!recording">开始录音</button>
-                            <button @click="stopRecording" v-show="recording">停止录音</button>
-                            <button @click="sendAudioData" v-show="sendShow">发送</button>
+                        <div>
+                            <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
+                                :on-change="handleChange" ref="uploadFile" :name="chatInfo"
+                                style="width: 17%;display: inline-block;">
+                                <el-button type="primary" size="mini" class="el-icon-folder-opened"></el-button>
+                            </el-upload>
+                            <div class="play-audio" style="width: 30%;display: inline-block;">
+                                <el-button type="primary" size="mini" @click="startRecording"
+                                    v-show="!recording">开始录音</el-button>
+                                <el-button type="primary" size="mini" @click="stopRecording"
+                                    v-show="recording">停止录音</el-button>
+                                <el-button type="primary" size="mini" @click="sendAudioData"
+                                    v-show="sendShow">发送</el-button>
+                            </div>
                         </div>
                     </el-footer>
                 </el-container>
@@ -235,7 +247,7 @@
 import Vue from 'vue'
 import VueNativeSock from 'vue-native-websocket'
 import InfiniteLoading from 'vue-infinite-loading'
-
+import dayjs from 'dayjs'
 
 export default {
     name: 'MyFriend',
@@ -251,6 +263,7 @@ export default {
             currentRow: {},
             label: true,
             listbtn: true,
+            friendData: [],
             tableData: [],
             chatList: [],
             user: {
@@ -275,25 +288,20 @@ export default {
             mediaRecorder: null,
             audioChunks: [],
             recording: false,
-            sendShow:false
+            sendShow: false
         };
     },
     mounted() {
-        console.log(this.NET.BASE_URL.http + 'showFriendList')
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
         window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
-        this.handleFriend()
-        this.handleMessageCount()
-        this.handleApplication()
         this.connect()
-        var homeThis=this
+        var homeThis = this
         this.$socket.onmessage = (event) => {
             if (event.data instanceof Blob) {
-                console.log('我是音频');
                 const audioContext = new AudioContext();
                 const audioData = event.data;
                 const fileReader = new FileReader();
@@ -308,45 +316,41 @@ export default {
                     });
                 };
 
-        fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
-            }else{
-                console.log('我是文字')
-                console.log(isNaN(Number('1223')))
-                console.log(typeof(JSON.parse(event.data)))
-                if(!isNaN(Number(JSON.parse(event.data)))){
-                    console.log('发送语音文本')
-                    
+                fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
+            } else {
+                if (!isNaN(Number(JSON.parse(event.data)))) {
+
                     homeThis.$socket.sendObj({
                         from: this.$cookies.get('userID'),
                         to: this.currentRow.userID,
                         kind: 2,
-                        attach:Number(JSON.parse(event.data))
+                        attach: Number(JSON.parse(event.data))
                     })
-                }else{
+                } else {
                     let message = JSON.parse(event.data)
-                this.chatList.push(message)
-                if ((message.fromID !== this.currentRow.userID || !this.drawer) && message.fromID !== this.user.userID) {
-                    this.messageCountList[this.messageCountList.findIndex(item => {
-                        if (item.message.fromID === message.fromID) {
-                            return true;
-                        }
-                    })].count++
+                    this.chatList.push(message)
+                    if ((message.fromID !== this.currentRow.userID || !this.drawer) && message.fromID !== this.user.userID) {
+                        this.messageCountList[this.messageCountList.findIndex(item => {
+                            if (item.message.fromID === message.fromID) {
+                                return true;
+                            }
+                        })].count++
+                    }
+                    if (this.currentRow.userID === message.fromID && this.drawer) {
+                        this.$axios({
+                            method: 'GET',
+                            url: this.NET.BASE_URL.http + 'changeMessageStatusInTime',
+                            params: {
+                                fromID: message.fromID,
+                                toID: message.toID,
+                                kind: 0
+                            }
+                        }).then(error => {
+                            console.log('错误', error.message)
+                        })
+                    }
                 }
-                if (this.currentRow.userID === message.fromID && this.drawer) {
-                    this.$axios({
-                        method: 'GET',
-                        url: this.NET.BASE_URL.http + 'changeMessageStatusInTime',
-                        params: {
-                            fromID: message.fromID,
-                            toID: message.toID,
-                            kind: 0
-                        }
-                    }).then(error => {
-                        console.log('错误', error.message)
-                    })
-                }
-                }
-            
+
             }
             this.handleScrollBottom()
         }
@@ -381,7 +385,6 @@ export default {
                         username: this.searchInput.trim(),
                     }
                 }).then(response => {
-                    console.log(response.data)
                     this.tableData = response.data.data
                     this.label = false
                 }, error => {
@@ -412,29 +415,31 @@ export default {
             }
         },
         handleCurrentChange(val) {
-            this.drawer = this.listbtn;
-            if (this.currentRow !== val && this.drawer) {
-                this.chatList = []
-                this.page = 0
-                this.currentRow = val;
-                this.customIdentifier = true
-                this.uploadURL = this.NET.BASE_URL.http + 'upload/'
-                    + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
-                console.log(this.messageCountList[this.messageCountList.findIndex(item => {
-                    if (item.message.fromID === this.currentRow.userID) {
-                        return true;
-                    }
-                })].count)
-                
+            if (this.friendData.some(item => item.userID === val.userID)) {
+                this.drawer = this.listbtn;
+                if (this.currentRow !== val && this.drawer) {
+                    this.chatList = []
+                    this.page = 0
+                    this.currentRow = val;
+                    this.customIdentifier = true
+                    this.uploadURL = this.NET.BASE_URL.http + 'upload/'
+                        + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
+                }
+                if (this.drawer) {
+                    this.messageCountList[this.messageCountList.findIndex(item => {
+                        if (item.message.fromID === this.currentRow.userID) {
+                            return true;
+                        }
+                    })].count = 0
+                }
+            } else {
+                this.$message({
+                    showClose: true,
+                    message: '宁和他还不是好友',
+                    type: 'warning',
+                });
             }
-            if(this.drawer){
-                this.messageCountList[this.messageCountList.findIndex(item => {
-                    if (item.message.fromID === this.currentRow.userID) {
-                        return true;
-                    }
-                })].count = 0
-            }
-            
+
             this.listbtn = true
         },
         handleApplicationChange(val) {
@@ -457,7 +462,6 @@ export default {
                     status: status
                 }
             }).then(response => {
-                console.log(response.data.msg)
                 homeThis.detailDialogVisable = false
                 homeThis.messageDialog.messageDialogVisable = true
                 if (response.data.code === 1) {
@@ -516,9 +520,8 @@ export default {
         },
         handleScrollBottom() {
             this.$nextTick(() => {
-                let scrollElem = this.$refs.chat
+                let scrollElem = document.querySelector('.chat-main')
                 scrollElem.scrollTop = scrollElem.scrollHeight
-                console.log(scrollElem, scrollElem.scrollTop, scrollElem.scrollHeight)
             });
         },
         handleBack() {
@@ -527,7 +530,6 @@ export default {
             this.handleFriend()
         },
         handleChange(file) {
-            console.log(file)
             if (file) {
                 this.uploadFile = true
                 this.chatInfo = file.name
@@ -543,6 +545,7 @@ export default {
                 }
             }).then(response => {
                 this.tableData = response.data.data
+                this.friendData = this.tableData
             }, error => {
                 console.log('错误', error.message)
             })
@@ -555,8 +558,6 @@ export default {
                     userID: this.user.userID
                 }
             }).then(response => {
-                console.log(response.data.data)
-
                 for (var i = 0; i < this.tableData.length; i++) {
 
                     var item = response.data.data[0][0].filter(item => item.fromID === this.tableData[i].userID)[0]
@@ -582,14 +583,12 @@ export default {
                     userID: this.user.userID
                 }
             }).then(response => {
-                console.log(response.data.data)
                 this.applicationList = response.data.data
             }, error => {
                 console.log('错误', error.message)
             })
         },
         handleOpenDialog() {
-            console.log()
             this.listbtn = false
             this.dialogInfo.systemMessageVisible = true
         },
@@ -606,8 +605,6 @@ export default {
             }).then(response => {
                 if (response.data.code === 1) {
                     this.userInfo = response.data.data
-                    console.log('信息查找成功')
-                    console.log(response.data)
                 } else {
                     console.log('查找失败')
                 }
@@ -658,67 +655,120 @@ export default {
             this.$router.go(0)
         },
         startRecording() {
-        if (!this.recording) {
-            console.log('录音咯1')
-          navigator.mediaDevices
-            .getUserMedia({ audio: true })
-            .then((stream) => {
-              this.audioChunks = [];
-              this.mediaRecorder = new MediaRecorder(stream);
-              console.log('录音咯2')
-              this.mediaRecorder.ondataavailable = (event) => {
-                console.log('录音咯3')
-                if (event.data.size > 0) {
-                  this.audioChunks.push(event.data);
-                  this.sendShow=true
+            if (!this.recording) {
+                navigator.mediaDevices
+                    .getUserMedia({ audio: true })
+                    .then((stream) => {
+                        this.audioChunks = [];
+                        this.mediaRecorder = new MediaRecorder(stream);
+                        this.mediaRecorder.ondataavailable = (event) => {
+                            if (event.data.size > 0) {
+                                this.audioChunks.push(event.data);
+                                this.sendShow = true
+                            }
+
+                        };
+                        this.mediaRecorder.start();
+                        this.recording = true;
+                    })
+                    .catch((error) => {
+                        console.error('获取麦克风访问权限失败:', error);
+                    });
+            }
+        },
+        stopRecording() {
+            if (this.recording) {
+                this.mediaRecorder.stop();
+                this.recording = false;
+            }
+        },
+        getAudioData() {
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            console.log(audioBlob)
+        },
+        sendAudioData() {
+            this.sendShow = false
+            this.recording = true
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            this.$socket.send(audioBlob)
+            //   this.$socket.sendObj({
+            //     message:audioBlob,
+            //     from: this.$cookies.get('userID'),
+            //     to: this.currentRow.userID,
+            //     kind: 2,
+            //     attach:0
+            //   }); // 发送二进制语音数据
+        },
+        listenAudio(attach) {
+            this.$socket.sendObj({
+                message: '999',
+                from: this.$cookies.get('userID'),
+                to: this.currentRow.userID,
+                kind: 999,
+                attach: attach
+            }); // 发送二进制语音数据
+        },
+        checkShowRule(arr, key) {
+            var newArr = arr.map((item, index, array) => {
+                var obj = this.toggleTime(item[key]);
+                item['show_time_type'] = obj.type;
+                item['show_time'] = obj.time;
+                if (index > 0) {
+                    item['is_show_time'] = this.compareTimeInterval(array[index - 1][key], array[index][key]);
+                } else {
+                    item['is_show_time'] = true;
                 }
-                
-              };
-              this.mediaRecorder.start();
-              this.recording = true;
-            })
-            .catch((error) => {
-              console.error('获取麦克风访问权限失败:', error);
+                return item;
             });
+            return newArr;
+        },
+        //根据不同时间的消息，输出不同的时间格式
+        toggleTime(date) {
+            var time;
+            var type = this.getDateDiff(date);
+            //1：新消息，2：当天消息,3：昨天消息，4：今年消息，5：其他消息
+            if (type == 1) {
+                time = "以下为最新消息";//新消息，不显示时间，但是要显示"以下为最新消息"
+            } else if (type == 2) {
+                time = dayjs(date).format("H:mm");//当天消息，显示：10:22
+            } else if (type == 3) {
+                time = dayjs(date).format("昨天 H:mm");//昨天消息，显示：昨天 20:41
+            } else if (type == 4) {
+                time = dayjs(date).format("M月D日 AH:mm").replace("AM", "上午").replace("PM", "下午");//今年消息，上午下午，显示：3月17日 下午16:45
+            } else if (type == 5) {
+                time = dayjs(date).format("YYYY年M月D日 AH:mm").replace("AM", "上午").replace("PM", "下午");//其他消息，上午下午，显示：2020年11月2日 下午15:17
+            }
+            return {
+                time: time,
+                type: type
+            };
+        },
+        //判断消息类型
+        getDateDiff(date) {
+            var nowDate = dayjs(new Date());//当前时间
+            var oldDate = dayjs(new Date(date));//参数时间
+            var result;
+            if (nowDate.year() - oldDate.year() >= 1) {
+                result = 5;
+            } else if (nowDate.month() - oldDate.month() >= 1 || nowDate.date() - oldDate.date() >= 2) {
+                result = 4;
+            } else if (nowDate.date() - oldDate.date() >= 1) {
+                result = 3;
+            } else if (nowDate.hour() - oldDate.hour() >= 1 || nowDate.minute() - oldDate.minute() >= 5) {
+                result = 2;
+            } else {
+                result = 1;
+            }
+            return result;
+        },
+
+        //判断两个时间差是否大于5分钟
+        compareTimeInterval(t1, t2) {
+            // console.log(t1,t2,dayjs(t2)-dayjs(t1));
+            return dayjs(t2) - dayjs(t1) >= 300000 ? true : false;
         }
-      },
-      stopRecording() {
-        if (this.recording) {
-          this.mediaRecorder.stop();
-          this.recording = false;
-        }
-      },
-      getAudioData(){
-            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-          console.log(audioBlob)
-      },
-      sendAudioData(){
-        this.sendShow=false
-        this.recording=true
-            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-          console.log(audioBlob)
-          console.log('发送')
-          this.$socket.send(audioBlob)
-        //   this.$socket.sendObj({
-        //     message:audioBlob,
-        //     from: this.$cookies.get('userID'),
-        //     to: this.currentRow.userID,
-        //     kind: 2,
-        //     attach:0
-        //   }); // 发送二进制语音数据
-      },
-      listenAudio(attach){
-        this.$socket.sendObj({
-            message:'999',
-            from: this.$cookies.get('userID'),
-            to: this.currentRow.userID,
-            kind: 999,
-            attach:attach
-          }); // 发送二进制语音数据
     },
-        
-    },
-   
+
     async created() {
         this.handleFriend()
         this.handleApplication()
