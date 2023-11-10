@@ -107,5 +107,6 @@
 
 .statistic-wrapper {
   margin-top: 20px;
+  background-color: antiquewhite;
 }
   </style>
