@@ -29,17 +29,21 @@
     </script>
     
     <style scoped lang="less">
-    
+    // .successContainer{
+    //   background-color: aqua;
+    // }
     .successContainer{
       .myimg {
-     width: 200px;
-      height: 200px;
+     width: 600px;
+      height: 600px;
+      background-color: white;;
     }
       .successBox{
-        width: 50%;
+        width: 100%;
         height: 80%;
         margin: 20px auto;
         text-align: center;
+        // background-color: aqua;
         .successInfo{
           width: 50%;
           margin: 10px auto;

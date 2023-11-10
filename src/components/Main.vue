@@ -21,7 +21,7 @@
                             <i class="el-icon-notebook-1"></i>
                             <span slot="title">我的学习</span>
                         </el-menu-item>
-                        <el-menu-item index="/main/my" class="elItem">
+                        <el-menu-item index="/main/myHome" class="elItem">
                             <i class="el-icon-setting"></i>
                             <span slot="title">个人主页</span>
                         </el-menu-item>

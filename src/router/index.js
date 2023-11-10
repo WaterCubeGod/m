@@ -1,7 +1,7 @@
 import Main from '../components/Main'
 import Friend from '../components/routerComponents/Friend'
 import MainPage from '../components/routerComponents/MainPage'
-import My from '../components/routerComponents/My'
+import myHome from '../components/routerComponents/myHome'
 import Team from '../components/routerComponents/Team'
 import Study from '../components/routerComponents/Study'
 import Donation from '../components/routerComponents/Donation'
@@ -38,11 +38,12 @@ const router = new VueRouter({
             children: [
                 { path: '/main/friend', name: 'friend', component: Friend },
                 { path: '/main/main', name: 'myMain', component: MainPage },
-                { path: '/main/my', name: 'my', component: My },
+                { path: '/main/myHome', name: 'myHome', component: myHome },
                 { path: '/main/team', name: 'team', component: Team },
                 { path: '/main/donation', name: 'donation', component: Donation },
                 { path: '/main/study', name: 'study', component: Study },
                 { path: '/main/donationdetail', name: 'donationdetail', component: DonationDetail },
+                { path: '/main/money', name: 'money', component: Money },
                 { path: '/main/money', name: 'money', component: Money },
                 
             ]

@@ -8,10 +8,11 @@
         <span>&ensp;&ensp;&ensp; {{Questionnaire.questionnaireInfo}}</span>
       </div>
       <!--问题列表-->
+      <!-- <div class="questionaire-container"> -->
       <div class="questionList">
         <el-card class="question" v-for="(Question,index) in Questionnaire.questionList" :key="index">
           <!--单选题-->
-          <div>
+          <div >
             <div slot="header" class="questionHead">
               <span  style="color: red"></span>
               <span>{{index+1}}、{{ Question.questionInfo }}</span>
@@ -26,9 +27,11 @@
       <div class="footBtn">
         <el-button type="primary" @click="uploadAnswer()">提交</el-button>
       </div>
-      <div style="height: 40px"></div> <!--占位,以后可以添加个人信息-->
     </div>
-  </div>
+      
+
+    </div>
+  <!-- </div> -->
   </template>
   
   <script>
@@ -107,7 +110,8 @@
           params: {  
           userID:this.userId
         }  
-  })
+        })
+        this.$cookies.set('userTrophy', Number(this.$cookies.get('userTrophy'))+1)
 
 
           this.$router.push({ path: 'answerSuccesse', query: { Score: this.Score.toString } });
@@ -136,13 +140,14 @@
   
    .paperViewContainer{
     width: 100%;
-    height: 100%;
+    height: 80%;
     .paperBox{
       position: absolute;
-      width: 50%;
-      height: 100%;
+      width: 87%;
+      height: 90%;
       left: 50%;
-      transform: translate(-50%);   // 向左移动自身宽度一半的距离
+      transform: translate(-43%);   // 向左移动自身宽度一半的距离
+      background-color: rgba(245, 248, 248, 0.8);
       .paperTitle{
         text-align: center;
       }
@@ -172,6 +177,10 @@
         align-items: center;
         height: 40px;
       }
+      // .questionaire-container{
+      //   background-color: antiquewhite;
+      //   width: 100%;
+      // }
   
     }
   

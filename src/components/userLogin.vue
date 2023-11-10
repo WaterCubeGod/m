@@ -51,6 +51,11 @@ export default {
                 this.$cookies.set('userID', response.data.data.userID)
                 this.$cookies.set('username', response.data.data.username)
                 this.$cookies.set('userAccount', response.data.data.account)
+                this.$cookies.set('userAddress', response.data.data.address)
+                this.$cookies.set('userPhone', response.data.data.phone)
+                this.$cookies.set('userEmail', response.data.data.email)
+                this.$cookies.set('userDescription', response.data.data.description)
+                this.$cookies.set('userTrophy', response.data.data.trophy)
                 
             } else {  
                 console.log('登录失败：' + response.data.message)  

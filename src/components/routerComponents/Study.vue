@@ -1,8 +1,7 @@
 <template>  
   <div>  
-    <button @click="openQuestionnaireList">打开习题界面</button>  
-    <button @click="openVideoLearning">打开视频学习界面</button>  
-    学习  
+    <el-button @click="openQuestionnaireList">打开习题界面</el-button>  
+    <el-button @click="openVideoLearning">打开视频学习界面</el-button>    
   </div>  
 </template>  
   
