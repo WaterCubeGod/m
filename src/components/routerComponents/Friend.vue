@@ -181,7 +181,7 @@
                             <el-button @click="sendInfo" type="primary" size="mini"
                                 style="width: 15%;height: 32px">发送</el-button>
                                 <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
-                                    :on-change="handleChange" ref="uploadFile" :name="chatInfo"  style="width: 10%;height: 32px;display:inline-block;">
+                                    :on-change="handleChange" ref="uploadFile" :on-success="success" style="width: 10%;height: 32px;display:inline-block;">
                                     <el-button type="primary" size="mini" class="el-icon-folder-opened" style="height: 32px;"></el-button>
                                 </el-upload>
                         </div>
@@ -291,7 +291,9 @@ export default {
             audioDivVisable:false,
             sendShow:false,
             broadCasting:false,
-            clickAttach:0
+            clickAttach:0,
+            attachNum: 0,
+
         };
     },
     mounted() {
@@ -379,10 +381,28 @@ export default {
                 }
 
             }
+            this.chatInfo = ''
             this.handleScrollBottom()
         }
     },
     methods: {
+        success(response) {
+            console.log(response,111111)
+            this.attachNum = response.data
+            console.log(this.attachNum)
+            this.$socket.sendObj({
+                message:this.chatInfo.trim(),
+                    from: Number(this.$cookies.get('userID')),
+                    to: Number(this.currentRow.userID),
+                    attach:response.data ,
+                    kind:0
+            })
+            this.uploadFile = false
+            this.attach = 0
+                this.chatInfo = ''
+                this.handleScrollBottom()
+                console.log(this.chatInfo,1231)
+        },
         connect() {
             Vue.use(VueNativeSock, this.NET.BASE_URL.ws + 'websocket/' + this.$cookies.get('userID'), {
                 format: 'json',
@@ -428,17 +448,22 @@ export default {
         sendInfo() {
             if (this.chatInfo.trim() !== '') {
                 if (this.uploadFile) {
+                    console.log(222222)
                     this.$refs.uploadFile.submit()
-                    this.uploadFile = false
+                    this.uploadFile=false
+                }else{
+                    var abaaba={
+                    message:this.chatInfo.trim(),
+                    from: Number(this.$cookies.get('userID')),
+                    to: Number(this.currentRow.userID),
+                    attach: 0,
+                    kind:0
                 }
-                this.$socket.sendObj({
-                    message: this.chatInfo.trim(),
-                    from: this.$cookies.get('userID'),
-                    to: this.currentRow.userID,
-                    kind: 0,
-                });
+                this.$socket.sendObj(abaaba);
+                this.attach = 0
                 this.chatInfo = ''
                 this.handleScrollBottom()
+                }
             }
         },
         handleCurrentChange(val) {
