@@ -3,8 +3,8 @@
       <div class="successBox">
         <el-card class="box-card">
           <div class="successInfo">
-            <img src="@/assets/jiangbei.jpg" alt="回答成功" class="myimg">
-            <h2>回答成功且60分以上，奖杯+1</h2>
+            <img src="@/assets/fail.jpg" alt="回答成功" class="myimg">
+            <h2>回答成功,但得分不到60，奖杯数不变</h2>
           </div>
         </el-card>
       </div>

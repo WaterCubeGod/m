@@ -16,8 +16,8 @@
               <span  style="color: red"></span>
               <span>{{index+1}}、{{ Question.questionInfo }}</span>
             </div>
-            <div v-for="(option,opIndex) in Question.questionList" :key="opIndex">
-              <el-radio v-model="question.answer[0]" :label="opIndex">{{option}}</el-radio>
+            <div v-for="(option,opIndex) in Question.optionList" :key="opIndex">
+              <el-radio  v-model="Question.answerOptionID"  :label="option.optionID" >{{option.optionInfo}}</el-radio>
             </div>
           </div>
           
@@ -36,46 +36,105 @@
     name: "AnswerPaper",
     data(){
       return{
-      
+        QuestionnaireID:null ,
+        Score: 0,
         Questionnaire:{},
-       
+        userId: null
       
       }
     },
     methods:{
-      // 通过问卷id获取问卷问题
-      async getPaperById(){
-        this.QuestionnaireID = this.$route.params.questionnaireID; 
-        
-        // 通过paperId获取paper的信息
-        let {data:res} = await this.$http.get(`http://localhost:8087/showQuestionnnaire${this.QuestionnaireId}`);
-        // console.log(res);
-        if (res.code !== 666){  // 获取问卷失败
-          return this.$message.error(res.msg);
-        }
-    
-        this.Questionnaire = res.data;
-        console.log(this.Questionnaire);
-      },
-      // 上传问卷填写结果
-
+      getUserID() {  
+      const cookieArr = document.cookie.split(";");  
+      for(let i=0; i<cookieArr.length; i++) {  
+        let cookiePair = cookieArr[i].split("=");  
+        if(cookiePair[0].trim() === "userID") {  
+          this.userId = cookiePair[1];  
+          break;  
+        }  
+      }  
+    }  ,
       
+    
+    
+      getScore(){
+        for (let Question of this.Questionnaire.questionList) {  
+          if(Question.rightOptionID==Question.answerOptionID)
+          this.Score++;
+        
+        
+          
+      }  
+      console.log(this.Score)
+
+      },
+
+
+      fetchData() {  
+  this.$axios({  
+    method: 'GET',  
+    url: 'http://localhost:8087/showQuestionnaire',  
+    params: {  
+      QuestionnaireID:this.QuestionnaireID
+    }  
+  })  
+  .then(response => {  
+    console.log(response.data);  
+    if (response.data.code === 666) {  
+       this.Questionnaire = response.data.data;  
+       
+   
+    } else {  
+      console.log(response.data.msg);  
+    }  
+  })  
+  .catch(error => {  
+    console.log('错误', error.message);  
+  });  
+  },
       async uploadAnswer(){
         // 跳转到回答问卷成功页面
-        await this.$router.push("/answerSuccess");
+        this.getUserID()
+        this.getScore()
+        let score=Number(this.Score)
+        score=score*50
+        console.log(score)
+        console.log(this.userId)
+        if(score>=60){
+          this.$axios({  
+          method: 'POST',  
+          url: 'http://localhost:8087/addTrophy',  
+          params: {  
+          userID:this.userId
+        }  
+  })
+
+
+          this.$router.push({ path: 'answerSuccesse', query: { Score: this.Score.toString } });
+        }
+        else
+          this.$router.push({ path: 'answerFail', query: { Score: this.Score.toString } });
       }
     },
     created() {
-      this.QuestionnaireId= this.$route.params.QuestionnaireId;
-      // console.log(this.QuestionnaireId);
-      this.getQuestionnaireId(this.QuestionnaireId);
+      this.QuestionnaireID= this.$route.query.QuestionnaireID;
+      
+      this.fetchData();
+      
+      
+      
+      
+      
+   
+     
     }
   }
   </script>
   
   <style scoped lang="less">
+   
   
-  .paperViewContainer{
+   .paperViewContainer{
     width: 100%;
     height: 100%;
     .paperBox{
@@ -117,6 +176,6 @@
     }
   
   
-  }
+  } 
   
   </style>

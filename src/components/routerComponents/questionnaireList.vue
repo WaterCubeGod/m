@@ -23,43 +23,54 @@
             Data: []
         }
     },
-    mounted() {
+    created() {
     this.fetchData();
   },
    
     methods: {
       goToAnswerPage(index) {  
       const questionnaireID = this.Data[index].questionnaireID;  
-      this.$router.push({ path : 'study/showQuestionnaire', params: { questionnaireID } });  
+      // this.$router.push({ path : 'showQuestionnaire', params: { questionnaireID } });
+      this.$router.push({ path: 'showQuestionnaire', query: { QuestionnaireID: questionnaireID.toString() } });
+      
+
+
+
+
+    }  ,
+    
+
+
+    fetchData() {  
+  this.$axios({  
+    method: 'POST',  
+    url: 'http://localhost:8087/getQuestionnaireList',  
+    params: {  
+        
     }  
+  })  
+  .then(response => {  
+    console.log(response.data);  
+    if (response.data.code === 666) {  
+      const questionnaires = response.data.data;  
+      const Data = questionnaires.map(questionnaire => ({  
+        questionnaireID: questionnaire.questionnaireID,  
+        questionnaireName: questionnaire.questionnaireName,  
+        questionnaireInfo: questionnaire.questionnaireInfo  
+      }));  
+      this.Data = Data;  
+    } else {  
+      console.log(response.data.msg);  
+    }  
+  })  
+  .catch(error => {  
+    console.log('错误', error.message);  
+  });  
+}
+
+
   },  
 
-
-      fetchData() {
-      this.$axios({
-        method: 'POST',
-        url: 'http://localhost:8087/getQuestionnaireList',
-        params: {
-          
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        if (response.data.code === 666) {
-          const questionnaires = response.data.data;
-          const Data = questionnaires.map(questionnaire => ({
-            questionnaireID: questionnaire.questionnaireID,
-            questionnaireName: questionnaire.questionnaireName,
-            questionnaireInfo: questionnaire.questionnaireInfo
-          }));
-          this.Data = Data;
-        } else {
-          console.log(response.data.msg);
-        }
-      })
-      .catch(error => {
-        console.log('错误', error.message);
-      });
-    }
+   
   }
   </script>
