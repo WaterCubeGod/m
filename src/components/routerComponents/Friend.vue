@@ -37,20 +37,25 @@
                                     <el-tag>{{ scope.row.address }}</el-tag>
                                 </div>
                             </el-popover>
-                            <div>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'video' } }">
-                                    <el-button size="mini">视频聊天</el-button>
-                                </router-link>
-                                <router-link :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'audio' } }">
-                                    <el-button size="mini">语音聊天</el-button>
-                                </router-link>
-                            </div>
-
                         </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="17%">
-
+                        <template slot-scope="scope">
+                            <div v-if="label || friendData.some(item => item.userID === scope.row.userID)">
+                                <router-link
+                                    :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'video' } }">
+                                    <el-button size="mini">视频聊天</el-button>
+                                </router-link>
+                                <router-link
+                                    :to="{ name: 'videoPlayer', params: { toID: scope.row.userID, type: 'audio' } }">
+                                    <el-button size="mini">语音聊天</el-button>
+                                </router-link>
+                            </div>
+                            <div v-else>
+                                <el-button @click="handleOpenDialog" size="mini">添加好友</el-button>
+                            </div>
+                        </template>
                     </el-table-column>
 
                     <el-table-column label="" min-width="13%">
@@ -105,22 +110,23 @@
                         {{ this.currentRow.username }}
                     </el-header>
 
-                    <el-main style="position: absolute;height: 75%;width: 100%;top: 10%;" ref="chat">
+                    <el-main style="position: absolute;height: 75%;width: 100%;top: 10%;" class="chat-main">
                         <infinite-loading :identifier="customIdentifier" direction="top"
                             @infinite="infiniteHandler"></infinite-loading>
-                        <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
+                        <el-row v-for="(item, $index) in checkShowRule(chatList, 'time')" :key="$index" style="margin-top: 10px;">
+                            <div v-if="item.is_show_time">{{ toggleTime(item.time).time }}</div>
                             <div v-if="item.fromID !== user.userID">
-                                <el-col :span="2" :offset="2">
+                                <el-col :span="2">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
                                 </el-col>
                                 <el-col :span="20">
-                                    <div v-if="item.attach === 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: left;text-align: left;">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else-if="item.attach !== 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-else-if="item.attach !== 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;height: 31px;display: inline-block;float: left;text-align: left;">
@@ -137,13 +143,13 @@
                             </div>
                             <div v-else>
                                 <el-col :span="20" :offset="2">
-                                    <div v-if="item.attach === 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-if="item.attach === 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right;text-align: left;">
                                         {{ item.content }}
                                     </div>
-                                    <div v-else-if="item.attach !== 0&&item.kind===0" style="border-style: solid;solid: #000;
+                                    <div v-else-if="item.attach !== 0 && item.kind === 0" style="border-style: solid;solid: #000;
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right;;text-align: left;">
@@ -240,7 +246,7 @@
 import Vue from 'vue'
 import VueNativeSock from 'vue-native-websocket'
 import InfiniteLoading from 'vue-infinite-loading'
-
+import dayjs from 'dayjs'
 
 export default {
     name: 'MyFriend',
@@ -256,6 +262,7 @@ export default {
             currentRow: {},
             label: true,
             listbtn: true,
+            friendData: [],
             tableData: [],
             chatList: [],
             user: {
@@ -287,16 +294,12 @@ export default {
         };
     },
     mounted() {
-        console.log(this.NET.BASE_URL.http + 'showFriendList')
         //获取容器当前高度，重设表格的最大高度
         this.getTableMaxHeight();
         let _this = this;
         window.onresize = function () {//用于使表格高度自适应的方法
             _this.getTableMaxHeight();//获取容器当前高度，重设表格的最大高度
         }
-        this.handleFriend()
-        this.handleMessageCount()
-        this.handleApplication()
         this.connect()
         
         this.$socket.onmessage = (event) => {
@@ -325,45 +328,41 @@ export default {
                     });
                 };
 
-        fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
-            }else{
-                console.log('我是文字')
-                console.log(isNaN(Number('1223')))
-                console.log(typeof(JSON.parse(event.data)))
-                if(!isNaN(Number(JSON.parse(event.data)))){
-                    console.log('发送语音文本')
-                    
+                fileReader.readAsArrayBuffer(audioData); // 读取 Blob 数据并转换为 ArrayBuffer
+            } else {
+                if (!isNaN(Number(JSON.parse(event.data)))) {
+
                     homeThis.$socket.sendObj({
                         from: this.$cookies.get('userID'),
                         to: this.currentRow.userID,
                         kind: 2,
-                        attach:Number(JSON.parse(event.data))
+                        attach: Number(JSON.parse(event.data))
                     })
-                }else{
+                } else {
                     let message = JSON.parse(event.data)
-                this.chatList.push(message)
-                if ((message.fromID !== this.currentRow.userID || !this.drawer) && message.fromID !== this.user.userID) {
-                    this.messageCountList[this.messageCountList.findIndex(item => {
-                        if (item.message.fromID === message.fromID) {
-                            return true;
-                        }
-                    })].count++
+                    this.chatList.push(message)
+                    if ((message.fromID !== this.currentRow.userID || !this.drawer) && message.fromID !== this.user.userID) {
+                        this.messageCountList[this.messageCountList.findIndex(item => {
+                            if (item.message.fromID === message.fromID) {
+                                return true;
+                            }
+                        })].count++
+                    }
+                    if (this.currentRow.userID === message.fromID && this.drawer) {
+                        this.$axios({
+                            method: 'GET',
+                            url: this.NET.BASE_URL.http + 'changeMessageStatusInTime',
+                            params: {
+                                fromID: message.fromID,
+                                toID: message.toID,
+                                kind: 0
+                            }
+                        }).then(error => {
+                            console.log('错误', error.message)
+                        })
+                    }
                 }
-                if (this.currentRow.userID === message.fromID && this.drawer) {
-                    this.$axios({
-                        method: 'GET',
-                        url: this.NET.BASE_URL.http + 'changeMessageStatusInTime',
-                        params: {
-                            fromID: message.fromID,
-                            toID: message.toID,
-                            kind: 0
-                        }
-                    }).then(error => {
-                        console.log('错误', error.message)
-                    })
-                }
-                }
-            
+
             }
             this.handleScrollBottom()
         }
@@ -398,7 +397,6 @@ export default {
                         username: this.searchInput.trim(),
                     }
                 }).then(response => {
-                    console.log(response.data)
                     this.tableData = response.data.data
                     this.label = false
                 }, error => {
@@ -429,29 +427,31 @@ export default {
             }
         },
         handleCurrentChange(val) {
-            this.drawer = this.listbtn;
-            if (this.currentRow !== val && this.drawer) {
-                this.chatList = []
-                this.page = 0
-                this.currentRow = val;
-                this.customIdentifier = true
-                this.uploadURL = this.NET.BASE_URL.http + 'upload/'
-                    + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
-                console.log(this.messageCountList[this.messageCountList.findIndex(item => {
-                    if (item.message.fromID === this.currentRow.userID) {
-                        return true;
-                    }
-                })].count)
-                
+            if (this.friendData.some(item => item.userID === val.userID)) {
+                this.drawer = this.listbtn;
+                if (this.currentRow !== val && this.drawer) {
+                    this.chatList = []
+                    this.page = 0
+                    this.currentRow = val;
+                    this.customIdentifier = true
+                    this.uploadURL = this.NET.BASE_URL.http + 'upload/'
+                        + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
+                }
+                if (this.drawer) {
+                    this.messageCountList[this.messageCountList.findIndex(item => {
+                        if (item.message.fromID === this.currentRow.userID) {
+                            return true;
+                        }
+                    })].count = 0
+                }
+            } else {
+                this.$message({
+                    showClose: true,
+                    message: '宁和他还不是好友',
+                    type: 'warning',
+                });
             }
-            if(this.drawer){
-                this.messageCountList[this.messageCountList.findIndex(item => {
-                    if (item.message.fromID === this.currentRow.userID) {
-                        return true;
-                    }
-                })].count = 0
-            }
-            
+
             this.listbtn = true
         },
         handleApplicationChange(val) {
@@ -474,7 +474,6 @@ export default {
                     status: status
                 }
             }).then(response => {
-                console.log(response.data.msg)
                 homeThis.detailDialogVisable = false
                 homeThis.messageDialog.messageDialogVisable = true
                 if (response.data.code === 1) {
@@ -533,9 +532,8 @@ export default {
         },
         handleScrollBottom() {
             this.$nextTick(() => {
-                let scrollElem = this.$refs.chat
+                let scrollElem = document.querySelector('.chat-main')
                 scrollElem.scrollTop = scrollElem.scrollHeight
-                console.log(scrollElem, scrollElem.scrollTop, scrollElem.scrollHeight)
             });
         },
         handleBack() {
@@ -544,7 +542,6 @@ export default {
             this.handleFriend()
         },
         handleChange(file) {
-            console.log(file)
             if (file) {
                 this.uploadFile = true
                 this.chatInfo = file.name
@@ -560,6 +557,7 @@ export default {
                 }
             }).then(response => {
                 this.tableData = response.data.data
+                this.friendData = this.tableData
             }, error => {
                 console.log('错误', error.message)
             })
@@ -572,8 +570,6 @@ export default {
                     userID: this.user.userID
                 }
             }).then(response => {
-                console.log(response.data.data)
-
                 for (var i = 0; i < this.tableData.length; i++) {
 
                     var item = response.data.data[0][0].filter(item => item.fromID === this.tableData[i].userID)[0]
@@ -599,14 +595,12 @@ export default {
                     userID: this.user.userID
                 }
             }).then(response => {
-                console.log(response.data.data)
                 this.applicationList = response.data.data
             }, error => {
                 console.log('错误', error.message)
             })
         },
         handleOpenDialog() {
-            console.log()
             this.listbtn = false
             this.dialogInfo.systemMessageVisible = true
         },
@@ -623,8 +617,6 @@ export default {
             }).then(response => {
                 if (response.data.code === 1) {
                     this.userInfo = response.data.data
-                    console.log('信息查找成功')
-                    console.log(response.data)
                 } else {
                     console.log('查找失败')
                 }
@@ -745,7 +737,7 @@ export default {
     }
         
     },
-   
+
     async created() {
         this.handleFriend()
         this.handleApplication()

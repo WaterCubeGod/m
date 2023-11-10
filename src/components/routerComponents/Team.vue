@@ -99,77 +99,93 @@
           </el-col>
       </el-row>
 
-      <el-drawer :visible.sync="drawer" :with-header="false" style="position: absolute" z-index="-1">
-          <div style="position:absolute;top:0;left:0;width:100%;height:100%;">
-              <el-container style="height: 100%;">
-                  <el-header style="position: relative;width: 100%;height: 10%;background: #add6fa;">
-                      {{ this.currentRow.username }}
-                  </el-header>
+      <el-drawer :visible.sync="drawer" :with-header="false" size="50%">
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                <el-container style="height: 100%;">
+                    <el-header style="width: 100%;height: 10%;background: #add6fa;">
+                        {{ this.currentRow.username }}
+                    </el-header>
 
-                  <el-main style="position: absolute;height: 70%;width: 100%;top: 10%;" ref="chat">
-                      <infinite-loading :identifier="customIdentifier" direction="top"
-                          @infinite="infiniteHandler"></infinite-loading>
-                      <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
-                          <div v-if="item.fromID !== user.userID">
-                              <el-col :span="4">
-                                  <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
-                              </el-col>
-                              <el-col :span="20">
-                                  <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
-                              background-color: #add6fa;
-                              border-width: 1px;
-                              border-radius: 7px;height: 31px;display: inline-block;float: left">
-                                      {{ item.content }}
-                                  </div>
-                                  <div v-else style="border-style: solid;solid: #000;
-                              background-color: #add6fa;
-                              border-width: 1px;
-                              border-radius: 7px;height: 31px;display: inline-block;float: left">
-                                      <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">{{
-                                          item.content }}</el-link>
-                                  </div>
-                              </el-col>
-                          </div>
-                          <div v-else>
-                              <el-col :span="20">
-                                  <div v-if="item.attach === 0" style="border-style: solid;solid: #000;
-                              background-color: #add6fa;
-                              border-width: 1px;
-                              border-radius: 7px;display: inline-block;float: right">
-                                      {{ item.content }}
-                                  </div>
-                                  <div v-else style="border-style: solid;solid: #000;
-                              background-color: #add6fa;
-                              border-width: 1px;
-                              border-radius: 7px;display: inline-block;float: right">
-                                      <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">
-                                          {{ item.content }}
-                                      </el-link>
-                                  </div>
-                              </el-col>
-                              <el-col :span="4">
-                                  <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
-                              </el-col>
-                          </div>
-                      </el-row>
+                    <el-main style="position: absolute;height: 75%;width: 100%;top: 10%;" ref="chat">
+                        <infinite-loading :identifier="customIdentifier" direction="top"
+                            @infinite="infiniteHandler"></infinite-loading>
+                        <el-row v-for="(item, $index) in chatList" :key="$index" style="margin-top: 10px;">
+                            <div v-if="item.fromID !== user.userID">
+                                <el-col :span="2" :offset="2">
+                                    <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
+                                </el-col>
+                                <el-col :span="20">
+                                    <div v-if="item.attach === 0 && item.kind === 0" style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: left;text-align: left;">
+                                        {{ item.content }}
+                                    </div>
+                                    <div v-else-if="item.attach !== 0 && item.kind === 0" style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;height: 31px;display: inline-block;float: left;text-align: left;">
+                                        <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">{{
+                                            item.content }}</el-link>
+                                    </div>
+                                    <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: left">
+                                        <el-button size="mini" @click="listenAudio(item.attach)">语音消息</el-button>
+                                    </div>
+                                </el-col>
+                            </div>
+                            <div v-else>
+                                <el-col :span="20" :offset="2">
+                                    <div v-if="item.attach === 0 && item.kind === 0" style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: right;text-align: left;">
+                                        {{ item.content }}
+                                    </div>
+                                    <div v-else-if="item.attach !== 0 && item.kind === 0" style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: right;;text-align: left;">
+                                        <el-link type="success" :href="NET.BASE_URL.http + 'download/' + item.attach">
+                                            {{ item.content }}
+                                        </el-link>
+                                    </div>
+                                    <!-- <div v-else style="border-style: solid;solid: #000;
+                                background-color: #add6fa;
+                                border-width: 1px;
+                                border-radius: 7px;display: inline-block;float: right">
+                                        <el-button size="mini" @click="listenAudio(item.attach)">语音消息</el-button>
+                                    </div> -->
+                                </el-col>
+                                <el-col :span="2" style="float: right">
+                                    <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
+                                </el-col>
+                            </div>
+                        </el-row>
+                    </el-main>
 
-                  </el-main>
-
-                  <el-footer style="position:absolute;top:80%;left:0;width:100%;height:100%;">
-                      <div>
-                          <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
-                              @keyup.enter.native="sendInfo" style="width: 80%;"></el-input>
-                          <el-button slot="append" icon="el-icon-search" @click="sendInfo"
-                              style="width: 20%;height: 32px"></el-button>
-                      </div>
-                      <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
-                          :on-change="handleChange" ref="uploadFile" :name="chatInfo">
-                          <i class="el-icon-folder-opened"></i>
-                      </el-upload>
-                  </el-footer>
-              </el-container>
-          </div>
-      </el-drawer>
+                    <el-footer style="position:absolute;top: 85%;left:0;width:100%;height: 15%;">
+                        <div>
+                            <el-input type="textarea" v-model="chatInfo" autosize @clear="sendInfo"
+                                @keyup.enter.native="sendInfo" style="width: 80%"></el-input>
+                            <el-button @click="sendInfo" type="primary" size="mini"
+                                style="width: 20%;height: 32px">发送</el-button>
+                        </div>
+                        <el-upload class="upload-file" :action="uploadURL" :show-file-list="false" :auto-upload="false"
+                            :on-change="handleChange" ref="uploadFile" :name="chatInfo">
+                            <el-button type="primary" size="mini" class="el-icon-folder-opened"></el-button>
+                        </el-upload>
+                        <!-- <div class="play-audio">
+                            <button @click="startRecording" v-show="!recording">开始录音</button>
+                            <button @click="stopRecording" v-show="recording">停止录音</button>
+                            <button @click="sendAudioData" v-show="sendShow">发送</button>
+                        </div> -->
+                    </el-footer>
+                </el-container>
+            </div>
+        </el-drawer>
 
       <el-dialog title="添加好友" :visible.sync="dialogInfo.systemMessageVisible">
           <el-form :model="currentRow">
@@ -385,10 +401,9 @@ export default {
       infiniteHandler($state) {
           this.$axios({
               method: 'GET',
-              url: this.NET.BASE_URL.http + 'getTeamHistoryMessage/',
+              url: this.NET.BASE_URL.http + 'getTeamHistoryMessage/' + this.currentRow.teamID,
               params: {
                   page: this.page,
-                  teamID: this.currentRow.teamID
               }
           }).then(response => {
               if (response.data.data.length) {
