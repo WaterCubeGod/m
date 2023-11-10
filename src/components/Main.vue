@@ -2,17 +2,13 @@
     <div class="main_page">
         <el-container id="elc">
             <el-header>
-                首页
+                明光筑梦，少年强国
             </el-header>
             <el-container>
                 <el-aside width="200px">
                     <el-menu :default-active="this.activeIndex" class="el-menu-vertical-demo" @open="handleOpen"
                         @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
                         style="width: 200px;" router>
-                        <el-menu-item index="/main/main">
-                            <i class="el-icon-menu"></i>
-                            <span slot="title">首页</span>
-                        </el-menu-item>
                             <el-menu-item index="/main/friend">
                             <i class="el-icon-chat-round"></i>
                             <span slot="title">我的好友</span>
@@ -53,7 +49,8 @@ export default {
     name: 'MainPage',
     data() {
         return {
-            activeIndex: ''
+            activeIndex: '',
+            header: '',
         }
     },
     methods: {
