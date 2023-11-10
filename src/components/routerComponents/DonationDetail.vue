@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <el-descriptions title="捐助详情" direction="vertical" :column="4" border>
+    <div style="border-radius: 7px;">
+      <el-descriptions title="捐助详情" direction="vertical" :column="4" border style="color: rgb(211, 211, 211);">
         <el-descriptions-item label="捐助编号">{{this.donationData.donationID}}</el-descriptions-item>
         <el-descriptions-item label="捐助人ID">{{this.donationData.fromID}}</el-descriptions-item>
         <el-descriptions-item label="捐助物" :span="2">{{this.donationData.donationName}}</el-descriptions-item>

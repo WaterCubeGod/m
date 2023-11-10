@@ -1,17 +1,17 @@
 <template>
   <el-container class="main-container">
       <el-header style="position: relative;">
-          <div style="position: absolute;width:70%">
+          <div style="position: absolute;width:100%">
               <i class="el-icon-back" @click="handleBack" style="font-size: 40px;vertical-align: middle;"
                   v-if="!label"></i>
               <el-input placeholder="请输入群名称进行搜索，可以直接回车搜索..." v-model="searchInput" class="searchClass" clearable
-                  @clear="search" @keydown.enter.native="search"></el-input>
-              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+                  @clear="search" @keydown.enter.native="search" style="width:87%;float:left"></el-input>
+              <el-button slot="append" icon="el-icon-search" @click="search"  style="width:10%;float:left"></el-button>
           </div>
       </el-header>
       <el-row style="height: 100%;" :gutter="20">
           <el-col style="height: 100%;" :span="16">
-              <el-table :data="tableData" style="height: 100%;" :max-height="tableHeight" highlight-current-row
+              <el-table :data="tableData" style="height: 100%;border-radius: 7px;" :max-height="tableHeight" highlight-current-row
                   @row-click="handleCurrentChange">
                   <el-table-column v-if="label" label="群组列表" min-width="20%">
                       <template>
@@ -65,18 +65,18 @@
           </el-col>
 
           <el-col style="height: 100%;" :span="8">
-              <el-table :data="applicationList" style="height: 100%;" :max-height="tableHeight" highlight-current-row
+              <el-table :data="applicationList" style="height: 100%;border-radius: 7px;" :max-height="tableHeight" highlight-current-row
                   @row-click="handleApplicationChange">
-                  <el-table-column v-if="label" label="我的申请" min-width="30%">
+                  <el-table-column v-if="label" label="群组邀请" min-width="30%">
                       <template>
                           <el-avatar icon="el-icon-user-solid"></el-avatar>
                       </template>
                   </el-table-column>
-                  <el-table-column v-else label="申请记录" min-width="30%">
+                  <!-- <el-table-column v-else label="申请记录" min-width="30%">
                       <template>
                           <el-avatar icon="el-icon-user-solid"></el-avatar>
                       </template>
-                  </el-table-column>
+                  </el-table-column> -->
                   <el-table-column label="" min-width="30%">
                       <template slot-scope="scope">
                           <el-popover trigger="hover" placement="top">
@@ -88,13 +88,13 @@
                           </el-popover>
                       </template>
                   </el-table-column>
-                  <el-table-column label="申请记录" min-width="30%">
+                  <!-- <el-table-column label="申请记录" min-width="30%">
                       <template slot-scope="scope">
                           <div>
                               <el-button size="mini" @click="handleOpenDetail(scope.row)">查看信息</el-button>
                           </div>
                       </template>
-                  </el-table-column>
+                  </el-table-column> -->
               </el-table>
           </el-col>
       </el-row>

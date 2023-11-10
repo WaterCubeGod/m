@@ -1,19 +1,19 @@
 <template>
     <el-container class="main-container">
         <el-header style="position: relative;">
-            <div style="position: absolute;width:70%">
-                <i class="el-icon-back" @click="handleBack" style="font-size: 40px;vertical-align: middle;"
-                    v-if="!label"></i>
+            <div style="position: absolute;width:100%">
+                <el-button class="el-icon-back" @click="handleBack" size="middle"
+                    v-if="!label"></el-button>
                 <el-input placeholder="请输入昵称进行搜索，可以直接回车搜索..." v-model="searchInput" class="searchClass" clearable
-                    @clear="search" @keydown.enter.native="search"></el-input>
-                <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+                    @clear="search" @keydown.enter.native="search" style="width:87%;float:left"></el-input>
+                <el-button slot="append" icon="el-icon-search" @click="search" style="width:10%;float:left"></el-button>
             </div>
         </el-header>
         <el-row style="height: 100%;" :gutter="20">
             <el-col style="height: 100%;" :span="16">
-                <el-table :data="tableData" style="height: 100%;" :max-height="tableHeight" highlight-current-row
-                    @row-click="handleCurrentChange">
-                    <el-table-column v-if="label" label="好友列表" min-width="20%">
+                <el-table :data="tableData" style="height: 100%;border-radius: 7px;" :max-height="tableHeight" highlight-current-row 
+                    @row-click="handleCurrentChange" >
+                    <el-table-column v-if="label" label="好友列表" min-width="20%" >
                         <template>
                             <el-avatar icon="el-icon-user-solid"></el-avatar>
                         </template>
@@ -73,18 +73,18 @@
             </el-col>
 
             <el-col style="height: 100%;" :span="8">
-                <el-table :data="applicationList" style="height: 100%;" :max-height="tableHeight" highlight-current-row
+                <el-table :data="applicationList" style="height: 100%; border-radius: 7px;" :max-height="tableHeight" highlight-current-row
                     @row-click="handleApplicationChange">
-                    <el-table-column v-if="label" label="我的申请" min-width="30%">
+                    <el-table-column v-if="label" label="好友申请" min-width="30%">
                         <template>
                             <el-avatar icon="el-icon-user-solid"></el-avatar>
                         </template>
                     </el-table-column>
-                    <el-table-column v-else label="申请记录" min-width="30%">
+                    <!-- <el-table-column v-else label="申请记录" min-width="30%">
                         <template>
                             <el-avatar icon="el-icon-user-solid"></el-avatar>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column label="" min-width="30%">
                         <template slot-scope="scope">
                             <el-popover trigger="hover" placement="top">
@@ -96,9 +96,9 @@
                             </el-popover>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请记录" min-width="30%">
+                    <!-- <el-table-column label="申请记录" min-width="30%">
 
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
             </el-col>
         </el-row>
@@ -114,7 +114,7 @@
                         <infinite-loading :identifier="customIdentifier" direction="top"
                             @infinite="infiniteHandler"></infinite-loading>
                         <el-row v-for="(item, $index) in checkShowRule(chatList, 'time')" :key="$index" style="margin-top: 10px;">
-                            <div v-if="item.is_show_time">{{ toggleTime(item.time).time }}</div>
+                            <div v-if="item.is_show_time" style="font-size: small;color: rgba(0, 0, 0, 0.5);">{{ toggleTime(item.time).time }}</div>
                             <div v-if="item.fromID !== user.userID">
                                 <el-col :span="2">
                                     <el-avatar icon="el-icon-user-solid" :size=33></el-avatar>
@@ -137,7 +137,7 @@
                                 background-color: #add6fa;
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: left">
-                                        <el-button size="mini" @click="listenAudio(item.attach)">语音消息</el-button>
+                                        <el-button size="mini" @click="listenAudio(item.attach)">语音消息<i class="el-icon-video-play" v-show="item.flag"></i><i class="el-icon-video-pause" v-show="!item.flag"></i></el-button>
                                     </div>
                                 </el-col>
                             </div>
@@ -162,7 +162,7 @@
                                 border-width: 1px;
                                 border-radius: 7px;display: inline-block;float: right">
                                         <el-button type="primary" size="mini" @click="listenAudio(item.attach)" style="background-color: #add6fa; border-width: 1px;
-                                border-radius: 7px;height: 35px;color: #000;">语音消息<i class="el-icon-video-play" v-show="!broadCasting"></i><i class="el-icon-video-pause" v-show="broadCasting"></i></el-button>
+                                border-radius: 7px;height: 35px;color: #000;">语音消息<i class="el-icon-video-play" v-show="item.flag"></i><i class="el-icon-video-pause" v-show="!item.flag"></i></el-button>
                                     </div>
                                 </el-col>
                                 <el-col :span="2" style="float: right">
@@ -291,6 +291,7 @@ export default {
             audioDivVisable:false,
             sendShow:false,
             broadCasting:false,
+            clickAttach:0
         };
     },
     mounted() {
@@ -310,7 +311,11 @@ export default {
                 const audioContext = new AudioContext();
                 audioContext.onstatechange=()=>{
                     console.log(audioContext.state)
-                    if(audioContext.state==='running')this.broadCasting=true;
+                    if(audioContext.state==='running'){
+                        console.log(111)
+                        console.log(homeThis.chatList)
+                        homeThis.chatList.filter(item => item.attach === this.clickAttach)[0].flag = false
+                    }
                 }
                 const audioData = event.data;
                 const fileReader = new FileReader();
@@ -323,7 +328,14 @@ export default {
                         source.connect(audioContext.destination);
                         source.start();
                         source.onended=()=>{
-                            homeThis.broadCasting=false;
+                            console.log(222)
+                            console.log(homeThis.chatList)
+                            for(let i=0;i<homeThis.chatList.length;i++){
+                                if(homeThis.chatList[i].attach ===  homeThis.clickAttach){
+                                    homeThis.chatList[i].flag=true
+                                    break
+                                }
+                            }
                         }
                     });
                 };
@@ -340,6 +352,9 @@ export default {
                     })
                 } else {
                     let message = JSON.parse(event.data)
+                    if(message.kind===2) {
+                        message['flag'] = true
+                    }
                     this.chatList.push(message)
                     if ((message.fromID !== this.currentRow.userID || !this.drawer) && message.fromID !== this.user.userID) {
                         this.messageCountList[this.messageCountList.findIndex(item => {
@@ -427,12 +442,12 @@ export default {
             }
         },
         handleCurrentChange(val) {
+            this.currentRow = val;
             if (this.friendData.some(item => item.userID === val.userID)) {
                 this.drawer = this.listbtn;
-                if (this.currentRow !== val && this.drawer) {
+                if (this.drawer) {
                     this.chatList = []
                     this.page = 0
-                    this.currentRow = val;
                     this.customIdentifier = true
                     this.uploadURL = this.NET.BASE_URL.http + 'upload/'
                         + this.$cookies.get('userID') + '/' + this.currentRow.userID + '/0'
@@ -447,7 +462,7 @@ export default {
             } else {
                 this.$message({
                     showClose: true,
-                    message: '宁和他还不是好友',
+                    message: '您和他还不是好友',
                     type: 'warning',
                 });
             }
@@ -501,6 +516,9 @@ export default {
                 if (response.data.data.length) {
                     this.page += 1
                     for (var i = 0; i < response.data.data.length; i++) {
+                        if(response.data.data[i].kind===2) {
+                            response.data.data[i]['flag'] = true
+                        }
                         this.chatList.unshift(response.data.data[i])
                     }
                     $state.loaded();
@@ -724,6 +742,7 @@ export default {
         this.audioDivVisable=false
       },
       listenAudio(attach){
+        this.clickAttach=attach
         this.$socket.sendObj({
             message:'999',
             from: this.$cookies.get('userID'),
@@ -732,6 +751,65 @@ export default {
             attach:attach
           }); // 发送二进制语音数据
     },
+    checkShowRule(arr, key) {
+            var newArr = arr.map((item, index, array) => {
+                var obj = this.toggleTime(item[key]);
+                item['show_time_type'] = obj.type;
+                item['show_time'] = obj.time;
+                if (index > 0) {
+                    item['is_show_time'] = this.compareTimeInterval(array[index - 1][key], array[index][key]);
+                } else {
+                    item['is_show_time'] = true;
+                }
+                return item;
+            });
+            return newArr;
+        },
+        //根据不同时间的消息，输出不同的时间格式
+        toggleTime(date) {
+            var time;
+            var type = this.getDateDiff(date);
+            //1：新消息，2：当天消息,3：昨天消息，4：今年消息，5：其他消息
+            if (type == 1) {
+                time = "以下为最新消息";//新消息，不显示时间，但是要显示"以下为最新消息"
+            } else if (type == 2) {
+                time = dayjs(date).format("H:mm");//当天消息，显示：10:22
+            } else if (type == 3) {
+                time = dayjs(date).format("昨天 H:mm");//昨天消息，显示：昨天 20:41
+            } else if (type == 4) {
+                time = dayjs(date).format("M月D日 AH:mm").replace("AM", "上午").replace("PM", "下午");//今年消息，上午下午，显示：3月17日 下午16:45
+            } else if (type == 5) {
+                time = dayjs(date).format("YYYY年M月D日 AH:mm").replace("AM", "上午").replace("PM", "下午");//其他消息，上午下午，显示：2020年11月2日 下午15:17
+            }
+            return {
+                time: time,
+                type: type
+            };
+        },
+        //判断消息类型
+        getDateDiff(date) {
+            var nowDate = dayjs(new Date());//当前时间
+            var oldDate = dayjs(new Date(date));//参数时间
+            var result;
+            if (nowDate.year() - oldDate.year() >= 1) {
+                result = 5;
+            } else if (nowDate.month() - oldDate.month() >= 1 || nowDate.date() - oldDate.date() >= 2) {
+                result = 4;
+            } else if (nowDate.date() - oldDate.date() >= 1) {
+                result = 3;
+            } else if (nowDate.hour() - oldDate.hour() >= 1 || nowDate.minute() - oldDate.minute() >= 5) {
+                result = 2;
+            } else {
+                result = 1;
+            }
+            return result;
+        },
+
+        //判断两个时间差是否大于5分钟
+        compareTimeInterval(t1, t2) {
+            // console.log(t1,t2,dayjs(t2)-dayjs(t1));
+            return dayjs(t2) - dayjs(t1) >= 300000 ? true : false;
+        },
     broadCastOrStop(){
         
     }
