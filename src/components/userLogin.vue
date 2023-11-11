@@ -1,5 +1,8 @@
 <template>    
   <div class="login-container">    
+    <el-header class="hee">
+      明光筑梦，少年强国
+    </el-header>
     <el-container>    
       <el-header>    
         <el-form class="login-form">    
@@ -73,31 +76,56 @@ export default {
 
 
 <style>
+
 .login-container {  
-  display: flex;  
+  /* display: flex;  
   justify-content: center;  
-  align-items: center;  
+  align-items: center;   */
   height: 100vh;  
+  
+  background-image: url('../assets/back.jpg');
 }  
+.hee{
+    /* background-color: #545c64; */
+    font-size: 50px;
+    font-family: STXingkai;
+    color: rgb(255, 186, 57);
+    text-align: center;
+    margin: auto;
+    line-height: 60px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
   
 .login-form {  
+  margin-top:200px;
+  margin-left:350px;
   display: flex;  
   flex-direction: column;  
   align-items: center;  
+  text-align: center;
+  width:50%;
+  color: rgb(57, 255, 179);
+
+
+  
 }  
   
 .login-form-item {  
   margin-bottom: 10px;  
+ 
 }  
   
 .login-input {  
   padding: 10px;  
   border: 1px solid #ccc;  
+  color: aliceblue;
+  width:150%;
   border-radius: 4px;  
 }  
   
 .register-button,  
 .login-button {  
+  margin-top:200px;
   /* 将按钮的样式设置得与密码栏协调 */  
   padding: 10px;  
   background-color: #409eff; /* 假设这是按钮的背景色 */  

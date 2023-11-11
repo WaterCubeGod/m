@@ -1,4 +1,5 @@
-<template>  
+<template> 
+   <div class="con">
     <div class="register-form">  
       <h2>注册</h2>  
       <form @submit.prevent="register">  
@@ -26,6 +27,7 @@
         <button type="submit">注册</button>  
       </form>  
     </div>  
+  </div> 
   </template>  
     
   <script>  
@@ -86,10 +88,15 @@
   </script>  
     
   <style scoped>  
+  .con{
+    background-image: url('../assets/back.jpg');
+    height: 100%;
+  }
   .register-form {  
     width: 300px;  
     margin: 0 auto;  
     padding: 20px;  
+    
   }  
   .form-group {  
     margin-bottom: 15px;  
