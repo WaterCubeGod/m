@@ -18,6 +18,7 @@ import questionnaireList from '../components/routerComponents/questionnaireList'
 import showQuestionnaire from '../components/routerComponents/showQuestionnaire'
 import answerSuccesse from '../components/routerComponents/answerSuccesse'
 import answerFail from '../components/routerComponents/answerFail'
+import loginFail from '../components/routerComponents/loginFail'
 
 
 
@@ -45,6 +46,7 @@ const router = new VueRouter({
                 { path: '/main/donationdetail', name: 'donationdetail', component: DonationDetail },
                 { path: '/main/money', name: 'money', component: Money },
                 { path: '/main/money', name: 'money', component: Money },
+              
                 
             ]
         },
@@ -65,6 +67,9 @@ const router = new VueRouter({
                 
             ]
         },
+
+
+        { path: '/loginFail', name: 'loginFail', component: loginFail },
         
 
         

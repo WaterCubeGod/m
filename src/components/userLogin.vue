@@ -62,6 +62,7 @@ export default {
                 
             } else {  
                 console.log('登录失败：' + response.data.message)  
+                this.$router.push({ path: '/loginFail'})
             }
         });
       

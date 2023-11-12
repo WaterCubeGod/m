@@ -5,6 +5,7 @@
           <div class="successInfo">
             <img src="@/assets/jiangbei.jpg" alt="回答成功" class="myimg">
             <h2>回答成功且60分以上，奖杯+1</h2>
+            <div label="奖杯">分数为：{{ this.score }}</div>
           </div>
         </el-card>
       </div>
@@ -17,15 +18,32 @@
 
 
     export default {
+      created(){
+        this.getData();
+        console.log(this.score)
+        
+
+      },
+
+      
       data() {  
     return {  
       // imgSrc: require("@/assets/successImg.png")
+      score:0
     }  
   }  ,
 
 
-      name: "AnswerSuccess"
-    }
+      
+    
+  methods: {  
+      getData() {  
+        this.score = this.$route.query.Score;  
+      }  
+    }  
+      }
+    
+    
     </script>
     
     <style scoped lang="less">

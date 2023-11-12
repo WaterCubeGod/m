@@ -100,7 +100,7 @@
         this.getUserID()
         this.getScore()
         let score=Number(this.Score)
-        score=score*50
+        score=score*20
         console.log(score)
         console.log(this.userId)
         if(score>=60){
@@ -108,16 +108,17 @@
           method: 'POST',  
           url: 'http://localhost:8087/addTrophy',  
           params: {  
+          score,
           userID:this.userId
         }  
         })
         this.$cookies.set('userTrophy', Number(this.$cookies.get('userTrophy'))+1)
 
 
-          this.$router.push({ path: 'answerSuccesse', query: { Score: this.Score.toString } });
+          this.$router.push({ path: 'answerSuccesse', query: { Score: this.Score*20  } });
         }
         else
-          this.$router.push({ path: 'answerFail', query: { Score: this.Score.toString } });
+          this.$router.push({ path: 'answerFail', query: { Score: this.Score*20 } });
       }
     },
     created() {
